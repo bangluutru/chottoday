@@ -169,6 +169,31 @@ const articlesMeta = {
 writePage('articles', injectMeta(baseHtml, articlesMeta));
 console.log('  ✓ Prerendered: /articles');
 
+// B2. Problem Discovery Index (/problems)
+const problemsMeta = {
+  title: 'Tra cứu tình huống đời sống tại Nhật | Chotto',
+  description: 'Tổng hợp các tình huống thực tế thường gặp khi sinh sống, học tập và làm việc tại Nhật Bản: mất thẻ ngoại kiều, thủ tục chuyển nhà, thuế, bảo hiểm...',
+  canonical: `${SITE_URL}/problems`,
+  ogTitle: 'Tra cứu tình huống đời sống tại Nhật | Chotto',
+  ogDescription: 'Tổng hợp các tình huống thực tế thường gặp khi sinh sống, học tập và làm việc tại Nhật Bản.',
+  ogImage: `${SITE_URL}/images/og/og-default.png`,
+  ogUrl: `${SITE_URL}/problems`,
+  ogType: 'website',
+  structuredData: {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Tra cứu tình huống đời sống tại Nhật',
+    url: `${SITE_URL}/problems`,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'Chotto',
+      url: SITE_URL,
+    },
+  },
+};
+writePage('problems', injectMeta(baseHtml, problemsMeta));
+console.log('  ✓ Prerendered: /problems');
+
 // C. Categories (/topics/:category)
 for (const cat of CATEGORY_DEFINITIONS) {
   const catMeta = {
@@ -298,6 +323,7 @@ const latestArticleDate = publishedArticles.reduce(
 const sitemapUrls = [
   { loc: `${SITE_URL}/`, changefreq: 'daily', priority: '1.0', lastmod: latestArticleDate },
   { loc: `${SITE_URL}/articles`, changefreq: 'daily', priority: '0.9', lastmod: latestArticleDate },
+  { loc: `${SITE_URL}/problems`, changefreq: 'weekly', priority: '0.9', lastmod: latestArticleDate },
   ...CATEGORY_DEFINITIONS.map((c) => {
     const catArticles = publishedArticles.filter((a) => a.category === c.id);
     const catLastmod = catArticles.reduce(

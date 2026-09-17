@@ -30,5 +30,8 @@ jobs:
       - name: Validate tool recommendations & references
         run: npm run validate:tool-refs
 
+      - name: Validate discovery engine & zero-hallucination tests
+        run: npm run test:discovery
+
       - name: Build production bundle & prerender SEO metadata
         run: npm run build

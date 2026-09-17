@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "validate:content": "node scripts/validate-content.mjs",
     "validate:tool-refs": "node scripts/validate-tool-refs.mjs",
-    "validate": "npm run validate:content && npm run validate:tool-refs"
+    "validate": "npm run validate:content && npm run validate:tool-refs",
+    "test:discovery": "node scripts/test-discovery.mjs",
+    "test": "npm run test:discovery"
   },
   "dependencies": {
     "react": "^18.3.1",

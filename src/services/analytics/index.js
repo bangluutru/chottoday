@@ -16,6 +16,10 @@ const ALLOWED_EVENTS = new Set([
   'source_link_click',
   'category_open',
   'article_share',
+  'discovery_search',
+  'discovery_result_click',
+  'problem_open',
+  'article_from_discovery',
 ]);
 
 const FORBIDDEN_KEYS = new Set([

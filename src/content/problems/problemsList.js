@@ -99,3 +99,13 @@ export const USER_PROBLEMS = [
     relatedToolIds: ['id-photo-studio'],
   },
 ];
+
+export function getProblemById(id) {
+  return USER_PROBLEMS.find((p) => p.id === id) || null;
+}
+
+export function getProblemsByCategory(categoryKey) {
+  if (!categoryKey || categoryKey === 'all') return USER_PROBLEMS;
+  return USER_PROBLEMS.filter((p) => p.categoryKey === categoryKey);
+}
+

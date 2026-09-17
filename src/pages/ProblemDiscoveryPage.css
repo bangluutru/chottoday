@@ -1,0 +1,147 @@
+.problem-discovery-wrapper {
+  padding-top: var(--space-8, 32px);
+  padding-bottom: var(--space-16, 64px);
+  min-height: calc(100vh - 200px);
+}
+
+.problem-discovery-header {
+  max-width: 720px;
+  margin-bottom: var(--space-8, 32px);
+}
+
+.problem-discovery-h1 {
+  font-family: var(--font-heading, 'Nunito', sans-serif);
+  font-size: var(--text-3xl, 28px);
+  font-weight: 800;
+  color: var(--color-ink, #1e2a44);
+  margin-top: var(--space-2, 8px);
+  margin-bottom: var(--space-3, 12px);
+  line-height: 1.25;
+}
+
+.problem-discovery-lead {
+  font-size: var(--text-base, 16px);
+  color: var(--color-ink-muted, #5a6578);
+  line-height: 1.6;
+}
+
+.problem-filter-tabs {
+  display: flex;
+  gap: var(--space-2, 8px);
+  overflow-x: auto;
+  padding-bottom: var(--space-3, 12px);
+  margin-bottom: var(--space-6, 24px);
+  -webkit-overflow-scrolling: touch;
+}
+
+.problem-filter-btn {
+  padding: 8px 16px;
+  background-color: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border-subtle, #e5e0d8);
+  border-radius: var(--radius-full, 9999px);
+  font-size: var(--text-sm, 14px);
+  font-weight: 600;
+  color: var(--color-ink-muted, #5a6578);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.problem-filter-btn:hover {
+  border-color: var(--color-ink, #1e2a44);
+  color: var(--color-ink, #1e2a44);
+}
+
+.problem-filter-btn.active {
+  background-color: var(--color-ink, #1e2a44);
+  border-color: var(--color-ink, #1e2a44);
+  color: #ffffff;
+}
+
+.problem-discovery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-5, 20px);
+}
+
+.problem-discovery-card {
+  background-color: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border-subtle, #e5e0d8);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-5, 20px);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.problem-discovery-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.problem-card-top {
+  margin-bottom: var(--space-3, 12px);
+}
+
+.problem-card-title {
+  font-family: var(--font-heading, 'Nunito', sans-serif);
+  font-size: var(--text-lg, 18px);
+  font-weight: 700;
+  color: var(--color-ink, #1e2a44);
+  margin: 0 0 var(--space-2, 8px) 0;
+  line-height: 1.35;
+}
+
+.problem-card-detail-text {
+  font-size: var(--text-sm, 14px);
+  color: var(--color-ink-muted, #5a6578);
+  line-height: 1.5;
+  margin: 0 0 var(--space-4, 16px) 0;
+  flex: 1;
+}
+
+.problem-card-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
+  border-top: 1px solid var(--color-border-subtle, #e5e0d8);
+  padding-top: var(--space-3, 12px);
+}
+
+.problem-action-article,
+.problem-action-tool {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: var(--radius-md, 6px);
+  font-size: var(--text-xs, 12px);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.problem-action-article {
+  background-color: var(--color-cream-light, #faf8f5);
+  color: var(--color-ink, #1e2a44);
+}
+
+.problem-action-article:hover {
+  background-color: #f0eae1;
+}
+
+.problem-action-tool {
+  background-color: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.problem-action-tool:hover {
+  background-color: #dcfce7;
+}
+
+@media (max-width: 640px) {
+  .problem-discovery-grid {
+    grid-template-columns: 1fr;
+  }
+}

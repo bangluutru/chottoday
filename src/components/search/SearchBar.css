@@ -109,6 +109,26 @@
   overflow-y: auto;
 }
 
+.suggestion-concept-header {
+  padding: 8px 16px;
+  background-color: var(--surface-dim);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+}
+
+.suggestion-concept-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: rgba(59, 89, 152, 0.1);
+  color: var(--color-indigo, #3b5998);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
 .suggestion-group-title {
   padding: 10px 16px 6px;
   font-family: var(--font-body);

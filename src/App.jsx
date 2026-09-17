@@ -9,6 +9,7 @@ import { HomePage } from './pages/HomePage';
 import { ArticlesIndexPage } from './pages/ArticlesIndexPage';
 import { ArticleDetailPage } from './pages/ArticleDetailPage';
 import { CategoryPage } from './pages/CategoryPage';
+import { ProblemDiscoveryPage } from './pages/ProblemDiscoveryPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -80,6 +81,7 @@ export function App() {
           <Route path="/articles" element={<ArticlesIndexPage />} />
           <Route path="/articles/:slug" element={<ArticleDetailPage />} />
           <Route path="/topics/:category" element={<CategoryPage />} />
+          <Route path="/problems" element={<ProblemDiscoveryPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>

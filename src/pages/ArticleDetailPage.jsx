@@ -4,6 +4,7 @@ import './ArticleDetailPage.css';
 import { getArticleBySlug, getRelatedArticles } from '../content/articles';
 import { getCategoryById } from '../content/categories/categoryMap';
 import { ArticleRenderer } from '../components/article/ArticleRenderer';
+import { ArticleContextualProblem } from '../components/article/ArticleContextualProblem';
 import {
   ClockIcon,
   ShieldCheckIcon,
@@ -413,7 +414,10 @@ export function ArticleDetailPage() {
           </div>
         </section>
 
-        {/* 10. Related Articles (Max 3) */}
+        {/* 10. Contextual Problem Card (Phase 5) */}
+        <ArticleContextualProblem article={article} />
+
+        {/* 11. Related Articles (Max 3) */}
         {relatedList && relatedList.length > 0 && (
           <section className="article-related-section" aria-labelledby="related-heading">
             <h2 id="related-heading" className="article-related-title">

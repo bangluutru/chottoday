@@ -68,6 +68,13 @@ export function NeedHelp() {
             );
           })}
         </div>
+
+        <div className="section-footer-action" style={{ textAlign: 'center', marginTop: 'var(--space-6, 24px)' }}>
+          <Link to="/problems" className="chotto-btn chotto-btn-secondary">
+            <span>Xem tất cả tình huống theo chủ đề</span>
+            <ArrowRightIcon size={16} />
+          </Link>
+        </div>
       </div>
     </section>
   );

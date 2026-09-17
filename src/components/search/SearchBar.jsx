@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './SearchBar.css';
 import { SearchIcon, CloseIcon, ArrowRightIcon, ExternalLinkIcon } from '../common/Icons';
-import { searchArticles } from '../../content/articles';
-import { searchTools, buildToolUrl } from '../../services/toolRegistry';
+import { discover } from '../../services/discovery/index.js';
+import { buildToolUrl } from '../../services/toolRegistry/index.js';
 
 export const SearchBar = forwardRef(function SearchBar(
   { onSearch, initialValue = '' },
@@ -11,40 +11,32 @@ export const SearchBar = forwardRef(function SearchBar(
 ) {
   const [query, setQuery] = useState(initialValue);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [articleResults, setArticleResults] = useState([]);
-  const [toolResults, setToolResults] = useState([]);
+  const [discoveryResult, setDiscoveryResult] = useState(null);
   const containerRef = useRef(null);
   const navigate = useNavigate();
 
-  // Quick intents requested in Specification 6
+  // Natural problem-oriented quick intent hints
   const quickIntents = [
-    'Thuế',
-    'Nenkin',
-    'Nhà ở',
+    'Mất thẻ zairyu',
+    'Lương 30 man',
+    'Nghỉ việc',
     'Đổi bằng lái',
-    'Thẻ cư trú',
-    'Việc làm',
-    'Học tiếng Nhật',
+    'Thuế thị dân',
+    'Gia hạn visa',
+    'Thuê nhà',
   ];
 
-  // Perform lightweight real-time search
+  // Perform intelligent real-time discovery
   useEffect(() => {
     const trimmed = query.trim();
     if (!trimmed) {
-      setArticleResults([]);
-      setToolResults([]);
+      setDiscoveryResult(null);
       setShowSuggestions(false);
       return;
     }
 
-    // 1. Articles search (Content-first priority)
-    const matchedArticles = searchArticles(trimmed).slice(0, 4);
-    setArticleResults(matchedArticles);
-
-    // 2. Tools search against local snapshot
-    const matchedTools = searchTools(trimmed, 3);
-    setToolResults(matchedTools);
-
+    const res = discover(trimmed);
+    setDiscoveryResult(res);
     setShowSuggestions(true);
   }, [query]);
 
@@ -81,17 +73,16 @@ export const SearchBar = forwardRef(function SearchBar(
     if (onSearch) onSearch('');
   };
 
-  const handleSelectArticle = (slug) => {
-    setShowSuggestions(false);
-    navigate(`/articles/${slug}`);
-  };
-
   const handleSeeAll = () => {
     setShowSuggestions(false);
     navigate(`/articles?q=${encodeURIComponent(query.trim())}`);
   };
 
-  const totalResults = articleResults.length + toolResults.length;
+  const articles = discoveryResult?.results?.articles?.slice(0, 3) || [];
+  const problems = discoveryResult?.results?.problems?.slice(0, 2) || [];
+  const tools = discoveryResult?.results?.tools?.slice(0, 2) || [];
+  const primaryConcept = discoveryResult?.intent?.primaryConcept || null;
+  const totalResults = articles.length + problems.length + tools.length;
 
   return (
     <div className="search-container" ref={containerRef}>
@@ -115,8 +106,8 @@ export const SearchBar = forwardRef(function SearchBar(
                 setShowSuggestions(false);
               }
             }}
-            placeholder="Bạn đang cần tìm gì? Ví dụ: thuế, nenkin, đổi bằng lái…"
-            aria-label="Nhập từ khóa cần tìm kiếm"
+            placeholder="Bạn đang gặp vấn đề gì? Ví dụ: mất thẻ zairyu, lương 30 man, nghỉ việc…"
+            aria-label="Nhập vấn đề hoặc từ khóa cần tìm kiếm"
             autoComplete="off"
             spellCheck="false"
             aria-expanded={showSuggestions}
@@ -147,17 +138,24 @@ export const SearchBar = forwardRef(function SearchBar(
             role="listbox"
             aria-label="Gợi ý kết quả tìm kiếm"
           >
+            {/* Concept recognition banner */}
+            {primaryConcept && (
+              <div className="suggestion-concept-header">
+                <span className="suggestion-concept-tag">Chủ đề: {primaryConcept.name}</span>
+              </div>
+            )}
+
             {totalResults === 0 ? (
               <div className="search-empty-state">
-                Không tìm thấy bài viết hoặc công cụ nào khớp với "{query}".
+                Chotto chưa tìm thấy nội dung đủ sát với "{query}". Thử tìm theo từ khóa hoặc xem các chủ đề bên dưới.
               </div>
             ) : (
               <>
                 {/* 1. ARTICLES SUGGESTIONS */}
-                {articleResults.length > 0 && (
+                {articles.length > 0 && (
                   <div>
-                    <div className="suggestion-group-title">Bài viết ({articleResults.length})</div>
-                    {articleResults.map((article) => (
+                    <div className="suggestion-group-title">Bài viết hướng dẫn ({articles.length})</div>
+                    {articles.map((article) => (
                       <Link
                         key={article.id}
                         to={`/articles/${article.slug}`}
@@ -170,7 +168,7 @@ export const SearchBar = forwardRef(function SearchBar(
                           <div className="suggestion-meta">
                             <span>{article.readingTime} phút đọc</span>
                             <span>·</span>
-                            <span>{article.tags.slice(0, 2).join(', ')}</span>
+                            <span>{(article.tags || []).slice(0, 2).join(', ')}</span>
                           </div>
                         </div>
                         <ArrowRightIcon size={14} color="var(--text-muted)" />
@@ -179,11 +177,35 @@ export const SearchBar = forwardRef(function SearchBar(
                   </div>
                 )}
 
-                {/* 2. TOOLS SUGGESTIONS */}
-                {toolResults.length > 0 && (
+                {/* 2. PROBLEMS / SITUATIONS SUGGESTIONS */}
+                {problems.length > 0 && (
                   <div>
-                    <div className="suggestion-group-title">Công cụ Toolio ({toolResults.length})</div>
-                    {toolResults.map((tool) => {
+                    <div className="suggestion-group-title">Tình huống thực tế ({problems.length})</div>
+                    {problems.map((prob) => (
+                      <Link
+                        key={prob.id}
+                        to={prob.targetUrl || '/problems'}
+                        className="suggestion-item suggestion-problem-item"
+                        role="option"
+                        onClick={() => setShowSuggestions(false)}
+                      >
+                        <div className="suggestion-main">
+                          <div className="suggestion-title">💬 {prob.statement}</div>
+                          <div className="suggestion-meta">
+                            <span>{prob.detail.slice(0, 65)}...</span>
+                          </div>
+                        </div>
+                        <ArrowRightIcon size={14} color="var(--text-muted)" />
+                      </Link>
+                    ))}
+                  </div>
+                )}
+
+                {/* 3. TOOLS SUGGESTIONS */}
+                {tools.length > 0 && (
+                  <div>
+                    <div className="suggestion-group-title">Công cụ thực hành ({tools.length})</div>
+                    {tools.map((tool) => {
                       const toolUrl = buildToolUrl(tool.id, { source: 'search' });
                       if (!toolUrl) return null;
                       return (
@@ -203,7 +225,7 @@ export const SearchBar = forwardRef(function SearchBar(
                             </div>
                           </div>
                           <span className="suggestion-tool-badge">
-                            <span>Mở miniapp</span>
+                            <span>Mở trong Toolio</span>
                             <ExternalLinkIcon size={12} className="suggestion-badge-icon" />
                           </span>
                         </a>
@@ -212,7 +234,7 @@ export const SearchBar = forwardRef(function SearchBar(
                   </div>
                 )}
 
-                {/* 3. SEE ALL RESULTS ACTION */}
+                {/* 4. SEE ALL RESULTS ACTION */}
                 <button
                   type="button"
                   className="search-see-all-btn"
@@ -229,7 +251,7 @@ export const SearchBar = forwardRef(function SearchBar(
 
       {/* Quick Intents / Suggested queries */}
       <div className="quick-intents-wrapper" aria-label="Gợi ý tìm kiếm phổ biến">
-        <span className="quick-intents-label">Gợi ý nhanh:</span>
+        <span className="quick-intents-label">Vấn đề phổ biến:</span>
         {quickIntents.map((intent) => (
           <button
             key={intent}
