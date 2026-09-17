@@ -1,0 +1,110 @@
+/* ==========================================================================
+   CHOTTODAY DESIGN TOKENS (SSOT: Chotto - Design.pdf & Color Pallete.pdf)
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     1. BRAND COLORS (Gốc)
+     ------------------------------------------------------------------------ */
+  --chotto-green: #66B96B;
+  --chotto-ink: #1E2A44;
+  --chotto-orange: #FBA93E;
+  --chotto-coral: #F15A53;
+  --chotto-violet: #AB8DF5;
+  --chotto-cyan: #2FC5D0;
+  --chotto-paper: #FBF9F5;
+
+  /* ------------------------------------------------------------------------
+     2. SURFACE & ELEVATION (Light Theme mặc định cho ChottoDay)
+     ------------------------------------------------------------------------ */
+  --surface-canvas: #FBF9F5;     /* Nền Giấy mặc định (~45% composition) */
+  --surface-card: #FFFFFF;       /* Nền thẻ trắng tinh khiết */
+  --surface-dim: #F4F1EA;        /* Nền lõm, chip hover, background subtle */
+  --surface-tint: #EFEBE2;       /* Nền nhấn nhẹ */
+  
+  /* Viền thẻ & phân cách (1px phẳng, không đổ bóng rác theo SOT trang 14) */
+  --border-card: #E6E2D9;
+  --border-subtle: #E6E2D9;
+  --border-divider: #D8D3C8;
+
+  /* ------------------------------------------------------------------------
+     3. TYPOGRAPHY & TEXT COLORS
+     ------------------------------------------------------------------------ */
+  --font-heading: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Màu chữ (Đã kiểm chứng WCAG AA >= 4.5:1) */
+  --text-primary: #1E2A44;       /* Mực: Tiêu đề, chữ chính (13.6:1 trên Giấy) */
+  --text-secondary: #3A4354;     /* Mực vừa: Chữ phụ, mô tả ngắn (9.5:1 trên Giấy) */
+  --text-muted: #666D7A;         /* Nhãn phụ, thời gian, metadata */
+  --text-subtle: #8A8F9A;        /* Gợi ý mờ */
+  --text-inverse: #FBF9F5;       /* Chữ sáng trên nền Mực */
+
+  /* ------------------------------------------------------------------------
+     4. CATEGORY SYSTEM (6 Nhóm vấn đề chuẩn SOT)
+     ------------------------------------------------------------------------ */
+  /* 01. Đời sống & nhà ở (Xanh Lá) */
+  --cat-life-accent: #66B96B;
+  --cat-life-text: #2F7A43;
+  --cat-life-bg: #EDF7EE;
+  --cat-life-border: #CBE8CE;
+
+  /* 02. Giấy tờ & hành chính (Mực) */
+  --cat-doc-accent: #1E2A44;
+  --cat-doc-text: #1E2A44;
+  --cat-doc-bg: #ECEFF5;
+  --cat-doc-border: #CFD7E4;
+
+  /* 03. Việc làm & tiền (Cam Nắng) */
+  --cat-work-accent: #FBA93E;
+  --cat-work-text: #8F5310;
+  --cat-work-bg: #FEF6EB;
+  --cat-work-border: #FDDDBD;
+
+  /* 04. Sức khoẻ & khẩn cấp (San Hô) */
+  --cat-health-accent: #F15A53;
+  --cat-health-text: #B32B26;
+  --cat-health-bg: #FDEEED;
+  --cat-health-border: #FBCDCB;
+
+  /* 05. Tiếng Nhật & học tập (Tím Lam) */
+  --cat-study-accent: #AB8DF5;
+  --cat-study-text: #6741C4;
+  --cat-study-bg: #F6F2FE;
+  --cat-study-border: #DFD5FB;
+
+  /* 06. Công cụ Chotto (Ngọc) */
+  --cat-tool-accent: #2FC5D0;
+  --cat-tool-text: #0A6E78;
+  --cat-tool-bg: #E9F8F9;
+  --cat-tool-border: #B7EBEF;
+
+  /* ------------------------------------------------------------------------
+     5. COMPONENT METRICS (SOT trang 14)
+     ------------------------------------------------------------------------ */
+  --radius-sm: 6px;
+  --radius-card: 12px;           /* Bo góc thẻ, ô nhập, modal */
+  --radius-btn: 12px;            /* Bo góc nút */
+  --radius-pill: 9999px;         /* Chip, tag */
+
+  --control-height: 48px;        /* Chiều cao chuẩn nút bấm & ô nhập */
+  --touch-target-min: 44px;      /* Vùng bấm nhỏ nhất trên Mobile */
+
+  /* Bố cục vùng nhìn */
+  --container-max-width: 1240px;
+  --gutter-desktop: 24px;
+  --gutter-mobile: 16px;
+
+  /* Bước khoảng cách chuẩn SOT: 4 / 8 / 12 / 18 / 28 / 48 px */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 18px;
+  --space-5: 28px;
+  --space-6: 48px;
+  --space-8: 72px;
+
+  /* Focus rings cho accessibility */
+  --focus-ring: 0 0 0 3px rgba(47, 197, 208, 0.4);
+  --focus-ring-ink: 0 0 0 3px rgba(30, 42, 68, 0.3);
+}

@@ -1,0 +1,213 @@
+/* ==========================================================================
+   GLOBAL LAYOUT & REUSABLE UTILITIES
+   ========================================================================== */
+
+/* Inner bounded container (Max width 1240px) */
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--gutter-mobile);
+  padding-right: var(--gutter-mobile);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: var(--gutter-desktop);
+    padding-right: var(--gutter-desktop);
+  }
+}
+
+/* Sections */
+.section {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+  }
+}
+
+/* Typography styles */
+.text-h1 {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  line-height: 38px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .text-h1 {
+    font-size: 40px;
+    line-height: 44px;
+  }
+}
+
+.text-h2 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .text-h2 {
+    font-size: 28px;
+    line-height: 34px;
+  }
+}
+
+.text-h3 {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .text-h3 {
+    font-size: 20px;
+    line-height: 26px;
+  }
+}
+
+.text-body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.text-button {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.text-caption {
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 19px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
+
+/* Base Card Style (1px viền phẳng #E6E2D9, bo góc 12px, nền trắng) */
+.chotto-card {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  transition: transform 0.18s ease, border-color 0.18s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.chotto-card:hover {
+  border-color: var(--text-muted);
+  transform: translateY(-2px);
+}
+
+/* Category Accent Strip: Thẻ có viền trái màu chủ đề (3.5px) */
+.card-life { border-left: 4px solid var(--cat-life-accent); }
+.card-doc { border-left: 4px solid var(--cat-doc-accent); }
+.card-work { border-left: 4px solid var(--cat-work-accent); }
+.card-health { border-left: 4px solid var(--cat-health-accent); }
+.card-study { border-left: 4px solid var(--cat-study-accent); }
+.card-tool { border-left: 4px solid var(--cat-tool-accent); }
+
+/* Buttons */
+.btn-primary {
+  height: var(--control-height);
+  padding: 0 24px;
+  background-color: var(--text-primary);
+  color: var(--surface-canvas);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--text-primary);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.btn-primary:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  height: var(--control-height);
+  padding: 0 20px;
+  background-color: var(--surface-card);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--border-card);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--surface-dim);
+  border-color: var(--text-muted);
+}
+
+/* Category Chip */
+.chotto-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-pill);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.chip-life { background-color: var(--cat-life-bg); color: var(--cat-life-text); }
+.chip-doc { background-color: var(--cat-doc-bg); color: var(--cat-doc-text); }
+.chip-work { background-color: var(--cat-work-bg); color: var(--cat-work-text); }
+.chip-health { background-color: var(--cat-health-bg); color: var(--cat-health-text); }
+.chip-study { background-color: var(--cat-study-bg); color: var(--cat-study-text); }
+.chip-tool { background-color: var(--cat-tool-bg); color: var(--cat-tool-text); }
+
+/* Quick Intent Button / Pill */
+.pill-intent {
+  height: 36px;
+  padding: 0 14px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-pill);
+  transition: all 0.15s ease;
+}
+
+.pill-intent:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  background-color: var(--surface-dim);
+}
+
+/* Subtle Motifs (Hoạ tiết một chút - Trang 12 SOT: < 15% diện tích) */
+.pattern-dots {
+  background-image: radial-gradient(var(--border-divider) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}

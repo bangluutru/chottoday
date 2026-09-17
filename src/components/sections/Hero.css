@@ -1,0 +1,117 @@
+/* ==========================================================================
+   HERO SECTION STYLES
+   ========================================================================== */
+
+.hero-section {
+  padding-top: 32px;
+  padding-bottom: 40px;
+  background-color: var(--surface-canvas);
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .hero-section {
+    padding-top: 48px;
+    padding-bottom: 56px;
+  }
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  align-items: center;
+}
+
+@media (min-width: 960px) {
+  .hero-grid {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 48px;
+  }
+}
+
+/* Left Column: Text & Search */
+.hero-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background-color: var(--surface-dim);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  align-self: flex-start;
+}
+
+.hero-headline {
+  font-family: var(--font-heading);
+  font-size: 34px;
+  line-height: 40px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  white-space: pre-line;
+}
+
+@media (min-width: 768px) {
+  .hero-headline {
+    font-size: 44px;
+    line-height: 48px;
+  }
+}
+
+.hero-support-text {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  max-width: 520px;
+}
+
+@media (min-width: 768px) {
+  .hero-support-text {
+    font-size: 17px;
+    line-height: 28px;
+    margin-bottom: 28px;
+  }
+}
+
+/* Right Column: Visual (Everyday Japan scene) */
+.hero-visual-card {
+  position: relative;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-card);
+  background-color: var(--surface-card);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(30, 42, 68, 0.04);
+}
+
+.hero-illustration {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-visual-caption {
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-muted);
+  background-color: var(--surface-card);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
