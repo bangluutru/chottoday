@@ -22,7 +22,7 @@ chottoday.com (ChottoDay — Repo này)
 └── Công cụ (Contextual Recommendation)
       │
       ▼
-tools.chottoday.com (Toolio — Interactive Miniapps & Utilities)
+toolio.chottoday.com (Toolio — Interactive Miniapps & Utilities)
 ```
 
 ---

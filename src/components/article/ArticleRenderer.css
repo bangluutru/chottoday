@@ -415,3 +415,28 @@
 .article-source-link:hover {
   color: var(--cat-work-text);
 }
+
+/* Quote styling */
+.article-quote {
+  margin: 32px 0;
+  padding: 20px 24px;
+  background: var(--bg-surface);
+  border-left: 4px solid var(--border-focus);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.article-quote-text {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.article-quote-author {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: normal;
+  display: block;
+}
+

@@ -67,7 +67,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="footer-link footer-link-highlight"
                 >
-                  <span>Toolio (tools.chottoday.com)</span>
+                  <span>Toolio (toolio.chottoday.com)</span>
                   <ExternalLinkIcon size={14} />
                 </a>
               </li>

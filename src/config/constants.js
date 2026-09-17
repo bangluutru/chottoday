@@ -9,7 +9,7 @@
 export const TOOLIO_BASE_URL =
   (typeof import.meta !== 'undefined' && import.meta.env?.VITE_TOOLIO_BASE_URL) ||
   (typeof process !== 'undefined' && process.env?.VITE_TOOLIO_BASE_URL) ||
-  'https://tools.chottoday.com';
+  'https://toolio.chottoday.com';
 
 /**
  * Builds an absolute URL pointing to a Toolio tool or subpath.

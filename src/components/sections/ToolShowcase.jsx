@@ -50,7 +50,7 @@ export function ToolShowcase() {
             <strong>Nguyên tắc Chotto:</strong> Nội dung là điểm bắt đầu, công cụ là điểm kết thúc. Các công cụ xử lý dữ liệu ngay trên trình duyệt của bạn, bảo mật tuyệt đối.
           </div>
           <span className="chotto-chip tool-notice-badge">
-            tools.chottoday.com
+            toolio.chottoday.com
           </span>
         </div>
 

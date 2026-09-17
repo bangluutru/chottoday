@@ -1,4 +1,5 @@
 import { ALL_ARTICLES } from './articlesList.js';
+import { isArticlePublished } from '../../services/content/articleModel.js';
 
 /**
  * Normalizes text for search: lowercase, removes Vietnamese diacritics
@@ -18,6 +19,10 @@ export function getAllArticles() {
   return ALL_ARTICLES;
 }
 
+export function getPublishedArticles() {
+  return ALL_ARTICLES.filter(isArticlePublished);
+}
+
 export function getArticleBySlug(slug) {
   return ALL_ARTICLES.find((a) => a.slug === slug) || null;
 }
@@ -27,10 +32,27 @@ export function getArticlesByCategory(categoryKey) {
   return ALL_ARTICLES.filter((a) => a.category === categoryKey);
 }
 
+/**
+ * Resolves related articles for an article.
+ * Supports both relatedArticleIds (array of slugs) and legacy relatedArticles object arrays.
+ */
+export function getRelatedArticles(article) {
+  if (!article) return [];
+  if (Array.isArray(article.relatedArticleIds) && article.relatedArticleIds.length > 0) {
+    return article.relatedArticleIds
+      .map((slug) => getArticleBySlug(slug))
+      .filter(Boolean);
+  }
+  if (Array.isArray(article.relatedArticles)) {
+    return article.relatedArticles;
+  }
+  return [];
+}
+
 export function getFeaturedArticles() {
   return [
-    ALL_ARTICLES.find((a) => a.slug === 'luong-30-man-thuc-nhan-bao-nhieu'),
     ALL_ARTICLES.find((a) => a.slug === 'mat-the-zairyu-thi-lam-gi'),
+    ALL_ARTICLES.find((a) => a.slug === 'luong-30-man-thuc-nhan-bao-nhieu'),
   ].filter(Boolean);
 }
 
@@ -46,7 +68,7 @@ export function searchArticles(query = '') {
   return ALL_ARTICLES.filter((article) => {
     const normTitle = normalizeSearchText(article.title);
     const normExcerpt = normalizeSearchText(article.excerpt);
-    const normTags = article.tags.map((t) => normalizeSearchText(t)).join(' ');
+    const normTags = (article.tags || []).map((t) => normalizeSearchText(t)).join(' ');
 
     // Match normalized Vietnamese
     if (

@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 const SITE_URL = 'https://chottoday.com';
 const DEFAULT_TITLE = 'Chotto — Vấn đề nhỏ, có Chotto giúp một chút.';
 const DEFAULT_DESC = 'Thông tin, hướng dẫn và công cụ hữu ích cho người Việt sống tại Nhật Bản. Từ thủ tục hành chính, thuế, việc làm đến cuộc sống thường ngày.';
-const DEFAULT_IMAGE = `${SITE_URL}/images/hero-everyday-japan.jpg`;
+const DEFAULT_IMAGE = `${SITE_URL}/images/og/og-default.png`;
 
 function setMetaTag(attributeName, attributeValue, content) {
   if (!content) return;
@@ -27,6 +27,22 @@ function setCanonicalTag(url) {
   link.setAttribute('href', url);
 }
 
+function setStructuredDataTag(data) {
+  const SCRIPT_ID = 'chotto-structured-data';
+  let script = document.getElementById(SCRIPT_ID);
+  if (!data) {
+    if (script) script.remove();
+    return;
+  }
+  if (!script) {
+    script = document.createElement('script');
+    script.id = SCRIPT_ID;
+    script.type = 'application/ld+json';
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(data);
+}
+
 export function PageMeta({
   title,
   description = DEFAULT_DESC,
@@ -35,11 +51,13 @@ export function PageMeta({
   ogDescription,
   ogImage = DEFAULT_IMAGE,
   ogType = 'website',
+  structuredData,
 }) {
   const location = useLocation();
 
   useEffect(() => {
-    const pageTitle = title ? `${title} — ChottoDay` : DEFAULT_TITLE;
+    // Title rule (Section 24): {Article Title} | Chotto
+    const pageTitle = title ? `${title} | Chotto` : DEFAULT_TITLE;
     const finalOgTitle = ogTitle || pageTitle;
     const finalOgDesc = ogDescription || description;
     const canonicalUrl = canonical
@@ -71,7 +89,15 @@ export function PageMeta({
     setMetaTag('name', 'twitter:title', finalOgTitle);
     setMetaTag('name', 'twitter:description', finalOgDesc);
     setMetaTag('name', 'twitter:image', imageUrl);
-  }, [title, description, canonical, ogTitle, ogDescription, ogImage, ogType, location.pathname]);
+
+    // 6. Structured Data
+    setStructuredDataTag(structuredData);
+
+    return () => {
+      // Clean up structured data on page transition
+      setStructuredDataTag(null);
+    };
+  }, [title, description, canonical, ogTitle, ogDescription, ogImage, ogType, structuredData, location.pathname]);
 
   return null;
 }

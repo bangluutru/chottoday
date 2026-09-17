@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
-    "validate:tool-refs": "node scripts/validate-tool-refs.mjs"
+    "validate:content": "node scripts/validate-content.mjs",
+    "validate:tool-refs": "node scripts/validate-tool-refs.mjs",
+    "validate": "npm run validate:content && npm run validate:tool-refs"
   },
   "dependencies": {
     "react": "^18.3.1",

@@ -14,17 +14,14 @@ export const ALL_ARTICLES = [
     publishedAt: '2026-09-08',
     updatedAt: '2026-09-15',
     readingTime: 7,
+    status: 'review',
     coverImage: '/images/hero-everyday-japan.jpg',
-    author: { name: 'Chotto Editorial Team' },
+    socialImage: '/images/og/og-default.png',
+    author: { name: 'Ban Biên Tập Chotto', role: 'Nội dung đời sống & nhà ở' },
     sections: [
       {
-        type: 'note',
-        title: 'Lưu ý về nội dung demo kiến trúc',
-        content: 'Bài viết này thuộc bộ dữ liệu mẫu (demo) của Phase 2 nhằm kiểm chứng hiển thị cấu trúc bài viết và luồng kết nối công cụ. Quy định và mức phí thuê nhà thực tế phụ thuộc vào chủ nhà và công ty bất động sản.',
-      },
-      {
         type: 'intro',
-        content: 'Thuê nhà tại Nhật Bản là một trong những thủ tục thường gặp đối với người nước ngoài. Bên cạnh tiền thuê nhà hàng tháng, chi phí ban đầu (Shoki Hiyo) thường gấp 3 đến 5 lần tiền nhà.',
+        content: 'Thuê nhà tại Nhật Bản là một trong những thủ tục phổ biến nhất đối với người nước ngoài. Bên cạnh tiền thuê nhà hàng tháng, chi phí ban đầu (Shoki Hiyo) thường gấp 3 đến 5 lần tiền nhà.',
       },
       {
         type: 'heading',
@@ -52,11 +49,17 @@ export const ALL_ARTICLES = [
         content: 'Bạn có thể trao đổi với công ty bất động sản để tìm các căn hộ "Zero-Zero" (0 tiền cọc, 0 tiền lễ) hoặc tìm hiểu các ưu đãi miễn phí tháng đầu tiên (Free Rent) vào mùa thấp điểm.',
       },
     ],
-    relatedArticles: [
-      { slug: 'doi-bang-lai-xe-viet-nhat', title: 'Đổi bằng lái xe Việt Nam sang bằng Nhật Bản (Gaimen Kirikae)', readingTime: 6, category: 'life' },
-      { slug: 'luong-30-man-thuc-nhan-bao-nhieu', title: 'Lương 30 man thực nhận bao nhiêu? (Minh họa tham khảo)', readingTime: 6, category: 'work' },
+    relatedArticleIds: [
+      'doi-bang-lai-xe-viet-nhat',
+      'luong-30-man-thuc-nhan-bao-nhieu',
     ],
     relatedToolIds: ['moving-cost-jp', 'address-change-checklist-jp'],
+    seo: {
+      metaTitle: 'Hợp đồng thuê nhà ở Nhật: Các khoản phí ban đầu | Chotto',
+      metaDescription: 'Giải thích chi tiết tiền lễ, tiền cọc, phí bảo lãnh khi thuê nhà tại Nhật Bản và kinh nghiệm thương lượng chi phí đầu vào.',
+      canonical: 'https://chottoday.com/articles/hop-dong-thue-nha-nhat-ban',
+      structuredDataType: 'Article',
+    },
   },
   {
     id: 'doi-bang-lai',
@@ -68,14 +71,11 @@ export const ALL_ARTICLES = [
     publishedAt: '2026-09-05',
     updatedAt: '2026-09-14',
     readingTime: 6,
+    status: 'review',
     coverImage: '/images/hero-everyday-japan.jpg',
-    author: { name: 'Chotto Editorial Team' },
+    socialImage: '/images/og/og-default.png',
+    author: { name: 'Ban Biên Tập Chotto', role: 'Nội dung thủ tục đời sống' },
     sections: [
-      {
-        type: 'note',
-        title: 'Lưu ý về nội dung demo kiến trúc',
-        content: 'Bài viết này thuộc bộ dữ liệu mẫu (demo) của Phase 2 nhằm kiểm chứng giao diện hướng dẫn thủ tục. Để biết quy trình sát hạch chính xác tại địa phương bạn, vui lòng liên hệ Trung tâm Sát hạch Lái xe (Menkyo Center).',
-      },
       {
         type: 'intro',
         content: 'Thủ tục Gaimen Kirikae (外免切替) cho phép người có bằng lái xe ô tô tại Việt Nam chuyển đổi sang bằng lái xe Nhật Bản theo quy trình rút gọn nếu đáp ứng đủ các điều kiện theo quy định.',
@@ -111,10 +111,16 @@ export const ALL_ARTICLES = [
         badge: 'Mở trong Toolio',
       },
     ],
-    relatedArticles: [
-      { slug: 'hop-dong-thue-nha-nhat-ban', title: 'Hợp đồng thuê nhà ở Nhật: Những khoản tiền không lấy lại được', readingTime: 7, category: 'life' },
+    relatedArticleIds: [
+      'hop-dong-thue-nha-nhat-ban',
     ],
     relatedToolIds: ['id-photo-studio'],
+    seo: {
+      metaTitle: 'Đổi bằng lái xe Việt Nam sang Nhật (Gaimen Kirikae) | Chotto',
+      metaDescription: 'Hướng dẫn quy trình đổi bằng lái xe Việt sang Nhật: điều kiện 90 ngày, dịch thuật JAF, thi lý thuyết tiếng Việt tại Menkyo Center.',
+      canonical: 'https://chottoday.com/articles/doi-bang-lai-xe-viet-nhat',
+      structuredDataType: 'Article',
+    },
   },
   {
     id: 'gia-han-visa-3-thang',
@@ -126,14 +132,11 @@ export const ALL_ARTICLES = [
     publishedAt: '2026-09-02',
     updatedAt: '2026-09-14',
     readingTime: 6,
+    status: 'review',
     coverImage: '/images/hero-everyday-japan.jpg',
-    author: { name: 'Chotto Editorial Team' },
+    socialImage: '/images/og/og-default.png',
+    author: { name: 'Ban Biên Tập Chotto', role: 'Nội dung thủ tục visa' },
     sections: [
-      {
-        type: 'note',
-        title: 'Lưu ý về nội dung demo kiến trúc',
-        content: 'Bài viết mẫu của Phase 2 nhằm kiểm chứng bố cục bài viết. Giấy tờ nộp Cục Xuất nhập cảnh có thể thay đổi tùy theo quy mô công ty và tư cách lưu trú của từng cá nhân.',
-      },
       {
         type: 'intro',
         content: 'Người lao động có thể nộp đơn xin gia hạn thời hạn lưu trú tại Cục Quản lý Xuất nhập cảnh (Nyukan) trước ngày hết hạn visa tối đa 3 tháng.',
@@ -154,10 +157,16 @@ export const ALL_ARTICLES = [
         ],
       },
     ],
-    relatedArticles: [
-      { slug: 'mat-the-zairyu-thi-lam-gi', title: 'Mất thẻ cư trú (Zairyu Card) thì làm gì? (Hướng dẫn tham khảo)', readingTime: 5, category: 'doc' },
+    relatedArticleIds: [
+      'mat-the-zairyu-thi-lam-gi',
     ],
     relatedToolIds: ['id-photo-studio', 'residence-renewal-guide-jp'],
+    seo: {
+      metaTitle: 'Gia hạn visa kỹ sư trước 3 tháng: Giấy tờ cần chuẩn bị | Chotto',
+      metaDescription: 'Danh mục hồ sơ gia hạn visa kỹ sư nộp Nyukan: giấy tờ cá nhân, giấy tờ công ty cần cấp và thời hạn thụ lý hồ sơ.',
+      canonical: 'https://chottoday.com/articles/gia-han-visa-ky-su-truoc-3-thang',
+      structuredDataType: 'Article',
+    },
   },
   {
     id: 'khai-thue-cuoi-nam',
@@ -169,14 +178,11 @@ export const ALL_ARTICLES = [
     publishedAt: '2026-08-28',
     updatedAt: '2026-09-12',
     readingTime: 5,
+    status: 'review',
     coverImage: '/images/hero-everyday-japan.jpg',
-    author: { name: 'Chotto Editorial Team' },
+    socialImage: '/images/og/og-default.png',
+    author: { name: 'Ban Biên Tập Chotto', role: 'Nội dung thuế & an sinh' },
     sections: [
-      {
-        type: 'note',
-        title: 'Lưu ý về nội dung demo kiến trúc',
-        content: 'Bài viết minh họa cho cấu trúc tài liệu thuế. Để đảm bảo tính chính xác cho hồ sơ của bạn, hãy tham khảo hướng dẫn từ bộ phận kế toán công ty hoặc cơ quan thuế sở tại.',
-      },
       {
         type: 'intro',
         content: 'Vào khoảng tháng 11 hàng năm, các doanh nghiệp tại Nhật Bản thường tiến hành thủ tục điều chỉnh thuế cuối năm (Nenmatsu Chosei) để cân đối số thuế thu nhập đã tạm khấu trừ trong năm của người lao động.',
@@ -199,10 +205,16 @@ export const ALL_ARTICLES = [
         badge: 'Mở trong Toolio',
       },
     ],
-    relatedArticles: [
-      { slug: 'luong-30-man-thuc-nhan-bao-nhieu', title: 'Lương 30 man thực nhận bao nhiêu? (Minh họa tham khảo)', readingTime: 6, category: 'work' },
+    relatedArticleIds: [
+      'luong-30-man-thuc-nhan-bao-nhieu',
     ],
     relatedToolIds: ['japan-tax-simulator'],
+    seo: {
+      metaTitle: 'Hướng dẫn khai thuế cuối năm Nenmatsu Chosei | Chotto',
+      metaDescription: 'Cách điền giấy khai thuế cuối năm tại Nhật Bản, điều kiện gửi tiền phụ dưỡng người thân ở Việt Nam để được giảm trừ thuế.',
+      canonical: 'https://chottoday.com/articles/khai-thue-cuoi-nam-gui-tien-ve-nha',
+      structuredDataType: 'Article',
+    },
   },
   {
     id: 'giam-phi-bhyt',
@@ -214,8 +226,10 @@ export const ALL_ARTICLES = [
     publishedAt: '2026-08-20',
     updatedAt: '2026-09-13',
     readingTime: 4,
+    status: 'review',
     coverImage: '/images/hero-everyday-japan.jpg',
-    author: { name: 'Chotto Editorial Team' },
+    socialImage: '/images/og/og-default.png',
+    author: { name: 'Ban Biên Tập Chotto', role: 'Nội dung an sinh y tế' },
     sections: [
       {
         type: 'intro',
@@ -227,10 +241,16 @@ export const ALL_ARTICLES = [
         content: 'Tùy thuộc vào quy định cụ thể của từng địa phương và mức thu nhập thực tế, người tham gia bảo hiểm có thể được xem xét các mức miễn giảm tương ứng.',
       },
     ],
-    relatedArticles: [
-      { slug: 'di-kham-benh-tu-vung-trieu-chung', title: 'Bảng từ vựng triệu chứng cơ thể khi đi khám bệnh tại Nhật', readingTime: 5, category: 'health' },
+    relatedArticleIds: [
+      'di-kham-benh-tu-vung-trieu-chung',
     ],
     relatedToolIds: ['social-insurance-jp'],
+    seo: {
+      metaTitle: 'Xin miễn giảm Bảo hiểm y tế quốc dân tại Nhật | Chotto',
+      metaDescription: 'Thủ tục xin giảm mức đóng bảo hiểm Kokumin Kenko Hoken tại Shiyakusho cho người thôi việc, thu nhập thấp hoặc du học sinh.',
+      canonical: 'https://chottoday.com/articles/bao-hiem-y-te-quoc-dan-giam-phi',
+      structuredDataType: 'Article',
+    },
   },
   {
     id: 'tu-vung-kham-benh',
@@ -242,8 +262,10 @@ export const ALL_ARTICLES = [
     publishedAt: '2026-08-15',
     updatedAt: '2026-09-10',
     readingTime: 5,
+    status: 'review',
     coverImage: '/images/hero-everyday-japan.jpg',
-    author: { name: 'Chotto Editorial Team' },
+    socialImage: '/images/og/og-default.png',
+    author: { name: 'Ban Biên Tập Chotto', role: 'Nội dung y tế thường thức' },
     sections: [
       {
         type: 'intro',
@@ -265,10 +287,16 @@ export const ALL_ARTICLES = [
         ],
       },
     ],
-    relatedArticles: [
-      { slug: 'bao-hiem-y-te-quoc-dan-giam-phi', title: 'Bảo hiểm y tế quốc dân giảm phí khi thu nhập thấp', readingTime: 4, category: 'health' },
+    relatedArticleIds: [
+      'bao-hiem-y-te-quoc-dan-giam-phi',
     ],
     relatedToolIds: [],
+    seo: {
+      metaTitle: 'Từ vựng tiếng Nhật mô tả triệu chứng khi đi khám bệnh | Chotto',
+      metaDescription: 'Tổng hợp mẫu câu và từ vựng tiếng Nhật điền phiếu Monshinhyo, mô tả triệu chứng đau ốm khi đến bệnh viện ở Nhật.',
+      canonical: 'https://chottoday.com/articles/di-kham-benh-tu-vung-trieu-chung',
+      structuredDataType: 'Article',
+    },
   },
   {
     id: 'mau-cau-shiyakusho',
@@ -280,8 +308,10 @@ export const ALL_ARTICLES = [
     publishedAt: '2026-08-10',
     updatedAt: '2026-09-11',
     readingTime: 5,
+    status: 'review',
     coverImage: '/images/hero-everyday-japan.jpg',
-    author: { name: 'Chotto Editorial Team' },
+    socialImage: '/images/og/og-default.png',
+    author: { name: 'Ban Biên Tập Chotto', role: 'Nội dung tiếng Nhật hành chính' },
     sections: [
       {
         type: 'intro',
@@ -296,10 +326,16 @@ export const ALL_ARTICLES = [
         ],
       },
     ],
-    relatedArticles: [
-      { slug: 'mat-the-zairyu-thi-lam-gi', title: 'Mất thẻ cư trú (Zairyu Card) thì làm gì? (Hướng dẫn tham khảo)', readingTime: 5, category: 'doc' },
+    relatedArticleIds: [
+      'mat-the-zairyu-thi-lam-gi',
     ],
     relatedToolIds: ['administrative-navigator-jp'],
+    seo: {
+      metaTitle: 'Mẫu câu tiếng Nhật gọi điện Shiyakusho & Bưu điện | Chotto',
+      metaDescription: 'Mẫu câu tiếng Nhật lịch sự khi gọi điện thoại lên Shiyakusho hỏi giấy tờ hoặc bưu điện xin giao lại bưu phẩm vắng nhà.',
+      canonical: 'https://chottoday.com/articles/mau-cau-tieng-nhat-shiyakusho-buu-dien',
+      structuredDataType: 'Article',
+    },
   },
   {
     id: 'hoa-don-invoice-freelance',
@@ -311,8 +347,10 @@ export const ALL_ARTICLES = [
     publishedAt: '2026-08-05',
     updatedAt: '2026-09-09',
     readingTime: 4,
+    status: 'review',
     coverImage: '/images/hero-everyday-japan.jpg',
-    author: { name: 'Chotto Editorial Team' },
+    socialImage: '/images/og/og-default.png',
+    author: { name: 'Ban Biên Tập Chotto', role: 'Nội dung công cụ kế toán' },
     sections: [
       {
         type: 'intro',
@@ -331,9 +369,15 @@ export const ALL_ARTICLES = [
         badge: 'Mở trong Toolio',
       },
     ],
-    relatedArticles: [
-      { slug: 'luong-30-man-thuc-nhan-bao-nhieu', title: 'Lương 30 man thực nhận bao nhiêu? (Minh họa tham khảo)', readingTime: 6, category: 'work' },
+    relatedArticleIds: [
+      'luong-30-man-thuc-nhan-bao-nhieu',
     ],
     relatedToolIds: ['invoice-studio'],
+    seo: {
+      metaTitle: 'Quy chuẩn hóa đơn Invoice (Tekikaku Seikyusho) Nhật Bản | Chotto',
+      metaDescription: 'Quy định các tiêu chí bắt buộc trên hóa đơn Invoice Nhật Bản: mã số T-number, tách thuế suất 8% và 10% theo luật NTA.',
+      canonical: 'https://chottoday.com/articles/hoa-don-invoice-tekikaku-freelance',
+      structuredDataType: 'Article',
+    },
   },
 ];

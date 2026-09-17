@@ -2,6 +2,7 @@ import React from 'react';
 import './ArticleRenderer.css';
 import { ExternalLinkIcon } from '../common/Icons';
 import { getToolById, isToolAvailable, buildToolUrl } from '../../services/toolRegistry';
+import { trackEvent } from '../../services/analytics';
 
 /**
  * Lightweight inline text parser converting **bold** to <strong>
@@ -148,8 +149,18 @@ export function ArticleRenderer({ sections = [] }) {
               </div>
             );
 
+          case 'quote':
+            return (
+              <blockquote key={idx} className="article-quote">
+                <p className="article-quote-text">{renderFormattedText(section.content)}</p>
+                {section.author && (
+                  <cite className="article-quote-author">— {section.author}</cite>
+                )}
+              </blockquote>
+            );
+
           case 'toolCTA': {
-            // Requirement 14: toolId -> ToolRegistryService -> resolve tool -> check availability -> build URL -> render CTA
+            // Requirement 14 & 18: toolId -> ToolRegistryService -> resolve tool -> check availability -> build URL -> render CTA
             const toolId = section.toolId;
             const tool = toolId ? getToolById(toolId) : null;
             const available = toolId ? isToolAvailable(toolId) : false;
@@ -168,7 +179,7 @@ export function ArticleRenderer({ sections = [] }) {
               return null;
             }
 
-            // Editorial contextualization (Section 12 & 13)
+            // Editorial contextualization
             const editorial = section.editorial || {};
             const title = editorial.title || section.title || tool.name;
             const description = editorial.description || section.description || tool.description;
@@ -176,6 +187,14 @@ export function ArticleRenderer({ sections = [] }) {
             const ctaText = section.ctaText || 'Dùng công cụ ngay';
             const note = section.note || (tool.processing === 'browser' ? '100% xử lý trên trình duyệt của bạn' : '');
             const icon = section.icon || '🛠️';
+
+            const handleToolClick = () => {
+              trackEvent('toolio_open', {
+                toolId: tool.id,
+                source: 'article_cta',
+                title: tool.name,
+              });
+            };
 
             return (
               <div key={idx} className="article-tool-cta">
@@ -197,6 +216,7 @@ export function ArticleRenderer({ sections = [] }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="article-tool-btn"
+                    onClick={handleToolClick}
                   >
                     <span>{ctaText}</span>
                     <ExternalLinkIcon size={16} />
@@ -216,12 +236,13 @@ export function ArticleRenderer({ sections = [] }) {
                 <div className="article-sources-list">
                   {section.items.map((source, srcIdx) => (
                     <div key={srcIdx} className="article-source-item">
-                      • {source.title} ({source.publisher}) —{' '}
+                      • {source.title} ({source.publisher || source.organization}) —{' '}
                       <a
                         href={source.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="article-source-link"
+                        onClick={() => trackEvent('source_link_click', { url: source.url, title: source.title })}
                       >
                         <span>Truy cập nguồn</span>
                         <ExternalLinkIcon size={12} />
