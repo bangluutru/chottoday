@@ -80,6 +80,19 @@
   color: var(--text-primary);
 }
 
+.footer-cat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.footer-link-highlight {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+
 .footer-bottom {
   padding-top: 24px;
   border-top: 1px solid var(--border-subtle);

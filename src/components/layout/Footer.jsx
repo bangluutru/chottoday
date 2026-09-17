@@ -2,6 +2,7 @@ import React from 'react';
 import './Footer.css';
 import { ExternalLinkIcon } from '../common/Icons';
 import { CATEGORIES } from '../../data/categories';
+import { TOOLIO_BASE_URL } from '../../config/constants';
 
 export function Footer() {
   return (
@@ -10,7 +11,7 @@ export function Footer() {
         <div className="footer-grid">
           {/* Col 1: Brand & Philosophy */}
           <div className="footer-brand-col">
-            <a href="/" aria-label="Trang chủ Chotto">
+            <a href="#hero" aria-label="Trang chủ Chotto">
               <img
                 src="/chotto-logo-full.svg"
                 alt="Chotto"
@@ -34,15 +35,7 @@ export function Footer() {
               {CATEGORIES.map((cat) => (
                 <li key={cat.id}>
                   <a href={`#category-${cat.id}`} className="footer-link">
-                    <span
-                      style={{
-                        width: '8px',
-                        height: '8px',
-                        borderRadius: '50%',
-                        backgroundColor: cat.accentColor,
-                        flexShrink: 0,
-                      }}
-                    />
+                    <span className={`footer-cat-dot cat-dot-${cat.colorKey}`} />
                     <span>{cat.name}</span>
                   </a>
                 </li>
@@ -66,11 +59,10 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://tools.chottoday.com"
+                  href={TOOLIO_BASE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="footer-link"
-                  style={{ fontWeight: 600, color: 'var(--text-primary)' }}
+                  className="footer-link footer-link-highlight"
                 >
                   <span>Toolio (tools.chottoday.com)</span>
                   <ExternalLinkIcon size={14} />

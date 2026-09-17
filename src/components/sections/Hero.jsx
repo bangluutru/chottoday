@@ -4,20 +4,13 @@ import { SearchBar } from '../search/SearchBar';
 
 export function Hero({ searchInputRef, onSearch }) {
   return (
-    <section className="hero-section" aria-labelledby="hero-heading">
+    <section className="hero-section" id="hero" aria-labelledby="hero-heading">
       <div className="container">
         <div className="hero-grid">
           {/* Content & Search */}
           <div className="hero-content">
             <div className="hero-badge-tag">
-              <span
-                style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--chotto-green)',
-                }}
-              />
+              <span className="hero-badge-dot" />
               <span>Dành cho người Việt tại Nhật</span>
             </div>
 
@@ -45,7 +38,7 @@ export function Hero({ searchInputRef, onSearch }) {
               loading="eager"
             />
             <div className="hero-visual-caption">
-              <span>Góc học tập & sinh hoạt tại Tokyo</span>
+              <span>Không gian sinh hoạt thường nhật tại Nhật Bản</span>
               <span>chottoday.com</span>
             </div>
           </div>

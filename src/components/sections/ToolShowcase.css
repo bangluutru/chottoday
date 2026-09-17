@@ -1,0 +1,60 @@
+/* ==========================================================================
+   TOOL SHOWCASE SECTION STYLES
+   ========================================================================== */
+
+.tool-showcase-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .tool-showcase-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+.tool-notice-box {
+  background-color: var(--surface-dim);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.tool-notice-badge {
+  background-color: var(--cat-tool-bg);
+  color: var(--cat-tool-text);
+  border: 1px solid var(--cat-tool-border);
+}
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .tool-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .tool-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+}
+
+.tool-grid-item {
+  display: flex;
+}

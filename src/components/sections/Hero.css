@@ -52,6 +52,15 @@
   align-self: flex-start;
 }
 
+.hero-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--chotto-green);
+  flex-shrink: 0;
+}
+
+
 .hero-headline {
   font-family: var(--font-heading);
   font-size: 34px;

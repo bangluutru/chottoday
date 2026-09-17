@@ -1,0 +1,20 @@
+/* ==========================================================================
+   USEFUL TODAY SECTION STYLES
+   ========================================================================== */
+
+.useful-today-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .useful-today-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+.useful-today-col {
+  display: flex;
+}

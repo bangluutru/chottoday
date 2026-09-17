@@ -2,8 +2,17 @@ import React from 'react';
 import './Cards.css';
 import { ClockIcon, ArrowRightIcon } from '../common/Icons';
 
-export function ArticleCard({ article }) {
-  const { title, excerpt, category, categoryKey, readTime, date, url } = article;
+export function ArticleCard(props) {
+  const article = props.article || props;
+  const {
+    title,
+    excerpt,
+    category,
+    categoryKey = 'life',
+    readTime,
+    date,
+    url = '#articles',
+  } = article;
 
   return (
     <article className={`article-card card-${categoryKey}`}>
@@ -20,10 +29,10 @@ export function ArticleCard({ article }) {
 
       <div className="card-bottom-meta">
         <span className="meta-item">
-          <ClockIcon size={14} color="var(--text-muted)" />
+          <ClockIcon size={14} />
           <span>{readTime}</span>
         </span>
-        <a href={url} className="meta-item" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+        <a href={url} className="meta-item card-action-link">
           <span>Đọc bài</span>
           <ArrowRightIcon size={14} />
         </a>

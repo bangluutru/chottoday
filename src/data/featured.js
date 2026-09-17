@@ -1,3 +1,5 @@
+import { getToolioUrl } from '../config/constants';
+
 export const FEATURED_CONTENT = {
   article: {
     id: 'art-f1',
@@ -26,7 +28,7 @@ export const FEATURED_CONTENT = {
     title: 'Mô phỏng Thuế thu nhập & Thuế thị dân Nhật Bản',
     description: 'Ước tính số tiền thuế bị khấu trừ hàng tháng và hoàn thuế theo mức lương, số người phụ thuộc và tiền gửi về.',
     badge: 'Chạy trên máy bạn',
-    url: 'https://tools.chottoday.com/#/japan-tax-simulator',
+    url: getToolioUrl('/#/japan-tax-simulator'),
     actionText: 'Mở công cụ',
   },
 };

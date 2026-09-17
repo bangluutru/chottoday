@@ -8,6 +8,7 @@ export function CategoryGrid({ onSelectCategory }) {
       {CATEGORIES.map((cat) => (
         <button
           key={cat.id}
+          id={`category-${cat.id}`}
           type="button"
           className="category-card"
           onClick={() => onSelectCategory && onSelectCategory(cat.id)}
@@ -27,10 +28,7 @@ export function CategoryGrid({ onSelectCategory }) {
           <p className="category-desc">{cat.description}</p>
 
           <div className="category-count">
-            <span
-              className="category-indicator-dot"
-              style={{ backgroundColor: cat.accentColor }}
-            />
+            <span className={`category-indicator-dot dot-${cat.colorKey}`} />
             <span>{cat.itemCount} nội dung</span>
           </div>
         </button>

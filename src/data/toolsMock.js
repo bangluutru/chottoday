@@ -1,3 +1,5 @@
+import { getToolioUrl } from '../config/constants';
+
 export const SELECTED_TOOLS = [
   {
     id: 'japan-tax-simulator',
@@ -7,7 +9,7 @@ export const SELECTED_TOOLS = [
     categoryKey: 'work',
     badge: 'Xử lý trên trình duyệt',
     isExternal: true,
-    toolioPath: 'https://tools.chottoday.com/#/japan-tax-simulator',
+    toolioPath: getToolioUrl('/#/japan-tax-simulator'),
     stats: 'Cập nhật luật thuế 2026',
   },
   {
@@ -18,7 +20,7 @@ export const SELECTED_TOOLS = [
     categoryKey: 'work',
     badge: 'Xử lý trên trình duyệt',
     isExternal: true,
-    toolioPath: 'https://tools.chottoday.com/#/japan-nenkin-guide',
+    toolioPath: getToolioUrl('/#/japan-nenkin-guide'),
     stats: 'Tối đa 60 tháng đóng',
   },
   {
@@ -29,7 +31,7 @@ export const SELECTED_TOOLS = [
     categoryKey: 'doc',
     badge: 'Xử lý trên trình duyệt',
     isExternal: true,
-    toolioPath: 'https://tools.chottoday.com/#/id-photo-studio',
+    toolioPath: getToolioUrl('/#/id-photo-studio'),
     stats: 'In combini 200¥',
   },
   {
@@ -40,7 +42,7 @@ export const SELECTED_TOOLS = [
     categoryKey: 'tool',
     badge: 'Xử lý trên trình duyệt',
     isExternal: true,
-    toolioPath: 'https://tools.chottoday.com/#/invoice-studio',
+    toolioPath: getToolioUrl('/#/invoice-studio'),
     stats: 'Đúng chuẩn NTA',
   },
 ];

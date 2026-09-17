@@ -1,0 +1,41 @@
+/* ==========================================================================
+   LATEST CONTENT SECTION STYLES
+   ========================================================================== */
+
+.latest-content-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .latest-content-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+.latest-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .latest-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .latest-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+}
+
+.latest-grid-item {
+  display: flex;
+}

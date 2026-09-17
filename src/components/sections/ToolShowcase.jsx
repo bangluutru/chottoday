@@ -1,79 +1,62 @@
 import React from 'react';
+import './ToolShowcase.css';
 import { SELECTED_TOOLS } from '../../data/toolsMock';
 import { ToolCard } from '../cards/ToolCard';
-import { ExternalLinkIcon, ShieldCheckIcon } from '../common/Icons';
+import { ExternalLinkIcon } from '../common/Icons';
+import { TOOLIO_BASE_URL } from '../../config/constants';
 
 export function ToolShowcase() {
   return (
     <section className="section" id="tools" aria-labelledby="tools-heading">
       <div className="container">
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'space-between',
-            marginBottom: '20px',
-            flexWrap: 'wrap',
-            gap: '12px',
-          }}
-        >
+        {/* Section Header */}
+        <div className="tool-showcase-header">
           <div>
-            <div
-              className="text-caption"
-              style={{
-                textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                marginBottom: '6px',
-                color: 'var(--text-muted)',
-              }}
-            >
-              Tiện ích tương tác
+            <div className="section-eyebrow">
+              Công cụ tiện ích
             </div>
             <h2 id="tools-heading" className="text-h2">
               Một chút công cụ
             </h2>
+            <p className="text-body">
+              Các miniapp độc lập trên nền tảng Toolio giúp bạn tính toán, tạo biểu mẫu và xử lý tác vụ tại chỗ.
+            </p>
           </div>
 
           <a
-            href="https://tools.chottoday.com"
+            href={TOOLIO_BASE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary"
-            style={{ height: '40px', fontSize: '14px' }}
+            className="btn-secondary btn-sm"
           >
-            <span>Khám phá toàn bộ Toolio</span>
-            <ExternalLinkIcon size={14} style={{ marginLeft: '6px' }} />
+            <span>Khám phá toàn bộ công cụ</span>
+            <ExternalLinkIcon size={14} className="icon-inline-right" />
           </a>
         </div>
 
-        {/* Subtle Privacy Assurance Note */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginBottom: '24px',
-            fontFamily: 'var(--font-body)',
-            fontSize: '13px',
-            color: 'var(--text-secondary)',
-          }}
-        >
-          <ShieldCheckIcon size={16} color="var(--cat-life-text)" />
-          <span>
-            Xử lý trực tiếp trên trình duyệt — tệp tin và dữ liệu cá nhân không bao giờ tải lên máy chủ.
+        {/* Informative ecosystem notice (Decoupled architecture) */}
+        <div className="tool-notice-box">
+          <div className="text-body">
+            <strong>Nguyên tắc Chotto:</strong> Nội dung là điểm bắt đầu, công cụ là điểm kết thúc. Các công cụ xử lý dữ liệu ngay trên trình duyệt của bạn, bảo mật tuyệt đối.
+          </div>
+          <span className="chotto-chip tool-notice-badge">
+            tools.chottoday.com
           </span>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '20px',
-          }}
-        >
+        {/* 4 Selected Miniapps Grid */}
+        <div className="tool-grid">
           {SELECTED_TOOLS.map((tool) => (
-            <div key={tool.id} style={{ display: 'flex' }}>
-              <ToolCard tool={tool} />
+            <div key={tool.id} className="tool-grid-item">
+              <ToolCard
+                title={tool.name}
+                description={tool.description}
+                category={tool.category}
+                categoryKey={tool.categoryKey}
+                badge={tool.badge}
+                stats={tool.stats}
+                toolioPath={tool.toolioPath}
+              />
             </div>
           ))}
         </div>

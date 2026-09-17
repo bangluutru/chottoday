@@ -211,3 +211,67 @@
   background-image: radial-gradient(var(--border-divider) 1.5px, transparent 1.5px);
   background-size: 24px 24px;
 }
+
+/* App Shell Layout */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* Section Header Shared Utilities */
+.section-header {
+  margin-bottom: var(--space-5);
+}
+
+.section-eyebrow {
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 19px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+  color: var(--text-muted);
+}
+
+.section-title-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: var(--space-5);
+}
+
+/* Semantic Category Dots (Replaces raw inline colors) */
+.cat-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cat-dot-life { background-color: var(--cat-life-accent); }
+.cat-dot-doc { background-color: var(--cat-doc-accent); }
+.cat-dot-work { background-color: var(--cat-work-accent); }
+.cat-dot-health { background-color: var(--cat-health-accent); }
+.cat-dot-study { background-color: var(--cat-study-accent); }
+.cat-dot-tool { background-color: var(--cat-tool-accent); }
+
+/* Small buttons & inline icon helpers */
+.btn-sm {
+  height: 40px;
+  font-size: 14px;
+  padding: 0 16px;
+}
+
+.icon-inline-right {
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+

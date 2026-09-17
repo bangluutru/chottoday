@@ -1,9 +1,17 @@
 import React from 'react';
 import './Cards.css';
-import { ClockIcon, ArrowRightIcon } from '../common/Icons';
+import { ArrowRightIcon } from '../common/Icons';
 
-export function GuideCard({ guide }) {
-  const { title, category, categoryKey, stepsCount, timeEstimate, slug } = guide;
+export function GuideCard(props) {
+  const guide = props.guide || props;
+  const {
+    title,
+    category,
+    categoryKey = 'work',
+    stepsCount = 4,
+    timeEstimate = '15 phút',
+    slug = '#useful-today',
+  } = guide;
 
   return (
     <div className={`guide-card card-${categoryKey}`}>
@@ -14,18 +22,17 @@ export function GuideCard({ guide }) {
         </span>
       </div>
 
-      <h3 className="card-title" style={{ marginTop: '4px' }}>
+      <h3 className="card-title card-title-spaced">
         <a href={slug}>{title}</a>
       </h3>
 
-      <div style={{ marginTop: 'auto', paddingTop: '16px' }}>
+      <div className="guide-action-wrapper">
         <a
           href={slug}
-          className="btn-primary"
-          style={{ width: '100%', height: '44px', fontSize: '14px' }}
+          className="btn-primary guide-action-btn"
         >
           <span>Bắt đầu xem các bước</span>
-          <ArrowRightIcon size={16} style={{ marginLeft: '6px' }} />
+          <ArrowRightIcon size={16} className="icon-inline-right" />
         </a>
       </div>
     </div>

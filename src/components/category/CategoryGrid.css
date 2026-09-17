@@ -95,3 +95,11 @@
   border-radius: 50%;
   flex-shrink: 0;
 }
+
+.category-indicator-dot.dot-life { background-color: var(--cat-life-accent); }
+.category-indicator-dot.dot-doc { background-color: var(--cat-doc-accent); }
+.category-indicator-dot.dot-work { background-color: var(--cat-work-accent); }
+.category-indicator-dot.dot-health { background-color: var(--cat-health-accent); }
+.category-indicator-dot.dot-study { background-color: var(--cat-study-accent); }
+.category-indicator-dot.dot-tool { background-color: var(--cat-tool-accent); }
+

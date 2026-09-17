@@ -1,0 +1,59 @@
+/* ==========================================================================
+   COMMUNITY & ABOUT BLOCK STYLES
+   ========================================================================== */
+
+.community-card {
+  padding: 40px 32px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .community-card {
+    grid-template-columns: 1.25fr 0.75fr;
+  }
+}
+
+.community-header-eyebrow {
+  margin-bottom: 8px;
+}
+
+.community-title {
+  margin-bottom: 12px;
+}
+
+.community-desc {
+  max-width: 520px;
+  margin-bottom: 20px;
+}
+
+.community-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.community-quote-card {
+  padding: 24px;
+  background-color: var(--surface-dim);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-subtle);
+}
+
+.community-quote-heading {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.community-quote-text {
+  font-size: 14px;
+  line-height: 22px;
+}

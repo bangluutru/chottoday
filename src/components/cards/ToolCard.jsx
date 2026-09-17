@@ -2,8 +2,20 @@ import React from 'react';
 import './Cards.css';
 import { ExternalLinkIcon, ShieldCheckIcon } from '../common/Icons';
 
-export function ToolCard({ tool }) {
-  const { name, description, category, categoryKey, badge, toolioPath, stats } = tool;
+export function ToolCard(props) {
+  const tool = props.tool || props;
+  const {
+    name,
+    title,
+    description,
+    category,
+    categoryKey = 'tool',
+    badge = 'Xử lý trên trình duyệt',
+    toolioPath,
+    stats,
+  } = tool;
+
+  const displayTitle = name || title;
 
   return (
     <div className={`tool-card card-${categoryKey}`}>
@@ -15,17 +27,17 @@ export function ToolCard({ tool }) {
         </span>
       </div>
 
-      <h3 className="card-title" style={{ marginTop: '4px' }}>
+      <h3 className="card-title card-title-spaced">
         <a href={toolioPath} target="_blank" rel="noopener noreferrer">
-          {name}
+          {displayTitle}
         </a>
       </h3>
 
       <p className="card-excerpt">{description}</p>
 
-      <div style={{ marginTop: 'auto' }}>
+      <div className="tool-action-wrapper">
         {stats && (
-          <div className="text-caption" style={{ marginBottom: '10px' }}>
+          <div className="text-caption tool-stats-caption">
             {stats}
           </div>
         )}

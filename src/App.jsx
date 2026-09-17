@@ -13,6 +13,7 @@ import { CommunityBlock } from './components/sections/CommunityBlock';
 export function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const searchInputRef = useRef(null);
+  const menuTriggerRef = useRef(null);
 
   // Focus search input when triggered
   const handleFocusSearch = () => {
@@ -36,7 +37,6 @@ export function App() {
 
   const handleSearch = (query) => {
     if (!query) return;
-    // For Phase 1, scroll smoothly to content and log query
     const target = document.getElementById('articles');
     if (target) {
       target.scrollIntoView({ behavior: 'smooth' });
@@ -44,27 +44,30 @@ export function App() {
   };
 
   const handleSelectCategory = (catId) => {
-    const target = document.getElementById('articles');
+    const target = document.getElementById(`category-${catId}`);
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
 
   return (
-    <div className="app-shell" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div className="app-shell">
       {/* 1. NAVBAR */}
       <Navbar
         onOpenMobileMenu={() => setMobileMenuOpen(true)}
         onFocusSearch={handleFocusSearch}
+        isMobileMenuOpen={mobileMenuOpen}
+        menuTriggerRef={menuTriggerRef}
       />
 
       {/* MOBILE DRAWER */}
       <MobileMenu
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
+        triggerRef={menuTriggerRef}
       />
 
-      <main id="main-content" style={{ flex: 1 }}>
+      <main id="main-content" className="main-content">
         {/* 2. HERO */}
         <Hero
           searchInputRef={searchInputRef}
@@ -80,16 +83,8 @@ export function App() {
         {/* 5. KHÁM PHÁ THEO CHỦ ĐỀ */}
         <section className="section" id="topics" aria-labelledby="topics-heading">
           <div className="container">
-            <div style={{ marginBottom: '24px' }}>
-              <div
-                className="text-caption"
-                style={{
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.06em',
-                  marginBottom: '6px',
-                  color: 'var(--text-muted)',
-                }}
-              >
+            <div className="section-header">
+              <div className="section-eyebrow">
                 Hệ thống phân loại
               </div>
               <h2 id="topics-heading" className="text-h2">
@@ -107,7 +102,7 @@ export function App() {
         {/* 7. MỘT CHÚT CÔNG CỤ */}
         <ToolShowcase />
 
-        {/* 8. CHOTTO FACEBOOK */}
+        {/* 8. CHOTTO FACEBOOK & ABOUT */}
         <CommunityBlock />
       </main>
 

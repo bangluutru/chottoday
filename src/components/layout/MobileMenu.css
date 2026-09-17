@@ -12,11 +12,14 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .mobile-menu-backdrop.open {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
 .mobile-menu-drawer {
@@ -130,6 +133,14 @@
   background-color: var(--surface-card);
   border: 1px solid var(--border-card);
 }
+
+.mobile-cat-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
 
 .mobile-menu-footer {
   padding: 16px 20px;

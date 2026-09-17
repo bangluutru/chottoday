@@ -1,3 +1,9 @@
+/**
+ * 6 Core Categories of ChottoDay (SSOT: Chotto - Design.pdf)
+ * 
+ * Semantic category identity only. Visual presentation and color tokens
+ * are resolved strictly via CSS design tokens (--cat-*-accent, --cat-*-text).
+ */
 export const CATEGORIES = [
   {
     id: 'life',
@@ -5,8 +11,6 @@ export const CATEGORIES = [
     description: 'Thuê nhà, hợp đồng, rác, hàng xóm, điện nước',
     icon: '/icons/icon-life.svg',
     colorKey: 'life',
-    accentColor: '#66B96B',
-    textColor: '#2F7A43',
     itemCount: 24,
   },
   {
@@ -15,8 +19,6 @@ export const CATEGORIES = [
     description: 'Visa, thẻ cư trú, đăng ký thành phố, my number',
     icon: '/icons/icon-doc.svg',
     colorKey: 'doc',
-    accentColor: '#1E2A44',
-    textColor: '#1E2A44',
     itemCount: 38,
   },
   {
@@ -25,8 +27,6 @@ export const CATEGORIES = [
     description: 'Hợp đồng lao động, thuế, lương, chuyển tiền',
     icon: '/icons/icon-work.svg',
     colorKey: 'work',
-    accentColor: '#FBA93E',
-    textColor: '#8F5310',
     itemCount: 31,
   },
   {
@@ -35,8 +35,6 @@ export const CATEGORIES = [
     description: 'Bệnh viện, bảo hiểm y tế, thiên tai, tai nạn',
     icon: '/icons/icon-health.svg',
     colorKey: 'health',
-    accentColor: '#F15A53',
-    textColor: '#B32B26',
     itemCount: 19,
   },
   {
@@ -45,8 +43,6 @@ export const CATEGORIES = [
     description: 'Từ vựng hành chính, mẫu câu, thi cử, trường học',
     icon: '/icons/icon-study.svg',
     colorKey: 'study',
-    accentColor: '#AB8DF5',
-    textColor: '#6741C4',
     itemCount: 27,
   },
   {
@@ -55,8 +51,6 @@ export const CATEGORIES = [
     description: 'Biểu mẫu, bảng tính, trình kiểm tra, liên kết',
     icon: '/icons/icon-tool.svg',
     colorKey: 'tool',
-    accentColor: '#2FC5D0',
-    textColor: '#0A6E78',
     itemCount: 18,
   },
 ];
