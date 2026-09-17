@@ -1,7 +1,8 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-import { SearchIcon, MenuIcon } from '../common/Icons';
+import { SearchIcon, MenuIcon, ChevronDownIcon } from '../common/Icons';
+import { setEphemeralQuery } from '../../services/discovery/searchStore';
 
 export function Navbar({
   onOpenMobileMenu,
@@ -9,16 +10,28 @@ export function Navbar({
   isMobileMenuOpen = false,
   menuTriggerRef,
 }) {
+  const [navSearch, setNavSearch] = useState('');
+  const navigate = useNavigate();
+
+  const handleNavSearchSubmit = (e) => {
+    e.preventDefault();
+    const trimmed = navSearch.trim();
+    if (!trimmed) return;
+    setEphemeralQuery(trimmed);
+    navigate('/articles');
+    setNavSearch('');
+  };
+
   return (
     <header className="navbar-wrapper" role="banner">
       <div className="container navbar-inner">
-        {/* Brand Logo (6-color official vector logo on light canvas) */}
-        <Link to="/" className="navbar-brand" aria-label="Chotto — Trang chủ">
+        {/* Brand Logo with Tagline */}
+        <Link to="/" className="navbar-brand" aria-label="Chotto — Sống dễ hơn ở Nhật">
           <img
             src="/chotto-logo-full.svg"
             alt="Chotto"
             className="navbar-logo-img"
-            width="152"
+            width="136"
             height="32"
           />
         </Link>
@@ -38,36 +51,51 @@ export function Navbar({
           >
             Bài viết
           </NavLink>
-          <Link to="/#topics" className="navbar-link">
-            Chủ đề
-          </Link>
+          <a href="/#topics" className="navbar-link navbar-dropdown-link">
+            <span>Chủ đề</span>
+            <ChevronDownIcon size={12} />
+          </a>
           <NavLink
             to="/topics/tools"
             className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}
           >
             Công cụ
           </NavLink>
-          <Link to="/#about" className="navbar-link">
+          <a href="/#about" className="navbar-link">
             Về Chotto
-          </Link>
+          </a>
         </nav>
 
         {/* Right Actions */}
         <div className="navbar-actions">
+          {/* Integrated Search Box (Desktop) */}
+          <form className="navbar-search-form" onSubmit={handleNavSearchSubmit} role="search">
+            <SearchIcon size={14} className="navbar-search-icon" />
+            <input
+              type="search"
+              className="navbar-search-input"
+              placeholder="Tìm kiếm... (ví dụ: thuế, nenkin, nhà ở...)"
+              value={navSearch}
+              onChange={(e) => setNavSearch(e.target.value)}
+              aria-label="Tìm kiếm trên Chotto"
+            />
+          </form>
+
+          {/* Language Selector */}
+          <div className="navbar-lang-pill" title="Ngôn ngữ: Tiếng Việt" aria-label="Tiếng Việt">
+            <span>VI</span>
+            <ChevronDownIcon size={11} />
+          </div>
+
+          {/* Mobile Search Icon Button */}
           <button
             type="button"
-            className="navbar-search-btn"
+            className="navbar-mobile-search-btn"
             onClick={onFocusSearch}
-            aria-label="Tìm kiếm nội dung trên Chotto"
+            aria-label="Tìm kiếm nội dung"
           >
-            <SearchIcon size={16} />
-            <span>Tìm kiếm...</span>
-            <kbd className="navbar-search-shortcut">⌘K</kbd>
+            <SearchIcon size={19} />
           </button>
-
-          <span className="navbar-lang-badge" title="Ngôn ngữ: Tiếng Việt" aria-label="Tiếng Việt">
-            VI
-          </span>
 
           {/* Mobile Hamburger Button */}
           <button
@@ -87,3 +115,4 @@ export function Navbar({
     </header>
   );
 }
+

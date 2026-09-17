@@ -4,45 +4,55 @@ import { FacebookIcon, ArrowRightIcon } from '../common/Icons';
 
 export function CommunityBlock() {
   return (
-    <section className="section" id="about" aria-labelledby="community-heading">
-      <div id="community" />
+    <section className="section community-section" id="community" aria-labelledby="community-heading">
       <div className="container">
-        <div className="community-card">
-          <div>
-            <div className="section-eyebrow community-header-eyebrow">
-              Cộng đồng hỗ trợ & Về Chotto
+        <div className="community-banner-card">
+          <div className="community-banner-overlay" />
+          
+          <div className="community-banner-content">
+            <div className="community-banner-tag">
+              <span className="community-tag-dot" />
+              <span>Cộng đồng Chotto</span>
             </div>
 
-            <h2 id="community-heading" className="text-h2 community-title">
-              Gặp vấn đề chưa có lời giải?{'\n'}Hỏi Chotto trên Facebook.
+            <h2 id="community-heading" className="community-banner-title">
+              Cùng nhau khám phá cuộc sống Nhật Bản dễ dàng hơn.
             </h2>
 
-            <p className="text-body community-desc">
-              Không ai biết hết mọi việc ở một đất nước mới. Chotto cùng cộng đồng người Việt lâu năm tại Nhật sẵn sàng lắng nghe và gợi ý hướng đi cho bạn.
+            <div className="community-banner-note" aria-hidden="true">
+              "Chia sẻ kinh nghiệm, giúp đỡ lẫn nhau 🌸"
+            </div>
+
+            <p className="community-banner-desc">
+              Theo dõi fanpage Chotto để cập nhật bài viết mới, mẹo vặt hàng ngày và tham gia cộng đồng người Việt tại Nhật Bản.
             </p>
 
             <a
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary community-btn"
+              className="community-banner-btn"
+              aria-label="Theo dõi Fanpage Chotto trên Facebook"
             >
-              <FacebookIcon size={18} />
-              <span>Tham gia Chotto Community</span>
-              <ArrowRightIcon size={16} />
+              <FacebookIcon size={18} color="#ffffff" />
+              <span>Theo dõi Fanpage</span>
+              <ArrowRightIcon size={15} color="#ffffff" />
             </a>
           </div>
 
-          <div className="community-quote-card">
-            <div className="community-quote-heading">
-              “Vấn đề nhỏ, có chỗ để hỏi.”
-            </div>
-            <p className="text-body community-quote-text">
-              Mỗi câu hỏi của bạn là một gợi ý để đội ngũ Chotto hoàn thiện thêm những bài viết hướng dẫn và miniapps công cụ hữu ích cho cộng đồng.
-            </p>
+          <div className="community-banner-visual">
+            <img
+              src="/images/community/fuji-sakura.jpg"
+              alt="Núi Phú Sĩ và hoa anh đào Nhật Bản"
+              className="community-banner-img"
+              loading="lazy"
+              width="500"
+              height="280"
+            />
           </div>
         </div>
       </div>
     </section>
   );
 }
+

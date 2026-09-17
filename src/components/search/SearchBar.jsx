@@ -15,15 +15,14 @@ export const SearchBar = forwardRef(function SearchBar(
   const containerRef = useRef(null);
   const navigate = useNavigate();
 
-  // Natural problem-oriented quick intent hints
+  // Natural problem-oriented quick intent hints matching visual SOT
   const quickIntents = [
     'Mất thẻ zairyu',
     'Lương 30 man',
     'Nghỉ việc',
     'Đổi bằng lái',
-    'Thuế thị dân',
-    'Gia hạn visa',
-    'Thuê nhà',
+    'Thuế',
+    'Nênkin',
   ];
 
   // Perform intelligent real-time discovery
@@ -130,7 +129,8 @@ export const SearchBar = forwardRef(function SearchBar(
           )}
 
           <button type="submit" className="search-submit-btn">
-            Tìm
+            <SearchIcon size={15} color="#ffffff" className="search-btn-icon" />
+            <span>Tìm kiếm</span>
           </button>
         </div>
 

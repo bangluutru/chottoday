@@ -11,105 +11,128 @@ export function UsefulToday() {
   const nenkinUrl = nenkinTool ? buildToolUrl(nenkinTool.id, { source: 'homepage' }) : null;
 
   return (
-    <section className="section" id="useful-today" aria-labelledby="useful-today-heading">
+    <section className="section useful-today-section" id="useful-today" aria-labelledby="useful-today-heading">
       <div className="container">
-        {/* Section Header */}
-        <div className="section-header">
-          <div className="section-eyebrow">
-            Tuyển chọn hôm nay
+        {/* Section Header with 'Xem tất cả →' */}
+        <div className="section-head-bar">
+          <div className="section-head-left">
+            <h2 id="useful-today-heading" className="section-title-with-icon">
+              <span className="section-icon-emoji" role="img" aria-label="Sao">⭐</span>
+              <span>Hôm nay có gì hữu ích?</span>
+            </h2>
+            <p className="section-desc-subtle">
+              Hai bài viết cẩm nang giải thích rõ ngọn ngành và một công cụ thực hành xử lý ngay.
+            </p>
           </div>
-          <h2 id="useful-today-heading" className="text-h2">
-            Hôm nay có gì hữu ích?
-          </h2>
-          <p className="text-body">
-            Hai bài viết cẩm nang giải thích rõ ngọn ngành và một công cụ thực hành xử lý ngay.
-          </p>
+          <Link to="/articles" className="section-link-more">
+            <span>Xem tất cả</span>
+            <ArrowRightIcon size={14} />
+          </Link>
         </div>
 
-        {/* 3 Featured Items Grid: ARTICLE, ARTICLE, TOOL */}
+        {/* 3 Visual Cards: Article, Article, Tool */}
         <div className="useful-today-grid">
-          {/* Card 1: Article 30 Man */}
+          {/* Card 1: Article Salary 30 Man */}
           <div className="useful-today-col">
             <Link
               to={`/articles/${articleSalary30Man.slug}`}
-              className="chotto-card card-work useful-today-card"
+              className="useful-visual-card"
             >
-              <div className="useful-today-meta-head">
-                <span className="chotto-chip chip-work">BÀI VIẾT</span>
-                <span className="text-caption">{articleSalary30Man.updatedAt}</span>
+              <div className="useful-card-media">
+                <img
+                  src="/images/featured/salary-30man.jpg"
+                  alt="Bảng tính lương 30 man tại Nhật Bản"
+                  className="useful-card-img"
+                  loading="lazy"
+                  width="400"
+                  height="220"
+                />
+                <span className="useful-card-chip chip-work-pill">Việc làm &amp; tiền</span>
               </div>
-              <h3 className="card-title">{articleSalary30Man.title}</h3>
-              <p className="card-excerpt">{articleSalary30Man.excerpt}</p>
-              <div className="useful-today-card-foot">
-                <span className="useful-today-read-time">
-                  <ClockIcon size={13} />
-                  <span>{articleSalary30Man.readingTime} phút đọc</span>
-                </span>
-                <span className="useful-today-action-link">
-                  <span>Đọc bài</span>
-                  <ArrowRightIcon size={14} />
-                </span>
+              <div className="useful-card-body">
+                <h3 className="useful-card-title">{articleSalary30Man.title}</h3>
+                <p className="useful-card-excerpt">{articleSalary30Man.excerpt}</p>
+                <div className="useful-card-foot">
+                  <span className="useful-card-meta">
+                    <ClockIcon size={13} />
+                    <span>{articleSalary30Man.readingTime} phút đọc · 17/09/2026</span>
+                  </span>
+                  <span className="useful-card-arrow">
+                    <ArrowRightIcon size={15} />
+                  </span>
+                </div>
               </div>
             </Link>
           </div>
 
-          {/* Card 2: Article Lost Zairyu */}
+          {/* Card 2: Article Lost Zairyu Card */}
           <div className="useful-today-col">
             <Link
               to={`/articles/${articleLostZairyu.slug}`}
-              className="chotto-card card-doc useful-today-card"
+              className="useful-visual-card"
             >
-              <div className="useful-today-meta-head">
-                <span className="chotto-chip chip-doc">BÀI VIẾT</span>
-                <span className="text-caption">{articleLostZairyu.updatedAt}</span>
+              <div className="useful-card-media">
+                <img
+                  src="/images/featured/zairyu-card.jpg"
+                  alt="Thẻ lưu trú Zairyu Card tại Nhật"
+                  className="useful-card-img"
+                  loading="lazy"
+                  width="400"
+                  height="220"
+                />
+                <span className="useful-card-chip chip-doc-pill">Giấy tờ &amp; hành chính</span>
               </div>
-              <h3 className="card-title">{articleLostZairyu.title}</h3>
-              <p className="card-excerpt">{articleLostZairyu.excerpt}</p>
-              <div className="useful-today-card-foot">
-                <span className="useful-today-read-time">
-                  <ClockIcon size={13} />
-                  <span>{articleLostZairyu.readingTime} phút đọc</span>
-                </span>
-                <span className="useful-today-action-link">
-                  <span>Đọc bài</span>
-                  <ArrowRightIcon size={14} />
-                </span>
+              <div className="useful-card-body">
+                <h3 className="useful-card-title">{articleLostZairyu.title}</h3>
+                <p className="useful-card-excerpt">{articleLostZairyu.excerpt}</p>
+                <div className="useful-card-foot">
+                  <span className="useful-card-meta">
+                    <ClockIcon size={13} />
+                    <span>{articleLostZairyu.readingTime} phút đọc · 17/09/2026</span>
+                  </span>
+                  <span className="useful-card-arrow">
+                    <ArrowRightIcon size={15} />
+                  </span>
+                </div>
               </div>
             </Link>
           </div>
 
-          {/* Card 3: Tool Recommendation (Toolio) */}
+          {/* Card 3: Tool Recommendation (Toolio Nenkin) */}
           {nenkinTool && nenkinUrl && (
             <div className="useful-today-col">
               <a
                 href={nenkinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="chotto-card card-tool useful-today-card useful-today-tool-card"
+                className="useful-visual-card useful-tool-featured-card"
               >
-                <div className="useful-today-meta-head">
-                  <span className="chotto-chip chip-tool useful-today-tool-chip">
-                    CÔNG CỤ THỰC HÀNH
-                  </span>
-                  <span className="useful-today-privacy-badge">
-                    <ShieldCheckIcon size={13} />
-                    <span>Chạy trên máy bạn</span>
-                  </span>
+                <div className="useful-card-media">
+                  <img
+                    src="/images/featured/nenkin-tool.jpg"
+                    alt="Công cụ tính lương hưu Nenkin"
+                    className="useful-card-img"
+                    loading="lazy"
+                    width="400"
+                    height="220"
+                  />
+                  <span className="useful-card-chip chip-tool-pill">Công cụ</span>
                 </div>
-                <h3 className="card-title">
-                  {nenkinTool.name}
-                </h3>
-                <p className="card-excerpt useful-today-tool-desc">
-                  {nenkinTool.description}
-                </p>
-                <div className="useful-today-card-foot useful-today-tool-foot">
-                  <span className="useful-today-tool-origin">
-                    Mở trên Toolio
-                  </span>
-                  <span className="useful-today-action-link useful-today-tool-action">
-                    <span>Dùng ngay</span>
-                    <ExternalLinkIcon size={14} />
-                  </span>
+                <div className="useful-card-body">
+                  <h3 className="useful-card-title">Tính Nênkin của bạn</h3>
+                  <p className="useful-card-excerpt">
+                    Ước tính số tiền lương hưu hoặc tiền rút bảo hiểm Nenkin một lần khi về nước chính xác theo quy định 2026.
+                  </p>
+                  <div className="useful-tool-action-wrap">
+                    <div className="useful-tool-cta-btn">
+                      <span>Dùng ngay</span>
+                      <ExternalLinkIcon size={14} />
+                    </div>
+                    <div className="useful-tool-trust-pill">
+                      <ShieldCheckIcon size={13} />
+                      <span>Miễn phí · Bảo mật</span>
+                    </div>
+                  </div>
                 </div>
               </a>
             </div>
@@ -119,3 +142,4 @@ export function UsefulToday() {
     </section>
   );
 }
+

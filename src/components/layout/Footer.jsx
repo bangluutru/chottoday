@@ -1,98 +1,68 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Footer.css';
-import { ExternalLinkIcon } from '../common/Icons';
-import { getAllCategories } from '../../content/categories/categoryMap';
-import { TOOLIO_BASE_URL } from '../../config/constants';
+import { FacebookIcon, YouTubeIcon, TikTokIcon, InstagramIcon } from '../common/Icons';
 
 export function Footer() {
-  const categories = getAllCategories();
-
   return (
     <footer className="footer-wrapper" role="contentinfo">
       <div className="container">
-        <div className="footer-grid">
-          {/* Col 1: Brand & Philosophy */}
-          <div className="footer-brand-col">
+        <div className="footer-main-row">
+          {/* Brand & Tagline */}
+          <div className="footer-brand">
             <Link to="/" aria-label="Trang chủ Chotto">
               <img
                 src="/chotto-logo-full.svg"
                 alt="Chotto"
                 className="footer-logo"
-                width="130"
-                height="28"
+                width="120"
+                height="26"
               />
             </Link>
-            <div className="footer-philosophy">
-              “Vấn đề nhỏ, có chỗ để hỏi. Và có công cụ để giải quyết.”
-            </div>
-            <p className="footer-desc">
-              ChottoDay là nền tảng thông tin, cẩm nang hướng dẫn và cổng kết nối công cụ hữu ích dành cho người Việt đang sinh sống, học tập và làm việc tại Nhật Bản.
-            </p>
+            <span className="footer-tagline">Một chút, mỗi ngày cho người Việt tại Nhật</span>
           </div>
 
-          {/* Col 2: 6 Categories */}
-          <div>
-            <div className="footer-col-title">Chủ đề chính</div>
-            <ul className="footer-link-list">
-              {categories.map((cat) => (
-                <li key={cat.id}>
-                  <Link to={cat.path} className="footer-link">
-                    <span className={`footer-cat-dot cat-dot-${cat.colorKey}`} />
-                    <span>{cat.name}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Nav Links */}
+          <nav className="footer-nav" aria-label="Liên kết chân trang">
+            <Link to="/#about" className="footer-nav-link">Về Chotto</Link>
+            <span className="footer-nav-dot" aria-hidden="true">·</span>
+            <Link to="/articles" className="footer-nav-link">Cẩm nang</Link>
+            <span className="footer-nav-dot" aria-hidden="true">·</span>
+            <Link to="/topics/tools" className="footer-nav-link">Công cụ</Link>
+            <span className="footer-nav-dot" aria-hidden="true">·</span>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="footer-nav-link">Liên hệ</a>
+            <span className="footer-nav-dot" aria-hidden="true">·</span>
+            <span className="footer-nav-link footer-nav-subtle">Điều khoản &amp; Bảo mật</span>
+          </nav>
 
-          {/* Col 3: Ecosystem & Tools */}
-          <div>
-            <div className="footer-col-title">Hệ sinh thái Chotto</div>
-            <ul className="footer-link-list">
-              <li>
-                <Link to="/articles" className="footer-link">
-                  Cẩm nang bài viết
-                </Link>
-              </li>
-              <li>
-                <Link to="/#useful-today" className="footer-link">
-                  Hướng dẫn từng bước
-                </Link>
-              </li>
-              <li>
-                <a
-                  href={TOOLIO_BASE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="footer-link footer-link-highlight"
-                >
-                  <span>Toolio (toolio.chottoday.com)</span>
-                  <ExternalLinkIcon size={14} />
-                </a>
-              </li>
-              <li>
-                <a href="#community" className="footer-link">
-                  Chotto Facebook Community
-                </a>
-              </li>
-              <li>
-                <Link to="/#about" className="footer-link">
-                  Về dự án Chotto
-                </Link>
-              </li>
-            </ul>
+          {/* Social Icons */}
+          <div className="footer-socials" aria-label="Mạng xã hội Chotto">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="footer-social-btn" aria-label="Facebook">
+              <FacebookIcon size={18} />
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="footer-social-btn" aria-label="YouTube">
+              <YouTubeIcon size={18} />
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="footer-social-btn" aria-label="TikTok">
+              <TikTokIcon size={16} />
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="footer-social-btn" aria-label="Instagram">
+              <InstagramIcon size={16} />
+            </a>
           </div>
         </div>
 
-        {/* Bottom Bar: Disclaimer & Copyright */}
-        <div className="footer-bottom">
-          <div className="footer-disclaimer">
-            Lưu ý: Thông tin trên Chotto được biên soạn và cập nhật dựa trên luật pháp và quy định thực tế tại Nhật Bản, mang tính chất tham khảo hướng dẫn thực hành và không thay thế tư vấn pháp lý chính thức từ cơ quan nhà nước.
+        {/* Bottom Disclaimer & Copyright */}
+        <div className="footer-bottom-bar">
+          <p className="footer-disclaimer">
+            Lưu ý: Thông tin trên Chotto được biên soạn và cập nhật dựa trên luật pháp và thực tế tại Nhật Bản, mang tính chất cẩm nang tham khảo và không thay thế tư vấn pháp lý chính thức.
+          </p>
+          <div className="footer-copy">
+            © 2026 ChottoDay. Giữ bản quyền.
           </div>
-          <div>© 2026 ChottoDay. Bản quyền thuộc về Chotto.</div>
         </div>
       </div>
     </footer>
   );
 }
+
