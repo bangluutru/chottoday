@@ -1,0 +1,28 @@
+/* ==========================================================================
+   404 NOT FOUND PAGE STYLES
+   ========================================================================== */
+
+.not-found-container {
+  text-align: center;
+  padding: 72px 0;
+}
+
+.not-found-eyebrow {
+  color: var(--cat-health-text);
+}
+
+.not-found-title {
+  margin-bottom: 16px;
+}
+
+.not-found-desc {
+  max-width: 520px;
+  margin: 0 auto 28px;
+}
+
+.not-found-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}

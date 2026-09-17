@@ -4,6 +4,7 @@ import './ArticlesIndexPage.css';
 import { getAllArticles, searchArticles } from '../content/articles';
 import { getAllCategories, getCategoryById } from '../content/categories/categoryMap';
 import { ClockIcon, ArrowRightIcon, SearchIcon } from '../components/common/Icons';
+import { PageMeta } from '../components/common/PageMeta';
 
 export function ArticlesIndexPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,10 +13,6 @@ export function ArticlesIndexPage() {
   const [activeCategory, setActiveCategory] = useState('all');
 
   const categories = getAllCategories();
-
-  useEffect(() => {
-    document.title = 'Tất cả bài viết & hướng dẫn — ChottoDay';
-  }, []);
 
   useEffect(() => {
     const q = searchParams.get('q') || '';
@@ -44,21 +41,29 @@ export function ArticlesIndexPage() {
 
   return (
     <div className="articles-index-wrapper">
+      <PageMeta
+        title="Tất cả bài viết & hướng dẫn"
+        description="Tổng hợp các bài viết giải thích luật pháp, kinh nghiệm thực tiễn và hướng dẫn từng bước cho người Việt sinh sống tại Nhật Bản."
+        canonical="/articles"
+        ogTitle="Cẩm nang bài viết Chotto — ChottoDay"
+        ogDescription="Tổng hợp các bài viết giải thích luật pháp, kinh nghiệm thực tiễn và hướng dẫn từng bước cho người Việt sinh sống tại Nhật Bản."
+      />
+
       <div className="container">
         {/* Header */}
         <header className="articles-index-header">
           <div className="section-eyebrow">Thư viện nội dung</div>
-          <h1 className="text-h1" style={{ marginBottom: '12px' }}>
+          <h1 className="text-h1 articles-index-h1">
             Cẩm nang bài viết Chotto
           </h1>
-          <p className="text-body" style={{ maxWidth: '640px' }}>
+          <p className="text-body articles-index-lead">
             Tổng hợp các bài viết giải thích luật pháp, kinh nghiệm thực tiễn và hướng dẫn từng bước cho người Việt sinh sống tại Nhật Bản.
           </p>
         </header>
 
         {/* Search & Category Filter */}
-        <div style={{ marginBottom: '24px', maxWidth: '480px' }}>
-          <div className="search-box-wrapper" style={{ height: '44px' }}>
+        <div className="articles-search-container">
+          <div className="search-box-wrapper articles-search-box">
             <SearchIcon size={18} color="var(--text-muted)" />
             <input
               type="search"
@@ -93,7 +98,7 @@ export function ArticlesIndexPage() {
                 role="tab"
                 aria-selected={activeCategory === cat.id}
               >
-                <span className={`cat-dot cat-dot-${cat.colorKey}`} style={{ marginRight: '6px' }} />
+                <span className={`cat-dot cat-dot-${cat.colorKey} articles-filter-dot`} />
                 <span>{cat.shortName} ({count})</span>
               </button>
             );
@@ -102,7 +107,7 @@ export function ArticlesIndexPage() {
 
         {/* Article Editorial Rows */}
         {displayedArticles.length === 0 ? (
-          <div style={{ padding: '64px 0', textAlign: 'center', color: 'var(--text-muted)' }}>
+          <div className="articles-empty-state">
             Không tìm thấy bài viết nào phù hợp với điều kiện tìm kiếm.
           </div>
         ) : (
@@ -119,7 +124,7 @@ export function ArticlesIndexPage() {
                   <div className="article-row-main">
                     <div className="article-row-top">
                       {cat && (
-                        <span className={`chotto-chip chip-${cat.colorKey}`} style={{ height: '24px', fontSize: '11px', padding: '0 8px' }}>
+                        <span className={`chotto-chip chip-${cat.colorKey} article-row-chip`}>
                           {cat.shortName}
                         </span>
                       )}
@@ -127,7 +132,7 @@ export function ArticlesIndexPage() {
                         {article.updatedAt || article.publishedAt}
                       </span>
                       <span className="text-caption">·</span>
-                      <span className="text-caption" style={{ display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                      <span className="text-caption article-row-read-time">
                         <ClockIcon size={12} />
                         <span>{article.readingTime} phút đọc</span>
                       </span>

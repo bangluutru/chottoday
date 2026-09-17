@@ -42,15 +42,40 @@
   flex: 1;
 }
 
+.problem-card-detail {
+  font-size: 13px;
+  line-height: 20px;
+  margin-bottom: 16px;
+}
+
+.problem-card-action-group {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 12px;
+}
+
 .problem-card-action {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   color: var(--text-primary);
   text-decoration: none;
-  margin-top: auto;
 }
 
 .problem-card-action:hover {
   text-decoration: underline;
+}
+
+.problem-card-article-action {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.problem-card-tool-action {
+  font-size: 12px;
+  color: var(--cat-tool-text);
+  font-weight: 600;
 }

@@ -32,16 +32,15 @@ export function NeedHelp() {
                 {prob.statement}
               </h3>
 
-              <p className="text-body" style={{ fontSize: '13px', lineHeight: '20px', marginBottom: '16px' }}>
+              <p className="text-body problem-card-detail">
                 {prob.detail}
               </p>
 
-              <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px', borderTop: '1px solid var(--border-subtle)', paddingTop: '12px' }}>
+              <div className="problem-card-action-group">
                 {prob.recommendedArticle && (
                   <Link
                     to={`/articles/${prob.recommendedArticle.slug}`}
-                    className="problem-card-action"
-                    style={{ fontSize: '13px', fontWeight: 600 }}
+                    className="problem-card-action problem-card-article-action"
                   >
                     <span>Bài viết: {prob.recommendedArticle.title}</span>
                     <ArrowRightIcon size={13} />
@@ -53,8 +52,7 @@ export function NeedHelp() {
                     href={prob.recommendedTool.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="problem-card-action"
-                    style={{ fontSize: '12px', color: 'var(--cat-tool-text)', fontWeight: 600 }}
+                    className="problem-card-action problem-card-tool-action"
                   >
                     <span>Công cụ: {prob.recommendedTool.name}</span>
                     <ExternalLinkIcon size={12} />

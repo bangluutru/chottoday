@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Hero } from '../components/sections/Hero';
 import { UsefulToday } from '../components/sections/UsefulToday';
 import { NeedHelp } from '../components/sections/NeedHelp';
@@ -6,14 +6,17 @@ import { CategoryGrid } from '../components/category/CategoryGrid';
 import { LatestContent } from '../components/sections/LatestContent';
 import { ToolShowcase } from '../components/sections/ToolShowcase';
 import { CommunityBlock } from '../components/sections/CommunityBlock';
+import { PageMeta } from '../components/common/PageMeta';
 
 export function HomePage({ searchInputRef, onSearch }) {
-  useEffect(() => {
-    document.title = 'Chotto — Vấn đề nhỏ, có Chotto giúp một chút.';
-  }, []);
-
   return (
     <>
+      <PageMeta
+        title="Vấn đề nhỏ, có Chotto giúp một chút."
+        description="Thông tin, hướng dẫn và công cụ hữu ích cho người Việt sống tại Nhật Bản. Từ thủ tục hành chính, thuế, việc làm đến cuộc sống thường ngày."
+        canonical="/"
+      />
+
       {/* 1. HERO WITH LIVE SEARCH */}
       <Hero searchInputRef={searchInputRef} onSearch={onSearch} />
 

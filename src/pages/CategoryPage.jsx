@@ -3,22 +3,14 @@ import { useParams, Link } from 'react-router-dom';
 import './CategoryPage.css';
 import { getCategoryBySlug } from '../content/categories/categoryMap';
 import { getArticlesByCategory } from '../content/articles';
-import { SELECTED_TOOLS } from '../data/toolsMock';
+import { getToolsByIds } from '../data/toolsMock';
 import { ClockIcon, ArrowRightIcon, ExternalLinkIcon } from '../components/common/Icons';
+import { PageMeta } from '../components/common/PageMeta';
 
 export function CategoryPage() {
   const { category: categorySlug } = useParams();
   const category = getCategoryBySlug(categorySlug);
   const [selectedTag, setSelectedTag] = useState('Tất cả');
-
-  // Basic SEO
-  useEffect(() => {
-    if (category) {
-      document.title = `${category.name} — ChottoDay`;
-    } else {
-      document.title = 'Chủ đề — ChottoDay';
-    }
-  }, [category]);
 
   // Reset tag on category change
   useEffect(() => {
@@ -28,14 +20,18 @@ export function CategoryPage() {
   if (!category) {
     return (
       <div className="category-page-wrapper">
-        <div className="container" style={{ textAlign: 'center', padding: '64px 0' }}>
-          <h1 className="text-h2" style={{ marginBottom: '16px' }}>
+        <PageMeta
+          title="Không tìm thấy chủ đề"
+          description="Chủ đề bạn đang tìm kiếm không tồn tại hoặc đã được chuyển dời."
+        />
+        <div className="container category-not-found-wrap">
+          <h1 className="text-h2 category-not-found-title">
             Không tìm thấy chủ đề
           </h1>
-          <p className="text-body" style={{ marginBottom: '24px' }}>
+          <p className="text-body category-not-found-desc">
             Chủ đề bạn đang tìm kiếm không tồn tại hoặc đã được chuyển dời.
           </p>
-          <Link to="/" className="btn-primary" style={{ display: 'inline-flex' }}>
+          <Link to="/" className="btn-primary category-not-found-btn">
             <span>Quay lại trang chủ</span>
           </Link>
         </div>
@@ -50,13 +46,19 @@ export function CategoryPage() {
       ? allCategoryArticles
       : allCategoryArticles.filter((a) => a.tags.includes(selectedTag));
 
-  // Related tools
-  const relatedTools = (category.relatedToolIds || [])
-    .map((toolId) => SELECTED_TOOLS.find((t) => t.id === toolId))
-    .filter(Boolean);
+  // Related tools resolved centrally from single source of truth
+  const relatedTools = getToolsByIds(category.relatedToolIds || []);
 
   return (
     <div className="category-page-wrapper">
+      <PageMeta
+        title={category.name}
+        description={category.description}
+        canonical={category.path}
+        ogTitle={`${category.name} — ChottoDay`}
+        ogDescription={category.description}
+      />
+
       <div className="container">
         {/* Breadcrumb */}
         <nav className="breadcrumb-nav" aria-label="Đường dẫn chủ đề">
@@ -105,7 +107,7 @@ export function CategoryPage() {
 
         {/* 3. Articles Grid (2 cols desktop/tablet, 1 col mobile) */}
         {filteredArticles.length === 0 ? (
-          <div style={{ padding: '48px 0', textAlign: 'center', color: 'var(--text-muted)' }}>
+          <div className="category-empty-state">
             Chưa có bài viết nào với nhãn "{selectedTag}".
           </div>
         ) : (
@@ -128,7 +130,7 @@ export function CategoryPage() {
                 <p className="cat-card-excerpt">{article.excerpt}</p>
 
                 <div className="cat-card-meta-bottom">
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <span className="cat-card-read-time">
                     <ClockIcon size={13} />
                     <span>{article.readingTime} phút đọc</span>
                   </span>
@@ -159,30 +161,24 @@ export function CategoryPage() {
                   href={tool.toolioPath}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="chotto-card"
-                  style={{
-                    padding: '18px 20px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                  }}
+                  className="chotto-card category-tool-card"
                 >
                   <div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                    <div className="category-tool-card-head">
+                      <h3 className="category-tool-card-name">
                         {tool.name}
                       </h3>
-                      <span className="chotto-chip chip-tool" style={{ fontSize: '11px', height: '24px' }}>
+                      <span className="chotto-chip chip-tool category-tool-card-chip">
                         Miniapp
                       </span>
                     </div>
-                    <p style={{ fontSize: '13px', lineHeight: '20px', color: 'var(--text-secondary)', marginBottom: '14px' }}>
+                    <p className="category-tool-card-desc">
                       {tool.description}
                     </p>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-subtle)', paddingTop: '10px' }}>
-                    <span style={{ fontSize: '12px', color: 'var(--cat-tool-text)', fontWeight: 600 }}>
+                  <div className="category-tool-card-foot">
+                    <span className="category-tool-card-action-text">
                       Mở trong Toolio
                     </span>
                     <ExternalLinkIcon size={14} color="var(--cat-tool-text)" />

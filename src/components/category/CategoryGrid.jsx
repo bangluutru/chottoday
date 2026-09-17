@@ -20,7 +20,6 @@ export function CategoryGrid() {
             to={cat.path}
             className="category-card"
             aria-label={`Chủ đề ${cat.name}`}
-            style={{ textDecoration: 'none' }}
           >
             <div className="category-icon-wrapper">
               <img
@@ -35,12 +34,12 @@ export function CategoryGrid() {
             <h3 className="category-name">{cat.name}</h3>
             <p className="category-desc">{cat.description}</p>
 
-            <div className="category-count" style={{ marginTop: 'auto', paddingTop: '10px' }}>
+            <div className="category-count">
               <span className={`category-indicator-dot dot-${cat.colorKey}`} />
               <span>
                 {articleCount > 0 ? `${articleCount} bài viết` : 'Công cụ thực hành'}
               </span>
-              <ArrowRightIcon size={12} style={{ marginLeft: '4px', color: 'var(--text-muted)' }} />
+              <ArrowRightIcon size={12} className="category-card-arrow" />
             </div>
           </Link>
         );

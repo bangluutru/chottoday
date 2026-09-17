@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './SearchBar.css';
 import { SearchIcon, CloseIcon, ArrowRightIcon, ExternalLinkIcon } from '../common/Icons';
 import { searchArticles } from '../../content/articles';
@@ -172,11 +172,12 @@ export const SearchBar = forwardRef(function SearchBar(
                   <div>
                     <div className="suggestion-group-title">Bài viết ({articleResults.length})</div>
                     {articleResults.map((article) => (
-                      <div
+                      <Link
                         key={article.id}
+                        to={`/articles/${article.slug}`}
                         className="suggestion-item"
                         role="option"
-                        onClick={() => handleSelectArticle(article.slug)}
+                        onClick={() => setShowSuggestions(false)}
                       >
                         <div className="suggestion-main">
                           <div className="suggestion-title">{article.title}</div>
@@ -187,7 +188,7 @@ export const SearchBar = forwardRef(function SearchBar(
                           </div>
                         </div>
                         <ArrowRightIcon size={14} color="var(--text-muted)" />
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 )}
@@ -214,7 +215,7 @@ export const SearchBar = forwardRef(function SearchBar(
                         </div>
                         <span className="suggestion-tool-badge">
                           <span>Mở miniapp</span>
-                          <ExternalLinkIcon size={12} style={{ marginLeft: '4px' }} />
+                          <ExternalLinkIcon size={12} className="suggestion-badge-icon" />
                         </span>
                       </a>
                     ))}

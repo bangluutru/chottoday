@@ -1,6 +1,24 @@
 import React from 'react';
 import './ArticleRenderer.css';
-import { ArrowRightIcon, ExternalLinkIcon } from '../common/Icons';
+import { ExternalLinkIcon } from '../common/Icons';
+import { getToolById } from '../../data/toolsMock';
+
+/**
+ * Lightweight inline text parser converting **bold** to <strong>
+ * without pulling in heavy Markdown parser dependencies.
+ */
+function renderFormattedText(text) {
+  if (typeof text !== 'string') return text;
+  if (!text.includes('**')) return text;
+
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>;
+    }
+    return part;
+  });
+}
 
 export function ArticleRenderer({ sections = [] }) {
   if (!sections || sections.length === 0) return null;
@@ -12,7 +30,7 @@ export function ArticleRenderer({ sections = [] }) {
           case 'intro':
             return (
               <p key={idx} className="article-intro">
-                {section.content}
+                {renderFormattedText(section.content)}
               </p>
             );
 
@@ -21,7 +39,7 @@ export function ArticleRenderer({ sections = [] }) {
             const headingClass = section.level === 3 ? 'article-h3' : 'article-h2';
             return (
               <HeadingTag key={idx} className={headingClass}>
-                {section.text}
+                {renderFormattedText(section.text)}
               </HeadingTag>
             );
           }
@@ -29,7 +47,7 @@ export function ArticleRenderer({ sections = [] }) {
           case 'paragraph':
             return (
               <p key={idx} className="article-paragraph">
-                {section.content}
+                {renderFormattedText(section.content)}
               </p>
             );
 
@@ -38,7 +56,7 @@ export function ArticleRenderer({ sections = [] }) {
               <ul key={idx} className="article-list">
                 {section.items.map((item, itemIdx) => (
                   <li key={itemIdx} className="article-list-item">
-                    {item}
+                    {renderFormattedText(item)}
                   </li>
                 ))}
               </ul>
@@ -53,8 +71,8 @@ export function ArticleRenderer({ sections = [] }) {
                       {step.stepNumber || stepIdx + 1}
                     </div>
                     <div className="article-step-content">
-                      <div className="article-step-title">{step.title}</div>
-                      <div className="article-step-text">{step.text}</div>
+                      <div className="article-step-title">{renderFormattedText(step.title)}</div>
+                      <div className="article-step-text">{renderFormattedText(step.text)}</div>
                     </div>
                   </div>
                 ))}
@@ -68,7 +86,7 @@ export function ArticleRenderer({ sections = [] }) {
                 {section.reading && (
                   <div className="article-term-reading">Romaji: {section.reading}</div>
                 )}
-                <div className="article-term-meaning">{section.meaning}</div>
+                <div className="article-term-meaning">{renderFormattedText(section.meaning)}</div>
               </div>
             );
 
@@ -78,10 +96,10 @@ export function ArticleRenderer({ sections = [] }) {
                 {section.title && (
                   <div className="article-note-title">
                     <span>💡</span>
-                    <span>{section.title}</span>
+                    <span>{renderFormattedText(section.title)}</span>
                   </div>
                 )}
-                <div className="article-note-content">{section.content}</div>
+                <div className="article-note-content">{renderFormattedText(section.content)}</div>
               </div>
             );
 
@@ -90,10 +108,10 @@ export function ArticleRenderer({ sections = [] }) {
               <div key={idx} className="article-warning" role="alert">
                 {section.title && (
                   <div className="article-warning-title">
-                    ⚠️ {section.title}
+                    ⚠️ {renderFormattedText(section.title)}
                   </div>
                 )}
-                <div className="article-warning-content">{section.content}</div>
+                <div className="article-warning-content">{renderFormattedText(section.content)}</div>
               </div>
             );
 
@@ -101,7 +119,7 @@ export function ArticleRenderer({ sections = [] }) {
             return (
               <div key={idx} className="article-example-box">
                 {section.title && (
-                  <div className="article-example-title">{section.title}</div>
+                  <div className="article-example-title">{renderFormattedText(section.title)}</div>
                 )}
                 {section.items && (
                   <div className="article-example-table">
@@ -125,29 +143,36 @@ export function ArticleRenderer({ sections = [] }) {
                   </div>
                 )}
                 {section.caption && (
-                  <div className="article-example-caption">{section.caption}</div>
+                  <div className="article-example-caption">{renderFormattedText(section.caption)}</div>
                 )}
               </div>
             );
 
-          case 'toolCTA':
+          case 'toolCTA': {
+            // Single-source-of-truth: resolve tool destination & defaults from registry
+            const tool = section.toolId ? getToolById(section.toolId) : null;
+            const ctaUrl = section.ctaUrl || tool?.toolioPath || '#';
+            const title = section.title || tool?.name || 'Công cụ thực hành';
+            const description = section.description || tool?.description || '';
+            const badge = section.badge || tool?.badge || 'Mở trong Toolio';
+
             return (
               <div key={idx} className="article-tool-cta">
                 <div className="article-tool-header">
                   <div className="article-tool-title-wrap">
                     <span className="article-tool-icon">{section.icon || '🛠️'}</span>
-                    <h3 className="article-tool-title">{section.title}</h3>
+                    <h3 className="article-tool-title">{title}</h3>
                   </div>
-                  {section.badge && (
-                    <span className="article-tool-badge">{section.badge}</span>
+                  {badge && (
+                    <span className="article-tool-badge">{badge}</span>
                   )}
                 </div>
 
-                <p className="article-tool-desc">{section.description}</p>
+                {description && <p className="article-tool-desc">{description}</p>}
 
                 <div className="article-tool-action-row">
                   <a
-                    href={section.ctaUrl}
+                    href={ctaUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="article-tool-btn"
@@ -161,6 +186,7 @@ export function ArticleRenderer({ sections = [] }) {
                 </div>
               </div>
             );
+          }
 
           case 'sources':
             return (

@@ -1,20 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './NotFoundPage.css';
+import { PageMeta } from '../components/common/PageMeta';
 
 export function NotFoundPage() {
   return (
     <div className="section">
-      <div className="container" style={{ textAlign: 'center', padding: '72px 0' }}>
-        <div className="section-eyebrow" style={{ color: 'var(--cat-health-text)' }}>
+      <PageMeta
+        title="404 — Không tìm thấy trang"
+        description="Đường dẫn có thể bị sai, bài viết đã được cập nhật sang địa chỉ mới, hoặc tính năng đang được hoàn thiện."
+      />
+      <div className="container not-found-container">
+        <div className="section-eyebrow not-found-eyebrow">
           404 — Không tìm thấy trang
         </div>
-        <h1 className="text-h1" style={{ marginBottom: '16px' }}>
+        <h1 className="text-h1 not-found-title">
           Trang bạn tìm không tồn tại
         </h1>
-        <p className="text-body" style={{ maxWidth: '520px', margin: '0 auto 28px' }}>
+        <p className="text-body not-found-desc">
           Đường dẫn có thể bị sai, bài viết đã được cập nhật sang địa chỉ mới, hoặc tính năng đang được hoàn thiện.
         </p>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
+        <div className="not-found-actions">
           <Link to="/" className="btn-primary">
             <span>Về Trang chủ</span>
           </Link>
@@ -26,3 +32,5 @@ export function NotFoundPage() {
     </div>
   );
 }
+
+export default NotFoundPage;

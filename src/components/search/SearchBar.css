@@ -171,6 +171,13 @@
   color: var(--cat-tool-text);
   border: 1px solid var(--cat-tool-border);
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.suggestion-badge-icon {
+  margin-left: 2px;
 }
 
 .search-see-all-btn {

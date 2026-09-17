@@ -24,6 +24,24 @@
   }
 }
 
+/* Not Found State */
+.article-not-found-wrap {
+  text-align: center;
+  padding: 64px 0;
+}
+
+.article-not-found-title {
+  margin-bottom: 16px;
+}
+
+.article-not-found-desc {
+  margin-bottom: 24px;
+}
+
+.article-not-found-btn {
+  display: inline-flex;
+}
+
 /* Breadcrumb */
 .breadcrumb-nav {
   display: flex;
@@ -114,6 +132,12 @@
 .article-author-name {
   font-weight: 600;
   color: var(--text-primary);
+}
+
+.article-reading-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 /* Cover Image */

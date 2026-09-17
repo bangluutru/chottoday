@@ -18,3 +18,91 @@
 .useful-today-col {
   display: flex;
 }
+
+.useful-today-card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  height: 100%;
+  width: 100%;
+  text-decoration: none;
+  color: var(--text-primary);
+  border-radius: var(--radius-card);
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.useful-today-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--text-muted);
+}
+
+.useful-today-tool-card {
+  background-color: var(--cat-tool-bg);
+  border-color: var(--cat-tool-border);
+}
+
+.useful-today-meta-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.useful-today-privacy-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cat-tool-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.useful-today-tool-chip {
+  background-color: var(--surface-card);
+  border-color: var(--cat-tool-border);
+  color: var(--cat-tool-text);
+}
+
+.useful-today-tool-desc {
+  color: var(--text-secondary);
+}
+
+.useful-today-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.useful-today-tool-foot {
+  border-top-color: var(--cat-tool-border);
+}
+
+.useful-today-read-time {
+  font-size: 13px;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.useful-today-tool-origin {
+  font-size: 13px;
+  color: var(--cat-tool-text);
+  font-weight: 600;
+}
+
+.useful-today-action-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.useful-today-tool-action {
+  font-weight: 700;
+}

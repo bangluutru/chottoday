@@ -11,6 +11,23 @@
   margin-bottom: 32px;
 }
 
+.articles-index-h1 {
+  margin-bottom: 12px;
+}
+
+.articles-index-lead {
+  max-width: 640px;
+}
+
+.articles-search-container {
+  margin-bottom: 24px;
+  max-width: 480px;
+}
+
+.articles-search-box {
+  height: 44px;
+}
+
 .articles-filter-tabs {
   display: flex;
   align-items: center;
@@ -43,6 +60,16 @@
   background-color: var(--text-primary);
   color: var(--surface-canvas);
   border-color: var(--text-primary);
+}
+
+.articles-filter-dot {
+  margin-right: 6px;
+}
+
+.articles-empty-state {
+  padding: 64px 0;
+  text-align: center;
+  color: var(--text-muted);
 }
 
 /* Compact Editorial List */
@@ -83,6 +110,18 @@
   gap: 10px;
   margin-bottom: 6px;
   flex-wrap: wrap;
+}
+
+.article-row-chip {
+  height: 24px;
+  font-size: 11px;
+  padding: 0 8px;
+}
+
+.article-row-read-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
 }
 
 .article-row-title {

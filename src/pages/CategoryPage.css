@@ -7,6 +7,30 @@
   padding-bottom: 72px;
 }
 
+/* Category Not Found / Empty States */
+.category-not-found-wrap {
+  text-align: center;
+  padding: 64px 0;
+}
+
+.category-not-found-title {
+  margin-bottom: 16px;
+}
+
+.category-not-found-desc {
+  margin-bottom: 24px;
+}
+
+.category-not-found-btn {
+  display: inline-flex;
+}
+
+.category-empty-state {
+  padding: 48px 0;
+  text-align: center;
+  color: var(--text-muted);
+}
+
 /* Category Header Banner */
 .category-page-header {
   background-color: var(--surface-card);
@@ -166,6 +190,12 @@
   color: var(--text-muted);
 }
 
+.cat-card-read-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .cat-card-read-action {
   font-weight: 600;
   color: var(--text-primary);
@@ -209,4 +239,53 @@
   .category-tools-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+.category-tool-card {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+  color: inherit;
+}
+
+.category-tool-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.category-tool-card-name {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.category-tool-card-chip {
+  font-size: 11px;
+  height: 24px;
+}
+
+.category-tool-card-desc {
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.category-tool-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 10px;
+}
+
+.category-tool-card-action-text {
+  font-size: 12px;
+  color: var(--cat-tool-text);
+  font-weight: 600;
 }
