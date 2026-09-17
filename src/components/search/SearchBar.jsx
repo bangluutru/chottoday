@@ -183,28 +183,32 @@ export const SearchBar = forwardRef(function SearchBar(
                 {toolResults.length > 0 && (
                   <div>
                     <div className="suggestion-group-title">Công cụ Toolio ({toolResults.length})</div>
-                    {toolResults.map((tool) => (
-                      <a
-                        key={tool.id}
-                        href={buildToolUrl(tool.id, { source: 'search' })}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="suggestion-item"
-                        role="option"
-                        onClick={() => setShowSuggestions(false)}
-                      >
-                        <div className="suggestion-main">
-                          <div className="suggestion-title">{tool.name}</div>
-                          <div className="suggestion-meta">
-                            <span>{tool.description.slice(0, 60)}...</span>
+                    {toolResults.map((tool) => {
+                      const toolUrl = buildToolUrl(tool.id, { source: 'search' });
+                      if (!toolUrl) return null;
+                      return (
+                        <a
+                          key={tool.id}
+                          href={toolUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="suggestion-item"
+                          role="option"
+                          onClick={() => setShowSuggestions(false)}
+                        >
+                          <div className="suggestion-main">
+                            <div className="suggestion-title">{tool.name}</div>
+                            <div className="suggestion-meta">
+                              <span>{tool.description.slice(0, 60)}...</span>
+                            </div>
                           </div>
-                        </div>
-                        <span className="suggestion-tool-badge">
-                          <span>Mở miniapp</span>
-                          <ExternalLinkIcon size={12} className="suggestion-badge-icon" />
-                        </span>
-                      </a>
-                    ))}
+                          <span className="suggestion-tool-badge">
+                            <span>Mở miniapp</span>
+                            <ExternalLinkIcon size={12} className="suggestion-badge-icon" />
+                          </span>
+                        </a>
+                      );
+                    })}
                   </div>
                 )}
 

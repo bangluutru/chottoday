@@ -104,12 +104,12 @@ export function getAllTools() {
  * @param {string} toolId - Tool identifier
  * @param {Object} [context] - Context options
  * @param {'homepage'|'article'|'category'|'problem'|'search'} [context.source] - Referral source
- * @returns {string} Fully qualified URL or '#' if tool is unknown
+ * @returns {string|null} Fully qualified URL or null if tool is unknown/invalid
  */
 export function buildToolUrl(toolId, context = {}) {
   const tool = resolveTool(toolId);
   if (!tool) {
-    return '#';
+    return null;
   }
   return buildToolUrlFromTool(tool, context);
 }

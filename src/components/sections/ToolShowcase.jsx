@@ -56,19 +56,23 @@ export function ToolShowcase() {
 
         {/* 4 Selected Miniapps Grid */}
         <div className="tool-grid">
-          {featuredTools.map((tool) => (
-            <div key={tool.id} className="tool-grid-item">
-              <ToolCard
-                title={tool.name}
-                description={tool.description}
-                category={tool.domain === 'japan-life' ? 'Đời sống Nhật' : 'Tiện ích'}
-                categoryKey="tool"
-                badge={tool.processing === 'browser' ? 'Chạy trên trình duyệt' : 'Xử lý an toàn'}
-                stats={tool.domain === 'japan-life' ? 'Nhật Bản' : 'Đa năng'}
-                toolioPath={buildToolUrl(tool.id, { source: 'homepage' })}
-              />
-            </div>
-          ))}
+          {featuredTools.map((tool) => {
+            const toolUrl = buildToolUrl(tool.id, { source: 'homepage' });
+            if (!toolUrl) return null;
+            return (
+              <div key={tool.id} className="tool-grid-item">
+                <ToolCard
+                  title={tool.name}
+                  description={tool.description}
+                  category={tool.domain === 'japan-life' ? 'Đời sống Nhật' : 'Tiện ích'}
+                  categoryKey="tool"
+                  badge={tool.processing === 'browser' ? 'Chạy trên trình duyệt' : 'Xử lý an toàn'}
+                  stats={tool.domain === 'japan-life' ? 'Nhật Bản' : 'Đa năng'}
+                  toolioPath={toolUrl}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

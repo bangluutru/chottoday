@@ -16,6 +16,7 @@ export function ToolCard(props) {
   } = tool;
 
   const displayTitle = name || title;
+  if (!toolioPath) return null;
 
   return (
     <div className={`tool-card card-${categoryKey}`}>

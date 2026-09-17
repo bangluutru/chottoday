@@ -8,6 +8,7 @@ import { ClockIcon, ArrowRightIcon, ExternalLinkIcon, ShieldCheckIcon } from '..
 
 export function UsefulToday() {
   const nenkinTool = getToolById('national-pension-jp');
+  const nenkinUrl = nenkinTool ? buildToolUrl(nenkinTool.id, { source: 'homepage' }) : null;
 
   return (
     <section className="section" id="useful-today" aria-labelledby="useful-today-heading">
@@ -78,39 +79,41 @@ export function UsefulToday() {
           </div>
 
           {/* Card 3: Tool Recommendation (Toolio) */}
-          <div className="useful-today-col">
-            <a
-              href={nenkinTool ? buildToolUrl(nenkinTool.id, { source: 'homepage' }) : '#'}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="chotto-card card-tool useful-today-card useful-today-tool-card"
-            >
-              <div className="useful-today-meta-head">
-                <span className="chotto-chip chip-tool useful-today-tool-chip">
-                  CÔNG CỤ THỰC HÀNH
-                </span>
-                <span className="useful-today-privacy-badge">
-                  <ShieldCheckIcon size={13} />
-                  <span>Chạy trên máy bạn</span>
-                </span>
-              </div>
-              <h3 className="card-title">
-                {nenkinTool?.name || 'Tính tiền Nenkin rút 1 lần (Lump-sum)'}
-              </h3>
-              <p className="card-excerpt useful-today-tool-desc">
-                {nenkinTool?.description || 'Ước tính số tiền nhận lại sau khi rời Nhật Bản theo số tháng đóng.'}
-              </p>
-              <div className="useful-today-card-foot useful-today-tool-foot">
-                <span className="useful-today-tool-origin">
-                  Mở trên Toolio
-                </span>
-                <span className="useful-today-action-link useful-today-tool-action">
-                  <span>Dùng ngay</span>
-                  <ExternalLinkIcon size={14} />
-                </span>
-              </div>
-            </a>
-          </div>
+          {nenkinTool && nenkinUrl && (
+            <div className="useful-today-col">
+              <a
+                href={nenkinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="chotto-card card-tool useful-today-card useful-today-tool-card"
+              >
+                <div className="useful-today-meta-head">
+                  <span className="chotto-chip chip-tool useful-today-tool-chip">
+                    CÔNG CỤ THỰC HÀNH
+                  </span>
+                  <span className="useful-today-privacy-badge">
+                    <ShieldCheckIcon size={13} />
+                    <span>Chạy trên máy bạn</span>
+                  </span>
+                </div>
+                <h3 className="card-title">
+                  {nenkinTool.name}
+                </h3>
+                <p className="card-excerpt useful-today-tool-desc">
+                  {nenkinTool.description}
+                </p>
+                <div className="useful-today-card-foot useful-today-tool-foot">
+                  <span className="useful-today-tool-origin">
+                    Mở trên Toolio
+                  </span>
+                  <span className="useful-today-action-link useful-today-tool-action">
+                    <span>Dùng ngay</span>
+                    <ExternalLinkIcon size={14} />
+                  </span>
+                </div>
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -164,6 +164,9 @@ export function ArticleRenderer({ sections = [] }) {
 
             // Centralized URL builder
             const ctaUrl = buildToolUrl(tool.id, { source: 'article' });
+            if (!ctaUrl) {
+              return null;
+            }
 
             // Editorial contextualization (Section 12 & 13)
             const editorial = section.editorial || {};

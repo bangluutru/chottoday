@@ -155,14 +155,17 @@ export function CategoryPage() {
             </div>
 
             <div className="category-tools-grid">
-              {relatedTools.map((tool) => (
-                <a
-                  key={tool.id}
-                  href={buildToolUrl(tool.id, { source: 'category' })}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="chotto-card category-tool-card"
-                >
+              {relatedTools.map((tool) => {
+                const toolUrl = buildToolUrl(tool.id, { source: 'category' });
+                if (!toolUrl) return null;
+                return (
+                  <a
+                    key={tool.id}
+                    href={toolUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="chotto-card category-tool-card"
+                  >
                   <div>
                     <div className="category-tool-card-head">
                       <h3 className="category-tool-card-name">
@@ -184,8 +187,9 @@ export function CategoryPage() {
                     <ExternalLinkIcon size={14} color="var(--cat-tool-text)" />
                   </div>
                 </a>
-              ))}
-            </div>
+              );
+            })}
+          </div>
           </section>
         )}
       </div>

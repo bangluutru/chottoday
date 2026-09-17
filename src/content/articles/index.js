@@ -1,4 +1,4 @@
-import { ALL_ARTICLES } from './articlesList';
+import { ALL_ARTICLES } from './articlesList.js';
 
 /**
  * Normalizes text for search: lowercase, removes Vietnamese diacritics
