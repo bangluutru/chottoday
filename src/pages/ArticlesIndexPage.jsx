@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './ArticlesIndexPage.css';
 import { getAllArticles } from '../content/articles/index.js';
 import { getAllCategories, getCategoryById, CATEGORY_BY_ID } from '../content/categories/categoryMap.js';
-import { discover } from '../services/discovery/index.js';
+import { discover, getEphemeralQuery, setEphemeralQuery, clearEphemeralQuery } from '../services/discovery/index.js';
 import { buildToolUrl } from '../services/toolRegistry/index.js';
 import { trackEvent } from '../services/analytics/index.js';
 import { ClockIcon, ArrowRightIcon, SearchIcon, ExternalLinkIcon, CloseIcon } from '../components/common/Icons.jsx';
@@ -11,44 +11,50 @@ import { PageMeta } from '../components/common/PageMeta.jsx';
 import { DiscoveryQuickSummary } from '../components/search/DiscoveryQuickSummary.jsx';
 
 export function ArticlesIndexPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const initialQuery = searchParams.get('q') || '';
-  const [query, setQuery] = useState(initialQuery);
+  const location = useLocation();
+
+  // Ephemeral in-memory search state: NEVER persisted to URL, localStorage, or cookies
+  const [query, setQuery] = useState(() => {
+    const ephemeral = getEphemeralQuery();
+    if (ephemeral) return ephemeral;
+    if (typeof window !== 'undefined' && location.search) {
+      return new URLSearchParams(location.search).get('q') || '';
+    }
+    return '';
+  });
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeSearchTab, setActiveSearchTab] = useState('all'); // 'all', 'articles', 'problems', 'tools'
 
   const categories = getAllCategories();
 
+  // Clear ephemeral query on unmount to prevent stale PII retention
   useEffect(() => {
-    const q = searchParams.get('q') || '';
-    setQuery(q);
-    if (q.trim()) {
-      setActiveSearchTab('all');
-    }
-  }, [searchParams]);
+    return () => {
+      clearEphemeralQuery();
+    };
+  }, []);
 
-  // Handle Search Input Change
+  // Handle Search Input Change (purely ephemeral React state - zero URL/history persistence)
   const handleSearchChange = (e) => {
     const val = e.target.value;
     setQuery(val);
+    setEphemeralQuery(val);
     if (val.trim()) {
-      setSearchParams({ q: val.trim() });
-    } else {
-      setSearchParams({});
+      setActiveSearchTab('all');
     }
   };
 
   const handleClearSearch = () => {
     setQuery('');
-    setSearchParams({});
+    clearEphemeralQuery();
   };
 
   const isSearching = Boolean(query.trim());
 
-  // Discovery execution when query is present
+  // Discovery execution when query is present (evaluated locally in-memory)
   const discovery = isSearching ? discover(query.trim()) : null;
 
-  // Track search event safely without recording raw free-text query
+  // Track search event safely with strictly non-sensitive metadata (NEVER raw query)
   useEffect(() => {
     if (isSearching && discovery) {
       trackEvent('discovery_search', {
@@ -70,11 +76,11 @@ export function ArticlesIndexPage() {
   return (
     <div className="articles-index-wrapper">
       <PageMeta
-        title={isSearching ? `Tìm kiếm: ${query} | Chotto` : 'Tất cả bài viết & hướng dẫn | Chotto'}
+        title={isSearching ? 'Tìm kiếm & khám phá | Chotto' : 'Tất cả bài viết & hướng dẫn | Chotto'}
         description="Tổng hợp các bài viết giải thích luật pháp, kinh nghiệm thực tiễn và hướng dẫn từng bước cho người Việt sinh sống tại Nhật Bản."
         canonical="/articles"
         robots={isSearching ? 'noindex, follow' : 'index, follow'}
-        ogTitle={isSearching ? `Tìm kiếm: ${query} — Chotto` : 'Cẩm nang bài viết Chotto'}
+        ogTitle={isSearching ? 'Tìm kiếm & khám phá | Chotto' : 'Cẩm nang bài viết Chotto'}
         ogDescription="Tổng hợp các bài viết giải thích luật pháp, kinh nghiệm thực tiễn và hướng dẫn từng bước cho người Việt sinh sống tại Nhật Bản."
       />
 
@@ -85,7 +91,7 @@ export function ArticlesIndexPage() {
             {isSearching ? 'Khám phá thông minh' : 'Thư viện nội dung'}
           </div>
           <h1 className="text-h1 articles-index-h1">
-            {isSearching ? `Kết quả tìm kiếm cho "${query}"` : 'Cẩm nang bài viết Chotto'}
+            {isSearching ? 'Kết quả tìm kiếm & khám phá' : 'Cẩm nang bài viết Chotto'}
           </h1>
           <p className="text-body articles-index-lead">
             {isSearching
@@ -198,7 +204,8 @@ export function ArticlesIndexPage() {
                         className="intent-chip"
                         onClick={() => {
                           setQuery(suggestion);
-                          setSearchParams({ q: suggestion });
+                          setEphemeralQuery(suggestion);
+                          setActiveSearchTab('all');
                         }}
                       >
                         {suggestion}

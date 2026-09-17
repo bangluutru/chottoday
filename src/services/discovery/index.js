@@ -4,3 +4,5 @@ export { resolveIntent } from './intentResolver.js';
 export { rankResults } from './rankingEngine.js';
 export { generateGroundedSummary } from './groundedSummarizer.js';
 export { TERMINOLOGY_CONCEPTS } from './terminologyIndex.js';
+export { getEphemeralQuery, setEphemeralQuery, clearEphemeralQuery } from './searchStore.js';
+

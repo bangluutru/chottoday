@@ -11,6 +11,7 @@ import { ArticleDetailPage } from './pages/ArticleDetailPage';
 import { CategoryPage } from './pages/CategoryPage';
 import { ProblemDiscoveryPage } from './pages/ProblemDiscoveryPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { setEphemeralQuery } from './services/discovery/searchStore.js';
 
 export function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -45,7 +46,8 @@ export function App() {
 
   const handleSearch = (query) => {
     if (!query) return;
-    navigate(`/articles?q=${encodeURIComponent(query)}`);
+    setEphemeralQuery(query);
+    navigate('/articles');
   };
 
   return (

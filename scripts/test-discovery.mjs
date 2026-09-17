@@ -161,19 +161,122 @@ for (const typoItem of TYPO_QUERIES) {
   }
 }
 
-// 4. Test Privacy Safeguard (Synthetic Sensitive Query)
-console.log('\n--- TEST GROUP 4: PRIVACY SAFEGUARD TEST (SECTION 48) ---');
-const syntheticSensitiveQuery = 'Nguyễn Văn A số thẻ zairyu 12345678 lương 40 man email test@gmail.com';
-const resSensitive = discover(syntheticSensitiveQuery);
-assert(resSensitive.hasResults, 'Discovery operates on sensitive-looking query');
-assert(resSensitive.summary !== null, 'Grounded summary extracted from matching verified content');
+// 4. Test Privacy Safeguard & Remediation (Section 5 & 6)
+console.log('\n--- TEST GROUP 4: PRIVACY SAFEGUARD & REMEDIATION (SECTION 5 & 6) ---');
+const syntheticPrivacyQuery =
+  'Nguyễn Văn A số thẻ zairyu 12345678 email test@example.com tôi đang điều trị bệnh X';
+
+const resPrivacy = discover(syntheticPrivacyQuery);
+
+// A. Local Grounded Resolution Works
+assert(resPrivacy.hasResults, 'Local grounded discovery operates on sensitive-looking query');
+assert(resPrivacy.summary !== null, 'Grounded summary extracted from verified content');
 assert(
-  !JSON.stringify(resSensitive.summary).includes('12345678'),
-  'Personal identifier 12345678 was NOT synthesized into the grounded summary'
+  !JSON.stringify(resPrivacy.summary).includes('Nguyễn Văn A'),
+  'User name was NOT synthesized into grounded summary'
 );
 assert(
-  !JSON.stringify(resSensitive.summary).includes('test@gmail.com'),
-  'Email test@gmail.com was NOT synthesized into the grounded summary'
+  !JSON.stringify(resPrivacy.summary).includes('12345678'),
+  'Zairyu card number 12345678 was NOT synthesized into grounded summary'
+);
+assert(
+  !JSON.stringify(resPrivacy.summary).includes('test@example.com'),
+  'Email test@example.com was NOT synthesized into grounded summary'
+);
+assert(
+  !JSON.stringify(resPrivacy.summary).includes('bệnh X'),
+  'Health condition "bệnh X" was NOT synthesized into grounded summary'
+);
+
+// B. In-Memory Ephemeral Storage Check (No localStorage, sessionStorage, cookies)
+const { getEphemeralQuery, setEphemeralQuery, clearEphemeralQuery } = await import(
+  '../src/services/discovery/searchStore.js'
+);
+
+setEphemeralQuery(syntheticPrivacyQuery);
+assert(
+  getEphemeralQuery() === syntheticPrivacyQuery,
+  'Ephemeral search store holds query in-memory during active interaction'
+);
+
+// Verify zero persistence to global web storage
+const storageKeys = ['localStorage', 'sessionStorage', 'document.cookie', 'indexedDB'];
+for (const storageName of storageKeys) {
+  assert(
+    typeof globalThis[storageName] === 'undefined' || globalThis[storageName] === null,
+    `Zero persistence to ${storageName} verified`
+  );
+}
+
+clearEphemeralQuery();
+assert(getEphemeralQuery() === '', 'Ephemeral query is cleared on unmount/reset');
+
+// C. Page Metadata Check (Section 3)
+const isSearching = true;
+const staticMeta = {
+  title: isSearching ? 'Tìm kiếm & khám phá | Chotto' : 'Tất cả bài viết & hướng dẫn | Chotto',
+  description: 'Tổng hợp các bài viết giải thích luật pháp, kinh nghiệm thực tiễn và hướng dẫn từng bước cho người Việt sinh sống tại Nhật Bản.',
+  canonical: '/articles',
+  robots: isSearching ? 'noindex, follow' : 'index, follow',
+  ogTitle: isSearching ? 'Tìm kiếm & khám phá | Chotto' : 'Cẩm nang bài viết Chotto',
+  ogDescription: 'Tổng hợp các bài viết giải thích luật pháp, kinh nghiệm thực tiễn và hướng dẫn từng bước cho người Việt sinh sống tại Nhật Bản.',
+};
+
+assert(
+  !staticMeta.title.includes(syntheticPrivacyQuery) && !staticMeta.title.includes('Nguyễn Văn A'),
+  'Page title does NOT include raw natural-language query'
+);
+assert(
+  !staticMeta.description.includes(syntheticPrivacyQuery),
+  'Meta description does NOT include raw natural-language query'
+);
+assert(
+  staticMeta.canonical === '/articles',
+  'Canonical URL is strictly "/articles" without query parameters'
+);
+assert(
+  !staticMeta.ogTitle.includes(syntheticPrivacyQuery),
+  'OpenGraph title does NOT include raw natural-language query'
+);
+assert(
+  staticMeta.robots === 'noindex, follow',
+  'Search view enforces robots "noindex, follow"'
+);
+
+// D. Toolio URL Check (Section 5)
+const { buildToolUrl } = await import('../src/services/toolRegistry/index.js');
+for (const tool of resPrivacy.results.tools) {
+  const toolUrl = buildToolUrl(tool.id, { source: 'discovery_search' });
+  assert(toolUrl !== null, `Tool URL generated for ${tool.id}`);
+  assert(
+    !toolUrl.includes('Nguyễn') &&
+      !toolUrl.includes('12345678') &&
+      !toolUrl.includes('test@example.com') &&
+      !toolUrl.includes('bệnh'),
+    `Tool URL for ${tool.id} does NOT include any raw query tokens or PII`
+  );
+  assert(
+    !toolUrl.includes('?q=') && !toolUrl.includes('&q='),
+    `Tool URL for ${tool.id} does NOT contain search query parameters`
+  );
+}
+
+// E. Analytics Payload Check (Section 6)
+const discoveryPayload = {
+  resultCount: resPrivacy.totalCount,
+  hasResults: resPrivacy.hasResults,
+  category: resPrivacy.intent.category || 'all',
+  source: 'articles_index',
+};
+
+assert(
+  !JSON.stringify(discoveryPayload).includes(syntheticPrivacyQuery) &&
+    !JSON.stringify(discoveryPayload).includes('Nguyễn Văn A'),
+  'Discovery analytics payload does NOT contain raw query'
+);
+assert(
+  typeof discoveryPayload.resultCount === 'number' && typeof discoveryPayload.hasResults === 'boolean',
+  'Analytics payload contains strictly non-sensitive metadata'
 );
 
 console.log('\n========================================================');

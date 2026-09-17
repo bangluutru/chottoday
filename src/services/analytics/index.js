@@ -23,6 +23,15 @@ const ALLOWED_EVENTS = new Set([
 ]);
 
 const FORBIDDEN_KEYS = new Set([
+  'query',
+  'q',
+  'searchquery',
+  'search_query',
+  'userquery',
+  'user_query',
+  'text',
+  'rawquery',
+  'raw_query',
   'salary',
   'income',
   'tax',
@@ -30,9 +39,9 @@ const FORBIDDEN_KEYS = new Set([
   'name',
   'phone',
   'address',
-  'cardId',
+  'cardid',
   'zairyu',
-  'myNumber',
+  'mynumber',
   'calculation',
   'inputs',
 ]);

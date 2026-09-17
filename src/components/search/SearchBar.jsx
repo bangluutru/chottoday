@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './SearchBar.css';
 import { SearchIcon, CloseIcon, ArrowRightIcon, ExternalLinkIcon } from '../common/Icons';
-import { discover } from '../../services/discovery/index.js';
+import { discover, setEphemeralQuery } from '../../services/discovery/index.js';
 import { buildToolUrl } from '../../services/toolRegistry/index.js';
 
 export const SearchBar = forwardRef(function SearchBar(
@@ -53,12 +53,14 @@ export const SearchBar = forwardRef(function SearchBar(
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!query.trim()) return;
+    const trimmed = query.trim();
+    if (!trimmed) return;
     setShowSuggestions(false);
+    setEphemeralQuery(trimmed);
     if (onSearch) {
-      onSearch(query.trim());
+      onSearch(trimmed);
     } else {
-      navigate(`/articles?q=${encodeURIComponent(query.trim())}`);
+      navigate('/articles');
     }
   };
 
@@ -74,8 +76,10 @@ export const SearchBar = forwardRef(function SearchBar(
   };
 
   const handleSeeAll = () => {
+    const trimmed = query.trim();
     setShowSuggestions(false);
-    navigate(`/articles?q=${encodeURIComponent(query.trim())}`);
+    setEphemeralQuery(trimmed);
+    navigate('/articles');
   };
 
   const articles = discoveryResult?.results?.articles?.slice(0, 3) || [];
@@ -147,7 +151,7 @@ export const SearchBar = forwardRef(function SearchBar(
 
             {totalResults === 0 ? (
               <div className="search-empty-state">
-                Chotto chưa tìm thấy nội dung đủ sát với "{query}". Thử tìm theo từ khóa hoặc xem các chủ đề bên dưới.
+                Chotto chưa tìm thấy nội dung phù hợp. Thử tìm theo từ khóa hoặc xem các chủ đề bên dưới.
               </div>
             ) : (
               <>
