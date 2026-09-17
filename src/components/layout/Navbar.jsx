@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import './Navbar.css';
 import { SearchIcon, MenuIcon } from '../common/Icons';
 
@@ -12,7 +13,7 @@ export function Navbar({
     <header className="navbar-wrapper" role="banner">
       <div className="container navbar-inner">
         {/* Brand Logo (6-color official vector logo on light canvas) */}
-        <a href="#hero" className="navbar-brand" aria-label="Chotto — Trang chủ">
+        <Link to="/" className="navbar-brand" aria-label="Chotto — Trang chủ">
           <img
             src="/chotto-logo-full.svg"
             alt="Chotto"
@@ -20,25 +21,35 @@ export function Navbar({
             width="152"
             height="32"
           />
-        </a>
+        </Link>
 
         {/* Desktop Navigation Links */}
         <nav className="navbar-nav" aria-label="Chính">
-          <a href="#hero" className="navbar-link active">
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}
+          >
             Trang chủ
-          </a>
-          <a href="#articles" className="navbar-link">
+          </NavLink>
+          <NavLink
+            to="/articles"
+            className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}
+          >
             Bài viết
-          </a>
-          <a href="#topics" className="navbar-link">
+          </NavLink>
+          <Link to="/#topics" className="navbar-link">
             Chủ đề
-          </a>
-          <a href="#tools" className="navbar-link">
+          </Link>
+          <NavLink
+            to="/topics/tools"
+            className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}
+          >
             Công cụ
-          </a>
-          <a href="#about" className="navbar-link">
+          </NavLink>
+          <Link to="/#about" className="navbar-link">
             Về Chotto
-          </a>
+          </Link>
         </nav>
 
         {/* Right Actions */}

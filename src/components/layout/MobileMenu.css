@@ -16,7 +16,18 @@
   pointer-events: none;
 }
 
+.mobile-menu-backdrop:not(.open) {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  .mobile-menu-backdrop {
+    display: none !important;
+  }
+}
+
 .mobile-menu-backdrop.open {
+  display: block;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;

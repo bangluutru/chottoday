@@ -1,0 +1,417 @@
+/* ==========================================================================
+   ARTICLE RENDERER & READING SURFACE TYPOGRAPHY
+   SSOT: Chotto Editorial Guidelines (Phase 2)
+   Calm, highly readable, generous whitespace, max-width ~760px
+   ========================================================================== */
+
+.article-reader {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text-primary);
+}
+
+@media (min-width: 768px) {
+  .article-reader {
+    font-size: 18px;
+    line-height: 1.8;
+  }
+}
+
+/* Paragraphs & Lead Intro */
+.article-intro {
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-card);
+  font-weight: 500;
+}
+
+.article-paragraph {
+  margin-bottom: 24px;
+  color: var(--text-secondary);
+}
+
+.article-paragraph strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Headings */
+.article-h2 {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  line-height: 34px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-top: 48px;
+  margin-bottom: 18px;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .article-h2 {
+    font-size: 30px;
+    line-height: 38px;
+  }
+}
+
+.article-h3 {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 32px;
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+/* Lists */
+.article-list {
+  margin-bottom: 28px;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.article-list-item {
+  position: relative;
+  padding-left: 24px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.article-list-item::before {
+  content: "•";
+  position: absolute;
+  left: 6px;
+  top: 0;
+  color: var(--text-primary);
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Steps Block */
+.article-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 24px;
+  margin-bottom: 36px;
+}
+
+.article-step-item {
+  display: flex;
+  gap: 16px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  padding: 20px;
+}
+
+.article-step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--text-primary);
+  color: var(--surface-canvas);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.article-step-content {
+  flex: 1;
+}
+
+.article-step-title {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.article-step-text {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+/* Japanese Administrative Terminology Block */
+.article-term-box {
+  background-color: var(--surface-dim);
+  border-left: 4px solid var(--cat-study-accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 18px 20px;
+  margin: 28px 0;
+}
+
+.article-term-kanji {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.article-term-reading {
+  font-size: 13px;
+  color: var(--cat-study-text);
+  font-weight: 600;
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}
+
+.article-term-meaning {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Calm Editorial Note */
+.article-note {
+  background-color: var(--surface-dim);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: 20px 22px;
+  margin: 28px 0;
+}
+
+.article-note-title {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.article-note-content {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+/* Administrative Warning Alert */
+.article-warning {
+  background-color: var(--cat-health-bg);
+  border: 1px solid var(--cat-health-border);
+  border-left: 4px solid var(--cat-health-accent);
+  border-radius: 0 var(--radius-card) var(--radius-card) 0;
+  padding: 20px 22px;
+  margin: 32px 0;
+}
+
+.article-warning-title {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--cat-health-text);
+  margin-bottom: 8px;
+}
+
+.article-warning-content {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-primary);
+}
+
+/* Concrete Calculation / Example Box */
+.article-example-box {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  margin: 32px 0;
+}
+
+.article-example-title {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.article-example-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.article-example-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: 15px;
+  border-radius: var(--radius-sm);
+  background-color: var(--surface-canvas);
+}
+
+.article-example-row.highlight {
+  background-color: var(--surface-dim);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.article-example-row.deduction {
+  color: var(--cat-health-text);
+  font-weight: 600;
+}
+
+.article-example-row.total {
+  background-color: var(--cat-work-bg);
+  border: 1px solid var(--cat-work-border);
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--cat-work-text);
+  margin-top: 6px;
+}
+
+.article-example-caption {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Contextual Toolio Action Banner */
+.article-tool-cta {
+  background-color: var(--cat-tool-bg);
+  border: 1px solid var(--cat-tool-border);
+  border-radius: var(--radius-card);
+  padding: 28px 24px;
+  margin: 40px 0;
+  position: relative;
+}
+
+.article-tool-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.article-tool-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.article-tool-icon {
+  font-size: 24px;
+}
+
+.article-tool-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.article-tool-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--cat-tool-border);
+  border-radius: var(--radius-pill);
+  color: var(--cat-tool-text);
+}
+
+.article-tool-desc {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  max-width: 620px;
+}
+
+.article-tool-action-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.article-tool-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 24px;
+  background-color: var(--text-primary);
+  color: var(--surface-canvas);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-btn);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.article-tool-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.article-tool-note {
+  font-size: 13px;
+  color: var(--cat-tool-text);
+  font-weight: 500;
+}
+
+/* Official Sources Box */
+.article-sources {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-divider);
+}
+
+.article-sources-title {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.article-sources-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.article-source-item {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.article-source-link {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.article-source-link:hover {
+  color: var(--cat-work-text);
+}

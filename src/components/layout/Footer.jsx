@@ -1,17 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 import { ExternalLinkIcon } from '../common/Icons';
-import { CATEGORIES } from '../../data/categories';
+import { getAllCategories } from '../../content/categories/categoryMap';
 import { TOOLIO_BASE_URL } from '../../config/constants';
 
 export function Footer() {
+  const categories = getAllCategories();
+
   return (
     <footer className="footer-wrapper" role="contentinfo">
       <div className="container">
         <div className="footer-grid">
           {/* Col 1: Brand & Philosophy */}
           <div className="footer-brand-col">
-            <a href="#hero" aria-label="Trang chủ Chotto">
+            <Link to="/" aria-label="Trang chủ Chotto">
               <img
                 src="/chotto-logo-full.svg"
                 alt="Chotto"
@@ -19,7 +22,7 @@ export function Footer() {
                 width="130"
                 height="28"
               />
-            </a>
+            </Link>
             <div className="footer-philosophy">
               “Vấn đề nhỏ, có chỗ để hỏi. Và có công cụ để giải quyết.”
             </div>
@@ -32,12 +35,12 @@ export function Footer() {
           <div>
             <div className="footer-col-title">Chủ đề chính</div>
             <ul className="footer-link-list">
-              {CATEGORIES.map((cat) => (
+              {categories.map((cat) => (
                 <li key={cat.id}>
-                  <a href={`#category-${cat.id}`} className="footer-link">
+                  <Link to={cat.path} className="footer-link">
                     <span className={`footer-cat-dot cat-dot-${cat.colorKey}`} />
                     <span>{cat.name}</span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -48,14 +51,14 @@ export function Footer() {
             <div className="footer-col-title">Hệ sinh thái Chotto</div>
             <ul className="footer-link-list">
               <li>
-                <a href="#articles" className="footer-link">
+                <Link to="/articles" className="footer-link">
                   Cẩm nang bài viết
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#useful-today" className="footer-link">
+                <Link to="/#useful-today" className="footer-link">
                   Hướng dẫn từng bước
-                </a>
+                </Link>
               </li>
               <li>
                 <a
@@ -74,9 +77,9 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#about" className="footer-link">
+                <Link to="/#about" className="footer-link">
                   Về dự án Chotto
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

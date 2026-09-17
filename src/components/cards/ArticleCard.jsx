@@ -1,28 +1,40 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Cards.css';
 import { ClockIcon, ArrowRightIcon } from '../common/Icons';
 
 export function ArticleCard(props) {
   const article = props.article || props;
   const {
+    slug,
     title,
     excerpt,
     category,
+    categoryLabel,
     categoryKey = 'life',
     readTime,
     date,
-    url = '#articles',
+    updatedDate,
   } = article;
+
+  const displayCategory = categoryLabel || category;
+  const displayDate = updatedDate || date;
+  const targetUrl = slug ? `/articles/${slug}` : (article.url || '/articles');
+  const isExternal = targetUrl.startsWith('http');
 
   return (
     <article className={`article-card card-${categoryKey}`}>
       <div className="card-top-meta">
-        <span className={`chotto-chip chip-${categoryKey}`}>{category}</span>
-        <span className="text-caption">{date}</span>
+        <span className={`chotto-chip chip-${categoryKey}`}>{displayCategory}</span>
+        <span className="text-caption">{displayDate}</span>
       </div>
 
       <h3 className="card-title">
-        <a href={url}>{title}</a>
+        {isExternal ? (
+          <a href={targetUrl}>{title}</a>
+        ) : (
+          <Link to={targetUrl}>{title}</Link>
+        )}
       </h3>
 
       <p className="card-excerpt">{excerpt}</p>
@@ -32,10 +44,17 @@ export function ArticleCard(props) {
           <ClockIcon size={14} />
           <span>{readTime}</span>
         </span>
-        <a href={url} className="meta-item card-action-link">
-          <span>Đọc bài</span>
-          <ArrowRightIcon size={14} />
-        </a>
+        {isExternal ? (
+          <a href={targetUrl} className="meta-item card-action-link">
+            <span>Đọc bài</span>
+            <ArrowRightIcon size={14} />
+          </a>
+        ) : (
+          <Link to={targetUrl} className="meta-item card-action-link">
+            <span>Đọc bài</span>
+            <ArrowRightIcon size={14} />
+          </Link>
+        )}
       </div>
     </article>
   );

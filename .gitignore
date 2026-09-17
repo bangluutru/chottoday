@@ -27,8 +27,11 @@ Thumbs.db
 __MACOSX/
 
 # Environment files
+.env
 .env.local
 .env.*.local
+!.env.example
+
 
 # Editor & IDE files
 .vscode/*

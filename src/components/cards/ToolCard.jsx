@@ -47,7 +47,7 @@ export function ToolCard(props) {
           rel="noopener noreferrer"
           className="tool-card-cta"
         >
-          <span>Mở trên Toolio (tools.chottoday.com)</span>
+          <span>Mở trên Toolio</span>
           <ExternalLinkIcon size={15} />
         </a>
       </div>

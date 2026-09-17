@@ -23,6 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   margin-bottom: 14px;
   gap: 8px;
 }
@@ -116,6 +117,7 @@
   transition: transform 0.18s ease, border-color 0.18s ease;
   height: 100%;
   position: relative;
+  min-width: 0;
 }
 
 .tool-card:hover {

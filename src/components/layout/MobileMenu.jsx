@@ -1,12 +1,14 @@
 import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import './MobileMenu.css';
 import { CloseIcon, ExternalLinkIcon, ArrowRightIcon } from '../common/Icons';
-import { CATEGORIES } from '../../data/categories';
+import { getAllCategories } from '../../content/categories/categoryMap';
 import { TOOLIO_BASE_URL } from '../../config/constants';
 
 export function MobileMenu({ isOpen, onClose, triggerRef }) {
   const drawerRef = useRef(null);
   const closeButtonRef = useRef(null);
+  const categories = getAllCategories();
 
   // Focus trap & ESC key handling
   useEffect(() => {
@@ -114,12 +116,14 @@ export function MobileMenu({ isOpen, onClose, triggerRef }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mobile-menu-header">
-          <img
-            src="/chotto-logo-full.svg"
-            alt="Chotto"
-            width="120"
-            height="26"
-          />
+          <Link to="/" onClick={onClose} aria-label="Trang chủ Chotto">
+            <img
+              src="/chotto-logo-full.svg"
+              alt="Chotto"
+              width="120"
+              height="26"
+            />
+          </Link>
           <button
             ref={closeButtonRef}
             type="button"
@@ -135,34 +139,34 @@ export function MobileMenu({ isOpen, onClose, triggerRef }) {
           <nav aria-label="Điều hướng di động">
             <ul className="mobile-nav-list">
               <li>
-                <a href="#hero" className="mobile-nav-item" onClick={onClose}>
+                <Link to="/" className="mobile-nav-item" onClick={onClose}>
                   <span>Trang chủ</span>
                   <ArrowRightIcon size={16} color="var(--text-muted)" />
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#articles" className="mobile-nav-item" onClick={onClose}>
+                <Link to="/articles" className="mobile-nav-item" onClick={onClose}>
                   <span>Bài viết</span>
                   <ArrowRightIcon size={16} color="var(--text-muted)" />
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#topics" className="mobile-nav-item" onClick={onClose}>
+                <Link to="/#topics" className="mobile-nav-item" onClick={onClose}>
                   <span>Chủ đề</span>
                   <ArrowRightIcon size={16} color="var(--text-muted)" />
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#tools" className="mobile-nav-item" onClick={onClose}>
+                <Link to="/topics/tools" className="mobile-nav-item" onClick={onClose}>
                   <span>Công cụ Chotto</span>
                   <ArrowRightIcon size={16} color="var(--text-muted)" />
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#about" className="mobile-nav-item" onClick={onClose}>
+                <Link to="/#about" className="mobile-nav-item" onClick={onClose}>
                   <span>Về Chotto</span>
                   <ArrowRightIcon size={16} color="var(--text-muted)" />
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>
@@ -170,16 +174,16 @@ export function MobileMenu({ isOpen, onClose, triggerRef }) {
           <div className="mobile-categories-section">
             <div className="mobile-section-title">6 Nhóm Chủ Đề</div>
             <div className="mobile-cat-grid" role="list">
-              {CATEGORIES.map((cat) => (
-                <a
+              {categories.map((cat) => (
+                <Link
                   key={cat.id}
-                  href={`#category-${cat.id}`}
+                  to={cat.path}
                   className="mobile-cat-link"
                   onClick={onClose}
                 >
                   <span className={`mobile-cat-dot cat-dot-${cat.colorKey}`} />
                   <span>{cat.name}</span>
-                </a>
+                </Link>
               ))}
             </div>
           </div>

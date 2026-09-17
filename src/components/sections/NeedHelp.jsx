@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './NeedHelp.css';
-import { PROBLEMS_NEED_HELP } from '../../data/problems';
-import { ArrowRightIcon } from '../common/Icons';
+import { USER_PROBLEMS } from '../../content/problems/problemsList';
+import { ArrowRightIcon, ExternalLinkIcon } from '../common/Icons';
 
 export function NeedHelp() {
   return (
@@ -10,41 +11,56 @@ export function NeedHelp() {
         {/* Section Header */}
         <div className="section-header">
           <div className="section-eyebrow">
-            Tình huống phổ biến
+            Tìm giải pháp theo tình huống
           </div>
           <h2 id="need-help-heading" className="text-h2">
             Có thể bạn đang cần
           </h2>
           <p className="text-body">
-            Các câu hỏi và tình huống cấp thiết thường gặp nhất khi sống tại Nhật Bản.
+            Bắt đầu từ vấn đề thực tế của bạn bằng ngôn ngữ đời thường thay vì thuật ngữ hành chính phức tạp.
           </p>
         </div>
 
-        {/* 6 Problem Cards Grid */}
+        {/* User-Problem Cards Grid */}
         <div className="problem-grid">
-          {PROBLEMS_NEED_HELP.map((item) => (
+          {USER_PROBLEMS.map((prob) => (
             <div
-              key={item.id}
-              className={`chotto-card card-${item.categoryKey} problem-card`}
+              key={prob.id}
+              className={`chotto-card card-${prob.categoryKey} problem-card`}
             >
-              <div className="problem-card-badge-row">
-                <span className={`chotto-chip chip-${item.categoryKey}`}>
-                  {item.tag}
-                </span>
-              </div>
-
               <h3 className="problem-card-question">
-                {item.question}
+                {prob.statement}
               </h3>
 
-              <a
-                href="#articles"
-                className="text-button problem-card-action"
-                aria-label={`Xem giải pháp cho: ${item.question}`}
-              >
-                <span>{item.linkText}</span>
-                <ArrowRightIcon size={14} className="icon-inline-right" />
-              </a>
+              <p className="text-body" style={{ fontSize: '13px', lineHeight: '20px', marginBottom: '16px' }}>
+                {prob.detail}
+              </p>
+
+              <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px', borderTop: '1px solid var(--border-subtle)', paddingTop: '12px' }}>
+                {prob.recommendedArticle && (
+                  <Link
+                    to={`/articles/${prob.recommendedArticle.slug}`}
+                    className="problem-card-action"
+                    style={{ fontSize: '13px', fontWeight: 600 }}
+                  >
+                    <span>Bài viết: {prob.recommendedArticle.title}</span>
+                    <ArrowRightIcon size={13} />
+                  </Link>
+                )}
+
+                {prob.recommendedTool && (
+                  <a
+                    href={prob.recommendedTool.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="problem-card-action"
+                    style={{ fontSize: '12px', color: 'var(--cat-tool-text)', fontWeight: 600 }}
+                  >
+                    <span>Công cụ: {prob.recommendedTool.name}</span>
+                    <ExternalLinkIcon size={12} />
+                  </a>
+                )}
+              </div>
             </div>
           ))}
         </div>
