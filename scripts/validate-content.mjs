@@ -94,15 +94,44 @@ for (const article of ALL_ARTICLES) {
       errors.push(`[${identifier}] Published article must have at least one authoritative source in 'sources'`);
     } else {
       for (const src of article.sources) {
-        if (!src.id || !src.organization || !src.title || !src.url) {
-          errors.push(`[${identifier}] Incomplete source object: ${JSON.stringify(src)}`);
+        if (!src.id || typeof src.id !== 'string') {
+          errors.push(`[${identifier}] Source missing valid 'id': ${JSON.stringify(src)}`);
         }
-        if (src.type && !validSourceTypes.has(src.type)) {
-          errors.push(`[${identifier}] Invalid source type "${src.type}"`);
+        if (!src.organization || typeof src.organization !== 'string') {
+          errors.push(`[${identifier}] Source missing valid 'organization': ${JSON.stringify(src)}`);
         }
-        if (src.url && !src.url.startsWith('https://') && !src.url.startsWith('http://')) {
-          errors.push(`[${identifier}] Source URL must be valid HTTP/HTTPS: "${src.url}"`);
+        if (!src.title || typeof src.title !== 'string') {
+          errors.push(`[${identifier}] Source missing valid 'title': ${JSON.stringify(src)}`);
         }
+        if (!src.url || typeof src.url !== 'string') {
+          errors.push(`[${identifier}] Source missing valid 'url': ${JSON.stringify(src)}`);
+        } else if (!src.url.startsWith('https://')) {
+          errors.push(`[${identifier}] Source URL must use HTTPS for trust governance: "${src.url}"`);
+        }
+        if (!src.accessedAt || !dateRegex.test(src.accessedAt)) {
+          errors.push(`[${identifier}] Source missing or invalid 'accessedAt' (YYYY-MM-DD): "${src.accessedAt}"`);
+        }
+        if (!src.type || !validSourceTypes.has(src.type)) {
+          errors.push(`[${identifier}] Source missing or invalid 'type' (expected one of ${Array.from(validSourceTypes).join(', ')}): "${src.type}"`);
+        }
+      }
+    }
+
+    // Must have verification review block
+    if (!article.review || typeof article.review !== 'object') {
+      errors.push(`[${identifier}] Published article must have a 'review' verification block`);
+    } else {
+      if (!article.review.lastVerifiedAt || !dateRegex.test(article.review.lastVerifiedAt)) {
+        errors.push(`[${identifier}] Review block missing or invalid 'lastVerifiedAt' (YYYY-MM-DD): "${article.review.lastVerifiedAt}"`);
+      }
+      if (!article.review.reviewAfter || !dateRegex.test(article.review.reviewAfter)) {
+        errors.push(`[${identifier}] Review block missing or invalid 'reviewAfter' (YYYY-MM-DD): "${article.review.reviewAfter}"`);
+      }
+      if (article.review.lastVerifiedAt && article.review.reviewAfter && article.review.lastVerifiedAt > article.review.reviewAfter) {
+        errors.push(`[${identifier}] Review lastVerifiedAt (${article.review.lastVerifiedAt}) cannot be after reviewAfter (${article.review.reviewAfter})`);
+      }
+      if (!article.review.reviewer || typeof article.review.reviewer !== 'string' || article.review.reviewer.trim() === '') {
+        errors.push(`[${identifier}] Review block missing or empty 'reviewer'`);
       }
     }
 

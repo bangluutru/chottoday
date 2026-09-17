@@ -2,10 +2,9 @@
  * Build-Time Prerender & SEO Static Generator (Phase 4)
  * 
  * Objectives:
- * 1. Generates static HTML for all indexable routes with pre-injected raw HTML tags:
+ * 1. Generates static metadata in raw HTML for crawler/social preview compatibility:
  *    <title>, <meta name="description">, <link rel="canonical">,
  *    <meta property="og:...">, <meta name="twitter:...">, and JSON-LD structured data.
- *    Guarantees 100% crawler compatibility for Facebook, Zalo, Twitter, LinkedIn, and Googlebot.
  * 2. Generates production sitemap.xml with real canonical URLs.
  * 3. Generates production robots.txt referencing sitemap.xml.
  * 4. Generates 404.html.
@@ -291,15 +290,27 @@ console.log('  ✓ Generated: dist/404.html');
 
 // 3. Generate sitemap.xml
 console.log('🗺️ Generating sitemap.xml...');
+const latestArticleDate = publishedArticles.reduce(
+  (latest, a) => ((a.updatedAt || a.publishedAt) > latest ? (a.updatedAt || a.publishedAt) : latest),
+  '2026-09-01'
+);
+
 const sitemapUrls = [
-  { loc: `${SITE_URL}/`, changefreq: 'daily', priority: '1.0', lastmod: '2026-09-17' },
-  { loc: `${SITE_URL}/articles`, changefreq: 'daily', priority: '0.9', lastmod: '2026-09-17' },
-  ...CATEGORY_DEFINITIONS.map((c) => ({
-    loc: `${SITE_URL}${c.path}`,
-    changefreq: 'weekly',
-    priority: '0.8',
-    lastmod: '2026-09-17',
-  })),
+  { loc: `${SITE_URL}/`, changefreq: 'daily', priority: '1.0', lastmod: latestArticleDate },
+  { loc: `${SITE_URL}/articles`, changefreq: 'daily', priority: '0.9', lastmod: latestArticleDate },
+  ...CATEGORY_DEFINITIONS.map((c) => {
+    const catArticles = publishedArticles.filter((a) => a.category === c.id);
+    const catLastmod = catArticles.reduce(
+      (latest, a) => ((a.updatedAt || a.publishedAt) > latest ? (a.updatedAt || a.publishedAt) : latest),
+      latestArticleDate
+    );
+    return {
+      loc: `${SITE_URL}${c.path}`,
+      changefreq: 'weekly',
+      priority: '0.8',
+      lastmod: catLastmod,
+    };
+  }),
   ...publishedArticles.map((a) => ({
     loc: `${SITE_URL}/articles/${a.slug}`,
     changefreq: 'weekly',
@@ -324,8 +335,7 @@ ${sitemapUrls
 `;
 
 fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemapXml, 'utf8');
-fs.writeFileSync(path.join(rootDir, 'public/sitemap.xml'), sitemapXml, 'utf8');
-console.log(`  ✓ sitemap.xml generated with ${sitemapUrls.length} indexable URLs`);
+console.log(`  ✓ dist/sitemap.xml generated with ${sitemapUrls.length} indexable URLs`);
 
 // 4. Generate robots.txt
 console.log('🤖 Generating robots.txt...');
@@ -335,7 +345,6 @@ Allow: /
 Sitemap: ${SITE_URL}/sitemap.xml
 `;
 fs.writeFileSync(path.join(distDir, 'robots.txt'), robotsTxt, 'utf8');
-fs.writeFileSync(path.join(rootDir, 'public/robots.txt'), robotsTxt, 'utf8');
-console.log('  ✓ robots.txt generated pointing to sitemap.xml');
+console.log('  ✓ dist/robots.txt generated pointing to sitemap.xml');
 
 console.log('🎉 Prerender and SEO generation completed successfully!');

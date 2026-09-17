@@ -61,18 +61,18 @@ export const articleLostZairyu = {
       items: [
         {
           stepNumber: 1,
-          title: 'Đến đồn cảnh sát (Koban) gần nhất khai báo mất tài sản',
-          text: 'Vào đồn cảnh sát gần nơi bạn đánh rơi hoặc gần nhà để khai báo. Cảnh sát sẽ cấp Giấy chứng nhận tiếp nhận khai báo mất tài sản (Ishitsu Todokede Shomeisho) hoặc ghi mã số tiếp nhận hồ sơ. Đây là tài liệu bắt buộc phải nộp lên Nyukan.',
+          title: 'Đến đồn cảnh sát (Koban / Cảnh sát sở tại) khai báo mất tài sản',
+          text: 'Vào đồn cảnh sát (Koban) gần nơi đánh rơi hoặc nơi cư trú để làm đơn báo mất. Cơ quan cảnh sát sẽ cấp Giấy xác nhận tiếp nhận mất đồ (遺失届出証明書 - Ishitsu Todokede Shōmeisho) hoặc Giấy tiếp nhận mất cắp (盗難届出証明書 nếu bị trộm). Trường hợp đồn công an không in giấy trực tiếp, hãy xin Mã số thụ lý đơn (受理番号 - Jūri Bangō). Đây là bằng chứng bắt buộc để Nyukan thụ lý.',
         },
         {
           stepNumber: 2,
           title: 'Chuẩn bị hộ chiếu và ảnh thẻ 3cm × 4cm',
-          text: 'Chuẩn bị hộ chiếu bản gốc, tờ khai xin cấp lại thẻ cư trú (có sẵn tại Nyukan hoặc tải từ website Cục Xuất nhập cảnh) và 1 ảnh thẻ 3cm × 4cm đáp ứng tiêu chuẩn nhận diện.',
+          text: 'Chuẩn bị hộ chiếu bản gốc, đơn xin cấp lại thẻ cư trú (có sẵn tại quầy Nyukan hoặc tải từ website ISA), giấy tờ xác nhận của cảnh sát (hoặc mã số thụ lý) và 1 ảnh thẻ cỡ 3cm × 4cm chụp trong vòng 3 tháng gần nhất.',
         },
         {
           stepNumber: 3,
-          title: 'Đến Cục Quản lý Xuất nhập cảnh (Nyukan) nộp hồ sơ',
-          text: 'Nộp hồ sơ trực tiếp tại bộ phận tiếp nhận cấp lại thẻ thuộc Cục Quản lý Xuất nhập cảnh khu vực bạn cư trú. Cán bộ thụ lý kiểm tra và thường in cấp thẻ mới ngay trong ngày.',
+          title: 'Đến Cục Quản lý Xuất nhập cảnh địa phương (地方出入国在留管理局) nộp hồ sơ',
+          text: 'Đến trực tiếp Cục Quản lý Xuất nhập cảnh (Nyukan) phụ trách khu vực bạn cư trú. Thủ tục cấp lại do mất mát được tiếp nhận trực tiếp (walk-in) trong ngày mà thông thường không cần đặt lịch hẹn trước. Cán bộ thụ lý kiểm tra và thường in, cấp thẻ mới ngay trong ngày nếu thông tin lưu trú hợp lệ.',
         },
       ],
     },
@@ -80,17 +80,17 @@ export const articleLostZairyu = {
       type: 'term',
       term: '遺失届出証明書（いしつとどけでしょうめいしょ）',
       reading: 'Ishitsu Todokede Shōmeisho',
-      meaning: 'Giấy chứng nhận tiếp nhận khai báo mất tài sản do cơ quan Cảnh sát Nhật Bản cấp.',
+      meaning: 'Giấy chứng nhận tiếp nhận khai báo mất tài sản do cơ quan Cảnh sát Nhật Bản cấp (kèm mã số thụ lý 受理番号).',
     },
     {
       type: 'note',
-      title: 'Lệ phí hành chính nhà nước',
-      content: 'Theo quy định hiện hành của Cục Xuất nhập cảnh Nhật Bản, thủ tục xin cấp lại thẻ cư trú do mất mát không thu lệ phí cấp thẻ (miễn phí tiền tem). Bạn chỉ tốn chi phí đi lại và chụp ảnh thẻ.',
+      title: 'Lệ phí hành chính nhà nước: Hoàn toàn miễn phí (手数料無料)',
+      content: 'Theo quy định chính thức của Cục Quản lý Xuất nhập cảnh và Lưu trú (ISA), thủ tục xin cấp lại thẻ cư trú do mất mát/hư hỏng bất khả kháng không thu lệ phí hành chính (手数料無料 — không cần mua tem doanh thu 収入印紙). Người làm thủ tục chỉ chịu chi phí chụp ảnh thẻ và phương tiện đi lại.',
     },
     {
       type: 'warning',
-      title: 'Thời hạn hoàn tất thủ tục là 14 ngày',
-      content: 'Theo Điều 19-10 Luật Kiểm soát Xuất nhập cảnh và Công nhận Người tị nạn, người cư trú phải nộp đơn xin cấp lại trong vòng 14 ngày kể từ ngày biết mất thẻ. Tránh để quá hạn làm ảnh hưởng đến tình trạng lưu trú hợp pháp.',
+      title: 'Thời hạn hoàn tất thủ tục luật định là 14 ngày',
+      content: 'Theo Điều 19-12 Luật Kiểm soát Xuất nhập cảnh và Công nhận Người tị nạn (出入国管理及び難民認定法第19条の12 - 紛失等による在留カードの再交付申請), người nước ngoài cư trú phải trực tiếp nộp đơn xin cấp lại thẻ trong vòng 14 ngày kể từ ngày phát hiện việc mất thẻ (hoặc kể từ ngày nhập cảnh lại nếu mất khi đang ở ngoài nước Nhật). Việc cố tình chậm trễ không có lý do chính đáng có thể bị xử lý vi phạm hành chính.',
     },
     {
       type: 'heading',
