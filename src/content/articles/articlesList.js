@@ -1,5 +1,5 @@
-import { articleSalary30Man } from './salary-30man';
-import { articleLostZairyu } from './lost-zairyu';
+import { articleSalary30Man } from './salary-30man.js';
+import { articleLostZairyu } from './lost-zairyu.js';
 
 export const ALL_ARTICLES = [
   articleSalary30Man,
@@ -56,7 +56,7 @@ export const ALL_ARTICLES = [
       { slug: 'doi-bang-lai-xe-viet-nhat', title: 'Đổi bằng lái xe Việt Nam sang bằng Nhật Bản (Gaimen Kirikae)', readingTime: 6, category: 'life' },
       { slug: 'luong-30-man-thuc-nhan-bao-nhieu', title: 'Lương 30 man thực nhận bao nhiêu? (Minh họa tham khảo)', readingTime: 6, category: 'work' },
     ],
-    relatedToolIds: ['japan-tax-simulator'],
+    relatedToolIds: ['moving-cost-jp', 'address-change-checklist-jp'],
   },
   {
     id: 'doi-bang-lai',
@@ -102,8 +102,10 @@ export const ALL_ARTICLES = [
         type: 'toolCTA',
         toolId: 'id-photo-studio',
         icon: '📸',
-        title: 'Chuẩn bị ảnh thẻ đổi bằng lái xe tiện lợi',
-        description: 'Tạo file ảnh thẻ đúng chuẩn nộp trung tâm sát hạch lái xe Menkyo Center.',
+        editorial: {
+          title: 'Chuẩn bị ảnh thẻ đổi bằng lái xe tiện lợi',
+          description: 'Tạo file ảnh thẻ đúng chuẩn nộp trung tâm sát hạch lái xe Menkyo Center.',
+        },
         ctaText: 'Tạo ảnh thẻ ngay',
         note: 'Hỗ trợ xuất file in tại các hệ thống combini',
         badge: 'Mở trong Toolio',
@@ -155,7 +157,7 @@ export const ALL_ARTICLES = [
     relatedArticles: [
       { slug: 'mat-the-zairyu-thi-lam-gi', title: 'Mất thẻ cư trú (Zairyu Card) thì làm gì? (Hướng dẫn tham khảo)', readingTime: 5, category: 'doc' },
     ],
-    relatedToolIds: ['id-photo-studio'],
+    relatedToolIds: ['id-photo-studio', 'residence-renewal-guide-jp'],
   },
   {
     id: 'khai-thue-cuoi-nam',
@@ -188,8 +190,10 @@ export const ALL_ARTICLES = [
         type: 'toolCTA',
         toolId: 'japan-tax-simulator',
         icon: '🧮',
-        title: 'Mô phỏng tiền hoàn thuế khi khai người phụ thuộc',
-        description: 'Xem ước tính số tiền điều chỉnh thuế thu nhập và thuế thị dân tham khảo.',
+        editorial: {
+          title: 'Mô phỏng tiền hoàn thuế khi khai người phụ thuộc',
+          description: 'Xem ước tính số tiền điều chỉnh thuế thu nhập và thuế thị dân tham khảo.',
+        },
         ctaText: 'Tính thử hoàn thuế',
         note: 'Công cụ mô phỏng độc lập trên Toolio',
         badge: 'Mở trong Toolio',
@@ -226,7 +230,7 @@ export const ALL_ARTICLES = [
     relatedArticles: [
       { slug: 'di-kham-benh-tu-vung-trieu-chung', title: 'Bảng từ vựng triệu chứng cơ thể khi đi khám bệnh tại Nhật', readingTime: 5, category: 'health' },
     ],
-    relatedToolIds: [],
+    relatedToolIds: ['social-insurance-jp'],
   },
   {
     id: 'tu-vung-kham-benh',
@@ -295,7 +299,7 @@ export const ALL_ARTICLES = [
     relatedArticles: [
       { slug: 'mat-the-zairyu-thi-lam-gi', title: 'Mất thẻ cư trú (Zairyu Card) thì làm gì? (Hướng dẫn tham khảo)', readingTime: 5, category: 'doc' },
     ],
-    relatedToolIds: [],
+    relatedToolIds: ['administrative-navigator-jp'],
   },
   {
     id: 'hoa-don-invoice-freelance',
@@ -318,8 +322,10 @@ export const ALL_ARTICLES = [
         type: 'toolCTA',
         toolId: 'invoice-studio',
         icon: '🧾',
-        title: 'Tạo hóa đơn Invoice hợp lệ Nhật Bản',
-        description: 'Biểu mẫu lập hóa đơn hỗ trợ tính các mức thuế suất theo quy chuẩn NTA, sẵn sàng xuất file in hoặc gửi cho đối tác.',
+        editorial: {
+          title: 'Tạo hóa đơn Invoice hợp lệ Nhật Bản',
+          description: 'Biểu mẫu lập hóa đơn hỗ trợ tính các mức thuế suất theo quy chuẩn NTA, sẵn sàng xuất file in hoặc gửi cho đối tác.',
+        },
         ctaText: 'Tạo hóa đơn ngay',
         note: 'Mẫu theo quy định của Cục Thuế Quốc Gia Nhật Bản',
         badge: 'Mở trong Toolio',

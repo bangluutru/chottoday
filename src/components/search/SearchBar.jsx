@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import './SearchBar.css';
 import { SearchIcon, CloseIcon, ArrowRightIcon, ExternalLinkIcon } from '../common/Icons';
 import { searchArticles } from '../../content/articles';
-import { SELECTED_TOOLS } from '../../data/toolsMock';
+import { searchTools, buildToolUrl } from '../../services/toolRegistry';
 
 export const SearchBar = forwardRef(function SearchBar(
   { onSearch, initialValue = '' },
@@ -37,26 +37,12 @@ export const SearchBar = forwardRef(function SearchBar(
       return;
     }
 
-    // Articles search
+    // 1. Articles search (Content-first priority)
     const matchedArticles = searchArticles(trimmed).slice(0, 4);
     setArticleResults(matchedArticles);
 
-    // Tools search
-    const lower = trimmed.toLowerCase();
-    const matchedTools = SELECTED_TOOLS.filter((t) => {
-      return (
-        t.name.toLowerCase().includes(lower) ||
-        t.description.toLowerCase().includes(lower) ||
-        t.category.toLowerCase().includes(lower) ||
-        (lower.includes('thue') && t.id.includes('tax')) ||
-        (lower.includes('thuế') && t.id.includes('tax')) ||
-        (lower.includes('nenkin') && t.id.includes('nenkin')) ||
-        (lower.includes('the') && t.id.includes('photo')) ||
-        (lower.includes('thẻ') && t.id.includes('photo')) ||
-        (lower.includes('hoa don') && t.id.includes('invoice')) ||
-        (lower.includes('hóa đơn') && t.id.includes('invoice'))
-      );
-    }).slice(0, 3);
+    // 2. Tools search against local snapshot
+    const matchedTools = searchTools(trimmed, 3);
     setToolResults(matchedTools);
 
     setShowSuggestions(true);
@@ -200,7 +186,7 @@ export const SearchBar = forwardRef(function SearchBar(
                     {toolResults.map((tool) => (
                       <a
                         key={tool.id}
-                        href={tool.toolioPath}
+                        href={buildToolUrl(tool.id, { source: 'search' })}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="suggestion-item"

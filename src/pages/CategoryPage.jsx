@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import './CategoryPage.css';
 import { getCategoryBySlug } from '../content/categories/categoryMap';
 import { getArticlesByCategory } from '../content/articles';
-import { getToolsByIds } from '../data/toolsMock';
+import { getToolsByIds, buildToolUrl } from '../services/toolRegistry';
 import { ClockIcon, ArrowRightIcon, ExternalLinkIcon } from '../components/common/Icons';
 import { PageMeta } from '../components/common/PageMeta';
 
@@ -158,7 +158,7 @@ export function CategoryPage() {
               {relatedTools.map((tool) => (
                 <a
                   key={tool.id}
-                  href={tool.toolioPath}
+                  href={buildToolUrl(tool.id, { source: 'category' })}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="chotto-card category-tool-card"

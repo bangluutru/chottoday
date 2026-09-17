@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './NeedHelp.css';
 import { USER_PROBLEMS } from '../../content/problems/problemsList';
 import { ArrowRightIcon, ExternalLinkIcon } from '../common/Icons';
+import { getToolById, buildToolUrl } from '../../services/toolRegistry';
 
 export function NeedHelp() {
   return (
@@ -23,44 +24,49 @@ export function NeedHelp() {
 
         {/* User-Problem Cards Grid */}
         <div className="problem-grid">
-          {USER_PROBLEMS.map((prob) => (
-            <div
-              key={prob.id}
-              className={`chotto-card card-${prob.categoryKey} problem-card`}
-            >
-              <h3 className="problem-card-question">
-                {prob.statement}
-              </h3>
+          {USER_PROBLEMS.map((prob) => {
+            const tool = prob.recommendedToolId ? getToolById(prob.recommendedToolId) : null;
+            const toolUrl = tool ? buildToolUrl(tool.id, { source: 'problem' }) : null;
 
-              <p className="text-body problem-card-detail">
-                {prob.detail}
-              </p>
+            return (
+              <div
+                key={prob.id}
+                className={`chotto-card card-${prob.categoryKey} problem-card`}
+              >
+                <h3 className="problem-card-question">
+                  {prob.statement}
+                </h3>
 
-              <div className="problem-card-action-group">
-                {prob.recommendedArticle && (
-                  <Link
-                    to={`/articles/${prob.recommendedArticle.slug}`}
-                    className="problem-card-action problem-card-article-action"
-                  >
-                    <span>Bài viết: {prob.recommendedArticle.title}</span>
-                    <ArrowRightIcon size={13} />
-                  </Link>
-                )}
+                <p className="text-body problem-card-detail">
+                  {prob.detail}
+                </p>
 
-                {prob.recommendedTool && (
-                  <a
-                    href={prob.recommendedTool.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="problem-card-action problem-card-tool-action"
-                  >
-                    <span>Công cụ: {prob.recommendedTool.name}</span>
-                    <ExternalLinkIcon size={12} />
-                  </a>
-                )}
+                <div className="problem-card-action-group">
+                  {prob.recommendedArticle && (
+                    <Link
+                      to={`/articles/${prob.recommendedArticle.slug}`}
+                      className="problem-card-action problem-card-article-action"
+                    >
+                      <span>Bài viết: {prob.recommendedArticle.title}</span>
+                      <ArrowRightIcon size={13} />
+                    </Link>
+                  )}
+
+                  {tool && toolUrl && (
+                    <a
+                      href={toolUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="problem-card-action problem-card-tool-action"
+                    >
+                      <span>Công cụ: {tool.name}</span>
+                      <ExternalLinkIcon size={12} />
+                    </a>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

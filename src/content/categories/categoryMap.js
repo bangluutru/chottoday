@@ -3,6 +3,7 @@
  * 
  * Maps URL topic slugs directly to existing Phase 1 tokens and IDs.
  * Preserves the single taxonomy without duplicating categories.
+ * All relatedToolIds strictly resolve against the Toolio compatibility snapshot.
  */
 
 export const CATEGORY_DEFINITIONS = [
@@ -19,7 +20,7 @@ export const CATEGORY_DEFINITIONS = [
     bgToken: 'var(--cat-life-bg)',
     textToken: 'var(--cat-life-text)',
     borderToken: 'var(--cat-life-border)',
-    relatedToolIds: ['invoice-studio'],
+    relatedToolIds: ['moving-cost-jp', 'address-change-checklist-jp', 'barcode-qr'],
     availableTags: ['Tất cả', 'Thuê nhà', 'Hợp đồng', 'Rác & Vứt đồ', 'Bằng lái xe', 'Điện nước'],
   },
   {
@@ -35,7 +36,7 @@ export const CATEGORY_DEFINITIONS = [
     bgToken: 'var(--cat-doc-bg)',
     textToken: 'var(--cat-doc-text)',
     borderToken: 'var(--cat-doc-border)',
-    relatedToolIds: ['id-photo-studio'],
+    relatedToolIds: ['id-photo-studio', 'official-form-helper-jp', 'procedure-requirement-checker-jp'],
     availableTags: ['Tất cả', 'Visa & Nyukan', 'Thẻ cư trú', 'My Number', 'Shiyakusho', 'Hộ chiếu'],
   },
   {
@@ -51,7 +52,7 @@ export const CATEGORY_DEFINITIONS = [
     bgToken: 'var(--cat-work-bg)',
     textToken: 'var(--cat-work-text)',
     borderToken: 'var(--cat-work-border)',
-    relatedToolIds: ['japan-tax-simulator', 'japan-nenkin-guide', 'invoice-studio'],
+    relatedToolIds: ['japan-tax-simulator', 'social-insurance-jp', 'invoice-studio'],
     availableTags: ['Tất cả', 'Lương thực nhận', 'Thuế thu nhập', 'Nenkin', 'Khai thuế', 'Chuyển tiền'],
   },
   {
@@ -67,7 +68,7 @@ export const CATEGORY_DEFINITIONS = [
     bgToken: 'var(--cat-health-bg)',
     textToken: 'var(--cat-health-text)',
     borderToken: 'var(--cat-health-border)',
-    relatedToolIds: [],
+    relatedToolIds: ['social-insurance-jp', 'maternity-allowance-jp'],
     availableTags: ['Tất cả', 'Bảo hiểm y tế', 'Khám bệnh', 'Từ vựng y tế', 'Cấp cứu', 'Thuốc'],
   },
   {
@@ -83,7 +84,7 @@ export const CATEGORY_DEFINITIONS = [
     bgToken: 'var(--cat-study-bg)',
     textToken: 'var(--cat-study-text)',
     borderToken: 'var(--cat-study-border)',
-    relatedToolIds: ['id-photo-studio'],
+    relatedToolIds: ['id-photo-studio', 'administrative-navigator-jp'],
     availableTags: ['Tất cả', 'Mẫu câu Shiyakusho', 'Từ vựng hành chính', 'Đổi bằng lái', 'Thi cử'],
   },
   {
@@ -99,7 +100,7 @@ export const CATEGORY_DEFINITIONS = [
     bgToken: 'var(--cat-tool-bg)',
     textToken: 'var(--cat-tool-text)',
     borderToken: 'var(--cat-tool-border)',
-    relatedToolIds: ['japan-tax-simulator', 'japan-nenkin-guide', 'id-photo-studio', 'invoice-studio'],
+    relatedToolIds: ['japan-tax-simulator', 'social-insurance-jp', 'id-photo-studio', 'invoice-studio', 'pdf-toolkit'],
     availableTags: ['Tất cả', 'Tính toán thuế', 'Hồ sơ thẻ', 'Nenkin', 'Hóa đơn'],
   },
 ];

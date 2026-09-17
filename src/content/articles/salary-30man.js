@@ -105,8 +105,10 @@ export const articleSalary30Man = {
       type: 'toolCTA',
       toolId: 'japan-tax-simulator',
       icon: '🧮',
-      title: 'Mô phỏng lương thực nhận tham khảo',
-      description: 'Nhập thông tin giả định để xem bảng phân tích khấu trừ và con số thực nhận tham khảo.',
+      editorial: {
+        title: 'Tính thử lương thực nhận của bạn',
+        description: 'Nhập một số thông tin cơ bản để xem kết quả ước tính các khoản khấu trừ thuế và bảo hiểm.',
+      },
       ctaText: 'Dùng công cụ ngay',
       note: 'Công cụ chạy trực tiếp trên trình duyệt, không lưu trữ dữ liệu cá nhân',
       badge: 'Mở trong Toolio',
@@ -147,5 +149,5 @@ export const articleSalary30Man = {
       category: 'life',
     },
   ],
-  relatedToolIds: ['japan-tax-simulator', 'japan-nenkin-guide'],
+  relatedToolIds: ['japan-tax-simulator', 'social-insurance-jp'],
 };

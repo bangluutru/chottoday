@@ -1,4 +1,10 @@
-import { getToolioUrl } from '../../config/constants';
+/**
+ * User Problems Data & Toolio Bridge Connections
+ *
+ * Problems define situational discovery triggers.
+ * Every tool connection uses stable toolId resolved via ToolRegistryService.
+ * Strictly 0 orphan IDs — all toolIds verified against Toolio compatibility snapshot.
+ */
 
 export const USER_PROBLEMS = [
   {
@@ -11,10 +17,8 @@ export const USER_PROBLEMS = [
       slug: 'mat-the-zairyu-thi-lam-gi',
       title: 'Mất thẻ cư trú (Zairyu Card) thì làm gì?',
     },
-    recommendedTool: {
-      name: 'Tạo ảnh thẻ combini 200¥',
-      url: getToolioUrl('/#/id-photo-studio'),
-    },
+    recommendedToolId: 'arriving-in-japan-wizard-jp',
+    relatedToolIds: ['arriving-in-japan-wizard-jp', 'id-photo-studio'],
   },
   {
     id: 'prob-moving',
@@ -26,7 +30,8 @@ export const USER_PROBLEMS = [
       slug: 'hop-dong-thue-nha-nhat-ban',
       title: 'Hợp đồng thuê nhà ở Nhật: Những khoản tiền không lấy lại được',
     },
-    recommendedTool: null,
+    recommendedToolId: 'moving-admin-checker-jp',
+    relatedToolIds: ['moving-admin-checker-jp', 'moving-cost-jp', 'address-change-checklist-jp'],
   },
   {
     id: 'prob-tax',
@@ -38,10 +43,8 @@ export const USER_PROBLEMS = [
       slug: 'luong-30-man-thuc-nhan-bao-nhieu',
       title: 'Lương 30 man thực nhận bao nhiêu?',
     },
-    recommendedTool: {
-      name: 'Mô phỏng Thuế thu nhập & Thị dân',
-      url: getToolioUrl('/#/japan-tax-simulator'),
-    },
+    recommendedToolId: 'japan-tax-simulator',
+    relatedToolIds: ['japan-tax-simulator', 'social-insurance-jp'],
   },
   {
     id: 'prob-job-change',
@@ -53,10 +56,8 @@ export const USER_PROBLEMS = [
       slug: 'bao-hiem-y-te-quoc-dan-giam-phi',
       title: 'Bảo hiểm y tế quốc dân giảm phí khi thu nhập thấp',
     },
-    recommendedTool: {
-      name: 'Tính tiền Nenkin rút 1 lần',
-      url: getToolioUrl('/#/japan-nenkin-guide'),
-    },
+    recommendedToolId: 'leaving-job-wizard-jp',
+    relatedToolIds: ['leaving-job-wizard-jp', 'unemployment-eligibility-jp', 'social-insurance-jp'],
   },
   {
     id: 'prob-renew-visa',
@@ -68,10 +69,8 @@ export const USER_PROBLEMS = [
       slug: 'gia-han-visa-ky-su-truoc-3-thang',
       title: 'Gia hạn visa kỹ sư trước 3 tháng: Thủ tục và giấy tờ công ty cần cấp',
     },
-    recommendedTool: {
-      name: 'Tạo ảnh thẻ chuẩn hồ sơ Nyukan',
-      url: getToolioUrl('/#/id-photo-studio'),
-    },
+    recommendedToolId: 'residence-renewal-guide-jp',
+    relatedToolIds: ['residence-renewal-guide-jp', 'id-photo-studio'],
   },
   {
     id: 'prob-unknown-mail',
@@ -83,7 +82,8 @@ export const USER_PROBLEMS = [
       slug: 'luong-30-man-thuc-nhan-bao-nhieu',
       title: 'Lương 30 man thực nhận bao nhiêu?',
     },
-    recommendedTool: null,
+    recommendedToolId: 'administrative-navigator-jp',
+    relatedToolIds: ['administrative-navigator-jp', 'document-finder-jp'],
   },
   {
     id: 'prob-driving',
@@ -95,9 +95,7 @@ export const USER_PROBLEMS = [
       slug: 'doi-bang-lai-xe-viet-nhat',
       title: 'Đổi bằng lái xe Việt Nam sang bằng Nhật Bản (Gaimen Kirikae)',
     },
-    recommendedTool: {
-      name: 'Tạo ảnh thẻ sát hạch lái xe',
-      url: getToolioUrl('/#/id-photo-studio'),
-    },
+    recommendedToolId: 'id-photo-studio',
+    relatedToolIds: ['id-photo-studio'],
   },
 ];

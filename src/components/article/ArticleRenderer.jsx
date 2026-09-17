@@ -1,7 +1,7 @@
 import React from 'react';
 import './ArticleRenderer.css';
 import { ExternalLinkIcon } from '../common/Icons';
-import { getToolById } from '../../data/toolsMock';
+import { getToolById, isToolAvailable, buildToolUrl } from '../../services/toolRegistry';
 
 /**
  * Lightweight inline text parser converting **bold** to <strong>
@@ -149,18 +149,36 @@ export function ArticleRenderer({ sections = [] }) {
             );
 
           case 'toolCTA': {
-            // Single-source-of-truth: resolve tool destination & defaults from registry
-            const tool = section.toolId ? getToolById(section.toolId) : null;
-            const ctaUrl = section.ctaUrl || tool?.toolioPath || '#';
-            const title = section.title || tool?.name || 'Công cụ thực hành';
-            const description = section.description || tool?.description || '';
-            const badge = section.badge || tool?.badge || 'Mở trong Toolio';
+            // Requirement 14: toolId -> ToolRegistryService -> resolve tool -> check availability -> build URL -> render CTA
+            const toolId = section.toolId;
+            const tool = toolId ? getToolById(toolId) : null;
+            const available = toolId ? isToolAvailable(toolId) : false;
+
+            // Handle unknown or paused tool gracefully without crashing
+            if (!tool || !available) {
+              if (typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production') {
+                console.warn(`[ChottoDay] Tool CTA omitted: toolId "${toolId}" is not recognized or active.`);
+              }
+              return null;
+            }
+
+            // Centralized URL builder
+            const ctaUrl = buildToolUrl(tool.id, { source: 'article' });
+
+            // Editorial contextualization (Section 12 & 13)
+            const editorial = section.editorial || {};
+            const title = editorial.title || section.title || tool.name;
+            const description = editorial.description || section.description || tool.description;
+            const badge = section.badge || 'Mở trong Toolio';
+            const ctaText = section.ctaText || 'Dùng công cụ ngay';
+            const note = section.note || (tool.processing === 'browser' ? '100% xử lý trên trình duyệt của bạn' : '');
+            const icon = section.icon || '🛠️';
 
             return (
               <div key={idx} className="article-tool-cta">
                 <div className="article-tool-header">
                   <div className="article-tool-title-wrap">
-                    <span className="article-tool-icon">{section.icon || '🛠️'}</span>
+                    <span className="article-tool-icon">{icon}</span>
                     <h3 className="article-tool-title">{title}</h3>
                   </div>
                   {badge && (
@@ -177,11 +195,11 @@ export function ArticleRenderer({ sections = [] }) {
                     rel="noopener noreferrer"
                     className="article-tool-btn"
                   >
-                    <span>{section.ctaText || 'Dùng công cụ ngay'}</span>
+                    <span>{ctaText}</span>
                     <ExternalLinkIcon size={16} />
                   </a>
-                  {section.note && (
-                    <span className="article-tool-note">{section.note}</span>
+                  {note && (
+                    <span className="article-tool-note">{note}</span>
                   )}
                 </div>
               </div>

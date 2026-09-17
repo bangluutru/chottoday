@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import './UsefulToday.css';
 import { articleSalary30Man } from '../../content/articles/salary-30man';
 import { articleLostZairyu } from '../../content/articles/lost-zairyu';
-import { getToolById } from '../../data/toolsMock';
+import { getToolById, buildToolUrl } from '../../services/toolRegistry';
 import { ClockIcon, ArrowRightIcon, ExternalLinkIcon, ShieldCheckIcon } from '../common/Icons';
 
 export function UsefulToday() {
-  const nenkinTool = getToolById('japan-nenkin-guide');
+  const nenkinTool = getToolById('national-pension-jp');
 
   return (
     <section className="section" id="useful-today" aria-labelledby="useful-today-heading">
@@ -80,7 +80,7 @@ export function UsefulToday() {
           {/* Card 3: Tool Recommendation (Toolio) */}
           <div className="useful-today-col">
             <a
-              href={nenkinTool?.toolioPath || '#'}
+              href={nenkinTool ? buildToolUrl(nenkinTool.id, { source: 'homepage' }) : '#'}
               target="_blank"
               rel="noopener noreferrer"
               className="chotto-card card-tool useful-today-card useful-today-tool-card"

@@ -77,8 +77,10 @@ export const articleLostZairyu = {
       type: 'toolCTA',
       toolId: 'id-photo-studio',
       icon: '📸',
-      title: 'Tạo ảnh thẻ chuẩn kích thước hồ sơ',
-      description: 'Cắt và căn chỉnh tỷ lệ 3x4cm phù hợp tiêu chuẩn in ấn tại hệ thống cửa hàng tiện lợi Nhật Bản.',
+      editorial: {
+        title: 'Tạo ảnh thẻ 3x4cm chuẩn hồ sơ Nyukan',
+        description: 'Cắt và căn chỉnh tỷ lệ 3x4cm phù hợp tiêu chuẩn in ấn tại hệ thống cửa hàng tiện lợi Nhật Bản (combini 200¥).',
+      },
       ctaText: 'Tạo ảnh thẻ ngay',
       note: 'Xử lý trực tiếp trên trình duyệt cá nhân, không gửi dữ liệu hình ảnh lên máy chủ',
       badge: 'Mở trong Toolio',

@@ -1,11 +1,21 @@
 import React from 'react';
 import './ToolShowcase.css';
-import { SELECTED_TOOLS } from '../../data/toolsMock';
+import { getToolsByIds, buildToolUrl } from '../../services/toolRegistry';
 import { ToolCard } from '../cards/ToolCard';
 import { ExternalLinkIcon } from '../common/Icons';
 import { TOOLIO_BASE_URL } from '../../config/constants';
 
+// Homepage decides which tool IDs to feature for discovery
+export const FEATURED_TOOL_IDS = [
+  'japan-tax-simulator',
+  'id-photo-studio',
+  'pdf-toolkit',
+  'social-insurance-jp',
+];
+
 export function ToolShowcase() {
+  const featuredTools = getToolsByIds(FEATURED_TOOL_IDS);
+
   return (
     <section className="section" id="tools" aria-labelledby="tools-heading">
       <div className="container">
@@ -46,16 +56,16 @@ export function ToolShowcase() {
 
         {/* 4 Selected Miniapps Grid */}
         <div className="tool-grid">
-          {SELECTED_TOOLS.map((tool) => (
+          {featuredTools.map((tool) => (
             <div key={tool.id} className="tool-grid-item">
               <ToolCard
                 title={tool.name}
                 description={tool.description}
-                category={tool.category}
-                categoryKey={tool.categoryKey}
-                badge={tool.badge}
-                stats={tool.stats}
-                toolioPath={tool.toolioPath}
+                category={tool.domain === 'japan-life' ? 'Đời sống Nhật' : 'Tiện ích'}
+                categoryKey="tool"
+                badge={tool.processing === 'browser' ? 'Chạy trên trình duyệt' : 'Xử lý an toàn'}
+                stats={tool.domain === 'japan-life' ? 'Nhật Bản' : 'Đa năng'}
+                toolioPath={buildToolUrl(tool.id, { source: 'homepage' })}
               />
             </div>
           ))}
