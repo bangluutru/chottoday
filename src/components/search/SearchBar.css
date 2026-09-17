@@ -5,17 +5,22 @@
 .search-container {
   width: 100%;
   max-width: 680px;
+  min-width: 0;
   position: relative;
 }
 
 .search-form {
   position: relative;
+  width: 100%;
+  min-width: 0;
 }
 
 .search-box-wrapper {
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
+  min-width: 0;
   height: 52px;
   padding: 0 16px;
   background-color: var(--surface-card);
@@ -40,6 +45,7 @@
 
 .search-input {
   flex: 1;
+  min-width: 0;
   height: 100%;
   font-family: var(--font-body);
   font-size: 15px;
@@ -98,6 +104,25 @@
 
 .search-btn-icon {
   flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .search-box-wrapper {
+    height: 48px;
+    padding: 0 6px 0 10px;
+    gap: 6px;
+  }
+  .search-input {
+    font-size: 13px;
+  }
+  .search-submit-btn {
+    height: 36px;
+    padding: 0 10px;
+    font-size: 12.5px;
+    gap: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
 }
 
 /* ==========================================================================

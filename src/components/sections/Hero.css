@@ -1,79 +1,144 @@
 /* ==========================================================================
-   HERO SECTION STYLES - HOMEPAGE REFRESH SOT
+   HERO SECTION STYLES - FULL-WIDTH SURFACE SOT
    ========================================================================== */
 
 .hero-section {
-  padding-top: 36px;
-  padding-bottom: 44px;
+  padding: 8px 16px 28px;
   background-color: var(--surface-canvas);
   position: relative;
 }
 
 @media (min-width: 768px) {
   .hero-section {
-    padding-top: 48px;
-    padding-bottom: 56px;
+    padding: 12px 24px 36px;
   }
 }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px;
+/* Full-width Hero Shell (One Visual Surface) */
+.hero-shell {
+  position: relative;
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  min-height: clamp(480px, 42vw, 560px);
+  border-radius: 20px;
+  border: 1px solid var(--border-card);
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
+  display: flex;
   align-items: center;
 }
 
-@media (min-width: 960px) {
-  .hero-grid {
-    grid-template-columns: 1.18fr 0.82fr;
-    gap: 44px;
+@media (min-width: 1280px) {
+  .hero-shell {
+    border-radius: 24px;
   }
 }
 
-/* Left Column: Text & Search */
-.hero-content {
+/* Full-width Photography Background */
+.hero-bg-picture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.hero-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% center; /* Woman stays prominent on the right */
+  display: block;
+}
+
+/* Subtle Left-Side Readability Gradient Overlay */
+.hero-overlay-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.97) 0%,
+    rgba(255, 255, 255, 0.92) 36%,
+    rgba(255, 255, 255, 0.58) 54%,
+    rgba(255, 255, 255, 0.15) 70%,
+    rgba(255, 255, 255, 0) 84%
+  );
+}
+
+/* Real HTML UI Overlaid on the Left */
+.hero-content-wrap {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 660px;
+  min-width: 0;
+  padding: 44px 24px 44px 48px;
   display: flex;
   flex-direction: column;
 }
 
-.hero-badge-tag {
+@media (min-width: 1024px) {
+  .hero-content-wrap {
+    padding-left: 56px;
+    max-width: 680px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-content-wrap {
+    padding-left: 64px;
+    max-width: 700px;
+  }
+}
+
+/* Badge Pill */
+.hero-badge-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 14px;
-  background-color: #ECFDF5;
-  border: 1px solid #A7F3D0;
+  padding: 6px 16px;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: var(--radius-pill);
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
-  color: #065F46;
+  color: var(--text-primary);
   margin-bottom: 16px;
   align-self: flex-start;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.hero-badge-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: #10B981;
-  flex-shrink: 0;
-}
-
+/* Semantic H1 Headline */
 .hero-headline {
   font-family: var(--font-heading);
-  font-size: 36px;
-  line-height: 1.18;
+  font-size: 38px;
+  line-height: 1.16;
   font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   letter-spacing: -0.02em;
 }
 
 @media (min-width: 768px) {
   .hero-headline {
     font-size: 46px;
-    line-height: 1.16;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero-headline {
+    font-size: 50px;
   }
 }
 
@@ -81,139 +146,125 @@
   color: #FF5A5F;
 }
 
-.hero-accent-green {
-  color: #059669;
+.hero-accent-blue {
+  color: #0284C7;
 }
 
-/* Handwritten / playful cursive accent note */
-.hero-handwritten-note {
-  font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif;
-  font-size: 17px;
-  font-weight: 600;
-  color: #E11D48;
-  margin-bottom: 16px;
-  letter-spacing: 0.01em;
-}
-
-.hero-support-text {
+/* Description Text */
+.hero-description {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 15.5px;
   line-height: 1.6;
   color: var(--text-secondary);
   margin-bottom: 24px;
-  max-width: 540px;
 }
 
 @media (min-width: 768px) {
-  .hero-support-text {
-    font-size: 16px;
-    line-height: 1.65;
-    margin-bottom: 26px;
+  .hero-description {
+    font-size: 16.5px;
   }
 }
 
-/* Right Column: Visual & Floating Stats */
-.hero-visual-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  position: relative;
-}
-
-.hero-visual-card {
-  position: relative;
-  border-radius: 20px;
-  border: 1px solid var(--border-card);
-  background-color: var(--surface-card);
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-}
-
-.hero-illustration {
+/* Search Box & Chips in Hero */
+.hero-search-box-container {
   width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  display: block;
+  max-width: 640px;
+  min-width: 0;
 }
 
-/* Floating Stats Card below photo */
-.hero-stats-card {
+.hero-content-wrap .search-box-wrapper {
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+  height: 54px;
+}
+
+.hero-content-wrap .quick-intents-wrapper {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 18px;
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-card);
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
-  gap: 8px;
+  gap: 6px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  max-width: 100%;
+  min-width: 0;
 }
 
-@media (max-width: 480px) {
-  .hero-stats-card {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-  .hero-stat-divider {
-    display: none;
-  }
+.hero-content-wrap .quick-intents-label {
+  display: none;
 }
 
-.hero-stat-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-}
-
-.hero-stat-icon-wrap {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.hero-stat-icon-articles {
-  background-color: #FEF3C7;
-}
-
-.hero-stat-icon-tools {
-  background-color: #CCFBF1;
-}
-
-.hero-stat-icon-community {
-  background-color: #DBEAFE;
-}
-
-.hero-stat-info {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.25;
-}
-
-.hero-stat-value {
-  font-family: var(--font-heading);
-  font-size: 15px;
-  font-weight: 700;
+.hero-content-wrap .intent-chip {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   color: var(--text-primary);
-}
-
-.hero-stat-label {
-  font-family: var(--font-body);
-  font-size: 11px;
-  color: var(--text-muted);
   white-space: nowrap;
 }
 
-.hero-stat-divider {
-  width: 1px;
-  height: 28px;
-  background-color: var(--border-subtle);
-  flex-shrink: 0;
+.hero-content-wrap .intent-chip:hover {
+  background-color: #F8FAFC;
+  border-color: rgba(0, 0, 0, 0.2);
+  color: var(--text-primary);
+  transform: translateY(-1px);
 }
+
+/* Responsive Styles for Tablet & Mobile */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 8px 12px 20px;
+  }
+
+  .hero-shell {
+    min-height: 480px;
+    border-radius: 16px;
+  }
+
+  .hero-bg-img {
+    object-position: 80% 25%;
+  }
+
+  .hero-overlay-gradient {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.88) 55%,
+      rgba(255, 255, 255, 0.4) 80%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+  }
+
+  .hero-content-wrap {
+    padding: 28px 16px 24px;
+    max-width: 100%;
+  }
+
+  .hero-headline {
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  .hero-description {
+    font-size: 14.5px;
+    margin-bottom: 18px;
+  }
+
+  .hero-content-wrap .search-box-wrapper {
+    height: 48px;
+    padding: 0 6px 0 10px;
+    gap: 6px;
+  }
+
+  .hero-content-wrap .intent-chip {
+    height: 30px;
+    padding: 0 9px;
+    font-size: 11.5px;
+  }
+}
+
 

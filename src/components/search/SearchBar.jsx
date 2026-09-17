@@ -22,7 +22,7 @@ export const SearchBar = forwardRef(function SearchBar(
     'Nghỉ việc',
     'Đổi bằng lái',
     'Thuế',
-    'Nênkin',
+    'Nenkin',
   ];
 
   // Perform intelligent real-time discovery
@@ -98,6 +98,7 @@ export const SearchBar = forwardRef(function SearchBar(
           <input
             ref={ref}
             type="search"
+            size="1"
             className="search-input"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
