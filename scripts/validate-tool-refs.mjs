@@ -6,18 +6,11 @@
  * - articles (relatedToolIds and toolCTA sections)
  * - categories (relatedToolIds)
  * - problems (relatedToolIds and recommendedToolId)
- * - homepage featured tools (ToolShowcase & UsefulToday)
+ * - homepage featured tools (src/data/homepage.js)
  *
  * Asserts zero orphan IDs against the Toolio compatibility snapshot.
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const rootDir = path.resolve(__dirname, '..');
 
 // 1. Load Toolio Snapshot
 const { TOOLIO_SNAPSHOT } = await import('../src/services/toolRegistry/toolioSnapshot.js');
@@ -69,26 +62,13 @@ for (const problem of USER_PROBLEMS) {
 }
 
 // 5. Load Homepage Featured Tools
-const homepageRefs = [];
-
-// Parse ToolShowcase.jsx
-const toolShowcasePath = path.join(rootDir, 'src/components/sections/ToolShowcase.jsx');
-const toolShowcaseContent = fs.readFileSync(toolShowcasePath, 'utf8');
-const featuredMatch = toolShowcaseContent.match(/FEATURED_TOOL_IDS\s*=\s*\[([\s\S]*?)\];/);
-if (featuredMatch) {
-  const ids = [...featuredMatch[1].matchAll(/'([^']+)'/g)].map((m) => m[1]);
-  for (const id of ids) {
-    homepageRefs.push({ source: 'homepage:tool-showcase', toolId: id });
-  }
-}
-
-// Parse UsefulToday.jsx
-const usefulTodayPath = path.join(rootDir, 'src/components/sections/UsefulToday.jsx');
-const usefulTodayContent = fs.readFileSync(usefulTodayPath, 'utf8');
-const usefulMatch = usefulTodayContent.match(/getToolById\(['"]([^'"]+)['"]\)/);
-if (usefulMatch) {
-  homepageRefs.push({ source: 'homepage:useful-today', toolId: usefulMatch[1] });
-}
+// Imported rather than regex-scraped: the homepage tile list is plain data,
+// so a stale selector can no longer silently skip every reference.
+const { HOME_TOOL_TILES } = await import('../src/data/homepage.js');
+const homepageRefs = HOME_TOOL_TILES.map((tile) => ({
+  source: 'homepage:tool-tiles',
+  toolId: tile.toolId,
+}));
 
 // 6. Validation Execution
 const allRefs = [

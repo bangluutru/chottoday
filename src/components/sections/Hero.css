@@ -1,270 +1,218 @@
 /* ==========================================================================
-   HERO SECTION STYLES - FULL-WIDTH SURFACE SOT
+   HERO — rounded photographic band, copy on the left
    ========================================================================== */
 
 .hero-section {
-  padding: 8px 16px 28px;
-  background-color: var(--surface-canvas);
-  position: relative;
+  padding: 14px var(--gutter-mobile) 0;
 }
 
 @media (min-width: 768px) {
   .hero-section {
-    padding: 12px 24px 36px;
+    padding-left: var(--gutter-desktop);
+    padding-right: var(--gutter-desktop);
   }
 }
 
-/* Full-width Hero Shell (One Visual Surface) */
 .hero-shell {
   position: relative;
-  width: 100%;
-  max-width: 1380px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  min-height: clamp(480px, 42vw, 560px);
-  border-radius: 20px;
+  min-height: 430px;
+  border-radius: var(--radius-hero);
   border: 1px solid var(--border-card);
   overflow: hidden;
-  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
   display: flex;
   align-items: center;
+  box-shadow: var(--shadow-hero);
 }
 
-@media (min-width: 1280px) {
-  .hero-shell {
-    border-radius: 24px;
-  }
-}
-
-/* Full-width Photography Background */
-.hero-bg-picture {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
+.hero-bg-picture,
 .hero-bg-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 70% center; /* Woman stays prominent on the right */
   display: block;
 }
 
-/* Subtle Left-Side Readability Gradient Overlay */
+.hero-bg-img {
+  object-fit: cover;
+  /* Framed off-centre so the subject clears the text column */
+  object-position: 46% 40%;
+}
+
+/* Opaque under the copy, fully clear over the photo's focal point */
 .hero-overlay-gradient {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
+  inset: 0;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.97) 0%,
-    rgba(255, 255, 255, 0.92) 36%,
-    rgba(255, 255, 255, 0.58) 54%,
-    rgba(255, 255, 255, 0.15) 70%,
-    rgba(255, 255, 255, 0) 84%
+    rgba(251, 249, 245, 0.97) 0%,
+    rgba(251, 249, 245, 0.93) 34%,
+    rgba(251, 249, 245, 0.6) 52%,
+    rgba(251, 249, 245, 0.16) 72%,
+    rgba(251, 249, 245, 0) 88%
   );
 }
 
-/* Real HTML UI Overlaid on the Left */
 .hero-content-wrap {
   position: relative;
-  z-index: 3;
+  z-index: 2;
   width: 100%;
   max-width: 660px;
-  min-width: 0;
-  padding: 44px 24px 44px 48px;
+  padding: 44px 24px 40px 48px;
   display: flex;
   flex-direction: column;
 }
 
-@media (min-width: 1024px) {
-  .hero-content-wrap {
-    padding-left: 56px;
-    max-width: 680px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .hero-content-wrap {
-    padding-left: 64px;
-    max-width: 700px;
-  }
-}
-
-/* Badge Pill */
-.hero-badge-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 16px;
-  background-color: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: var(--radius-pill);
-  font-family: var(--font-body);
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 16px;
-  align-self: flex-start;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-/* Semantic H1 Headline */
 .hero-headline {
   font-family: var(--font-heading);
-  font-size: 38px;
-  line-height: 1.16;
+  font-size: 50px;
+  line-height: 1.12;
   font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 12px;
   letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0 0 14px;
+  max-width: 540px;
 }
 
-@media (min-width: 768px) {
-  .hero-headline {
-    font-size: 46px;
-  }
-}
+/* "một chút" picks up two brand hues, deepened for AA on paper */
+.hero-accent-orange { color: var(--cat-work-text); }
+.hero-accent-violet { color: var(--cat-study-text); }
 
-@media (min-width: 1200px) {
-  .hero-headline {
-    font-size: 50px;
-  }
-}
-
-.hero-accent-coral {
-  color: #FF5A5F;
-}
-
-.hero-accent-blue {
-  color: #0284C7;
-}
-
-/* Description Text */
 .hero-description {
-  font-family: var(--font-body);
-  font-size: 15.5px;
+  font-size: 16.5px;
   line-height: 1.6;
   color: var(--text-secondary);
-  margin-bottom: 24px;
+  margin: 0 0 26px;
+  max-width: 460px;
+  text-wrap: pretty;
 }
 
-@media (min-width: 768px) {
-  .hero-description {
-    font-size: 16.5px;
-  }
-}
-
-/* Search Box & Chips in Hero */
 .hero-search-box-container {
+  max-width: 632px;
   width: 100%;
-  max-width: 640px;
-  min-width: 0;
 }
 
-.hero-content-wrap .search-box-wrapper {
-  background-color: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 14px;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
-  height: 54px;
-}
+/* ==========================================================================
+   HANDWRITTEN NOTES
+   Decorative only — aria-hidden on the wrapper, pointer-events off so they
+   never intercept a tap meant for the search field beneath.
+   ========================================================================== */
 
-.hero-content-wrap .quick-intents-wrapper {
+.hero-notes {
+  position: absolute;
+  z-index: 3;
+  right: 16px;
+  top: 36px;
+  width: 220px;
   display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 14px;
-  flex-wrap: wrap;
-  max-width: 100%;
-  min-width: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+  pointer-events: none;
 }
 
-.hero-content-wrap .quick-intents-label {
-  display: none;
-}
-
-.hero-content-wrap .intent-chip {
-  height: 32px;
-  padding: 0 12px;
-  font-size: 12.5px;
+.hero-note-script {
+  font-family: var(--font-hand);
+  font-size: 23px;
+  line-height: 1.4;
   font-weight: 600;
-  border-radius: var(--radius-pill);
-  background-color: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   color: var(--text-primary);
-  white-space: nowrap;
+  text-align: center;
+  transform: rotate(-2.5deg);
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  /* Light scrim so the script stays readable wherever the photo lands */
+  background: var(--scrim-paper-soft);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
-.hero-content-wrap .intent-chip:hover {
-  background-color: #F8FAFC;
-  border-color: rgba(0, 0, 0, 0.2);
+.hero-note-sticky {
+  width: 180px;
+  padding: 18px 16px;
+  background: var(--surface-note);
+  border-radius: 4px;
+  box-shadow: var(--shadow-note);
+  transform: rotate(3.2deg);
+  font-family: var(--font-hand);
+  font-size: 21px;
+  line-height: 1.5;
+  font-weight: 600;
   color: var(--text-primary);
-  transform: translateY(-1px);
+  text-align: center;
 }
 
-/* Responsive Styles for Tablet & Mobile */
-@media (max-width: 768px) {
-  .hero-section {
-    padding: 8px 12px 20px;
+.hero-note-sticky-face {
+  display: block;
+  text-align: right;
+  font-size: 17px;
+  margin-top: 6px;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+/* The notes need the photo's right third; below that the copy column claims
+   the full width and they are dropped rather than stacked. */
+@media (max-width: 1023px) {
+  .hero-notes {
+    display: none;
   }
 
-  .hero-shell {
-    min-height: 480px;
-    border-radius: 16px;
-  }
-
-  .hero-bg-img {
-    object-position: 80% 25%;
+  .hero-content-wrap {
+    max-width: none;
+    padding: 40px 28px 36px;
   }
 
   .hero-overlay-gradient {
     background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.95) 0%,
-      rgba(255, 255, 255, 0.88) 55%,
-      rgba(255, 255, 255, 0.4) 80%,
-      rgba(255, 255, 255, 0.1) 100%
+      90deg,
+      rgba(251, 249, 245, 0.97) 0%,
+      rgba(251, 249, 245, 0.9) 55%,
+      rgba(251, 249, 245, 0.7) 100%
     );
   }
 
+  .hero-headline {
+    font-size: 42px;
+  }
+}
+
+@media (max-width: 719px) {
+  .hero-section {
+    padding-top: 10px;
+  }
+
+  .hero-shell {
+    min-height: 0;
+    border-radius: var(--radius-panel);
+  }
+
   .hero-content-wrap {
-    padding: 28px 16px 24px;
-    max-width: 100%;
+    padding: 28px 18px 26px;
   }
 
   .hero-headline {
     font-size: 32px;
-    line-height: 1.2;
+    line-height: 1.16;
   }
 
   .hero-description {
-    font-size: 14.5px;
-    margin-bottom: 18px;
+    font-size: 15px;
+    margin-bottom: 20px;
   }
 
-  .hero-content-wrap .search-box-wrapper {
-    height: 48px;
-    padding: 0 6px 0 10px;
-    gap: 6px;
-  }
-
-  .hero-content-wrap .intent-chip {
-    height: 30px;
-    padding: 0 9px;
-    font-size: 11.5px;
+  /* At this width the photo is almost entirely behind the scrim, so it is
+     dimmed further instead of competing with the headline. */
+  .hero-overlay-gradient {
+    background: linear-gradient(
+      180deg,
+      rgba(251, 249, 245, 0.95) 0%,
+      rgba(251, 249, 245, 0.88) 100%
+    );
   }
 }
-
-

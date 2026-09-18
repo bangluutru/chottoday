@@ -18,28 +18,30 @@
 .search-box-wrapper {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
   min-width: 0;
-  height: 52px;
-  padding: 0 16px;
+  height: 58px;
+  /* Tight on the right so the submit button sits flush inside the pill */
+  padding: 0 8px 0 20px;
   background-color: var(--surface-card);
-  border: 1px solid var(--border-card);
-  border-radius: var(--radius-btn);
+  border: 1px solid rgba(30, 42, 68, 0.1);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-float);
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
   position: relative;
   z-index: 20;
 }
 
 .search-box-wrapper:focus-within {
-  border-color: var(--text-primary);
-  box-shadow: var(--focus-ring-ink);
+  border-color: var(--cat-tool-accent);
+  box-shadow: var(--shadow-float), var(--focus-ring);
 }
 
 .search-icon-wrapper {
   display: flex;
   align-items: center;
-  color: var(--text-muted);
+  color: var(--text-primary);
   flex-shrink: 0;
 }
 
@@ -79,27 +81,29 @@
   color: var(--text-primary);
 }
 
+/* Deepened Ngọc rather than the bright brand hue: #2FC5D0 with white text
+   only reaches 2.0:1, while --brand-teal-deep clears AA at 4.7:1. */
 .search-submit-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  height: 38px;
-  padding: 0 18px;
-  background-color: var(--chotto-blue, #2563EB);
+  height: 42px;
+  padding: 0 26px;
+  background-color: var(--brand-teal-deep);
   color: #ffffff;
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: var(--radius-pill);
   border: none;
   flex-shrink: 0;
   cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.15s ease;
+  transition: background-color 0.15s ease;
 }
 
 .search-submit-btn:hover {
-  background-color: #1D4ED8;
-  transform: translateY(-1px);
+  background-color: var(--brand-teal-deep-hover);
 }
 
 .search-btn-icon {
@@ -108,20 +112,23 @@
 
 @media (max-width: 480px) {
   .search-box-wrapper {
-    height: 48px;
-    padding: 0 6px 0 10px;
+    height: 50px;
+    padding: 0 6px 0 14px;
     gap: 6px;
   }
   .search-input {
     font-size: 13px;
   }
+  /* The label is dropped below this width; the icon carries the action */
   .search-submit-btn {
-    height: 36px;
-    padding: 0 10px;
-    font-size: 12.5px;
-    gap: 4px;
-    white-space: nowrap;
+    height: 38px;
+    width: 38px;
+    padding: 0;
+    gap: 0;
     flex-shrink: 0;
+  }
+  .search-submit-btn span {
+    display: none;
   }
 }
 
@@ -270,36 +277,35 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 16px;
   flex-wrap: wrap;
-}
-
-.quick-intents-label {
-  font-family: var(--font-body);
-  font-size: 13px;
-  color: var(--text-muted);
-  white-space: nowrap;
 }
 
 .intent-chip {
   display: inline-flex;
   align-items: center;
   height: 34px;
-  padding: 0 14px;
+  padding: 0 15px;
   background-color: var(--surface-card);
-  border: 1px solid var(--border-card);
+  border: 1px solid rgba(30, 42, 68, 0.1);
   border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-chip);
   font-family: var(--font-body);
   font-size: 13px;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-weight: 500;
-  transition: all 0.15s ease;
+  text-decoration: none;
+  transition: border-color 0.15s ease, color 0.15s ease;
   white-space: nowrap;
 }
 
 .intent-chip:hover {
-  border-color: var(--text-primary);
-  color: var(--text-primary);
-  background-color: var(--surface-dim);
-  transform: translateY(-1px);
+  border-color: var(--cat-tool-accent);
+  color: var(--cat-tool-text);
+}
+
+.intent-chip-more {
+  padding: 0 14px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
 }

@@ -1,61 +1,104 @@
 /* ==========================================================================
-   TOOL SHOWCASE SECTION STYLES
+   CÔNG CỤ TIỆN ÍCH — compact tool tiles inside the inset panel
    ========================================================================== */
 
-.tool-showcase-header {
+.tools-section {
+  padding-top: 34px;
+  padding-bottom: 0;
+}
+
+/* auto-fit keeps the row full at every width: seven across on desktop,
+   folding to four, then three, then two, without a media query per step. */
+.tool-tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 12px;
+}
+
+.tool-tile {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: var(--space-5);
-}
-
-@media (min-width: 768px) {
-  .tool-showcase-header {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
-  }
-}
-
-.tool-notice-box {
-  background-color: var(--surface-dim);
+  align-items: center;
+  text-align: center;
+  gap: 9px;
+  padding: 16px 8px 14px;
+  background-color: var(--surface-card);
   border: 1px solid var(--border-card);
-  border-radius: var(--radius-card);
-  padding: 16px 20px;
+  border-radius: var(--radius-tile);
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+.tool-tile:hover {
+  border-color: var(--cat-tool-accent);
+  transform: translateY(-2px);
+}
+
+.tool-tile:focus-visible {
+  outline: none;
+  border-color: var(--cat-tool-accent);
+  box-shadow: var(--focus-ring);
+}
+
+.tool-tile-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-icon-box);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.tool-notice-badge {
-  background-color: var(--cat-tool-bg);
-  color: var(--cat-tool-text);
-  border: 1px solid var(--cat-tool-border);
+/* `pre-line` honours the deliberate line break in each tile label, keeping
+   two-word names stacked exactly as drawn. */
+.tool-tile-label {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-primary);
+  white-space: pre-line;
 }
 
-.tool-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+.tool-tile-caption {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--text-muted);
 }
 
-@media (min-width: 640px) {
-  .tool-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+/* Trailing placeholder tile */
+.tool-tile-more {
+  justify-content: center;
+  border-style: dashed;
+  border-color: var(--border-dashed);
+  box-shadow: none;
+}
+
+.tool-tile-more:hover {
+  border-color: var(--cat-tool-accent);
+  background-color: #F9FEFE;
+}
+
+.tool-tile-more-dots {
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+@media (max-width: 719px) {
+  .tools-section {
+    padding-top: 26px;
   }
-}
 
-@media (min-width: 1024px) {
-  .tool-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
+  .tool-tile-grid {
+    grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+    gap: 10px;
   }
-}
 
-.tool-grid-item {
-  display: flex;
-  min-width: 0;
+  .tool-tile {
+    padding: 14px 6px 12px;
+  }
 }

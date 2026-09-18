@@ -1,241 +1,227 @@
 /* ==========================================================================
-   NAVBAR STYLES (Chotto Editorial Header)
+   NAVBAR — 72px sticky bar on translucent paper
    ========================================================================== */
 
 .navbar-wrapper {
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: var(--surface-canvas);
-  border-bottom: 1px solid var(--border-subtle);
+  background: var(--scrim-paper-strong);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-card);
 }
 
 .navbar-inner {
+  height: 72px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 60px;
-  gap: 16px;
+  gap: 18px;
+  flex-wrap: nowrap;
 }
 
-@media (min-width: 768px) {
-  .navbar-inner {
-    height: 64px;
-  }
-}
+/* --- Brand ---------------------------------------------------------------- */
 
-/* Logo */
 .navbar-brand {
   display: flex;
-  align-items: center;
-  min-height: var(--touch-target-min);
-  padding: 4px 0;
+  flex-direction: column;
+  gap: 3px;
   flex-shrink: 0;
+  text-decoration: none;
 }
 
-.navbar-logo-img {
-  height: 30px;
-  width: auto;
-  display: block;
+.navbar-logo {
+  width: 132px;
+  overflow: visible;
 }
 
-@media (min-width: 768px) {
-  .navbar-logo-img {
-    height: 32px;
-  }
+.navbar-tagline {
+  font-size: 10.5px;
+  line-height: 1.2;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
-/* Desktop Nav Links */
+/* --- Primary navigation --------------------------------------------------- */
+
 .navbar-nav {
-  display: none;
+  display: flex;
   align-items: center;
-  gap: 20px;
-}
-
-@media (min-width: 960px) {
-  .navbar-nav {
-    display: flex;
-  }
-}
-
-@media (min-width: 1200px) {
-  .navbar-nav {
-    gap: 24px;
-  }
+  gap: 14px;
+  margin-left: 4px;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .navbar-link {
-  font-family: var(--font-body);
   font-size: 14px;
   font-weight: 500;
   color: var(--text-secondary);
-  padding: 8px 0;
-  position: relative;
-  transition: color 0.15s ease;
-  white-space: nowrap;
   text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  padding: 6px 0;
+  border-bottom: 2.5px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
 
 .navbar-link:hover {
   color: var(--text-primary);
 }
 
+/* Active tab carries the coral underline from the brand palette */
 .navbar-link.active {
-  color: var(--text-primary);
   font-weight: 600;
-}
-
-.navbar-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  height: 2.5px;
-  background-color: var(--color-brand, #FF6B6B);
-  border-radius: var(--radius-pill);
+  color: var(--text-primary);
+  border-bottom-color: var(--cat-health-accent);
 }
 
 .navbar-dropdown-link {
-  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
-/* Right Actions (Integrated Search + Language) */
+/* --- Right-hand actions --------------------------------------------------- */
+
 .navbar-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
+  gap: 10px;
+  margin-left: auto;
+  min-width: 0;
+  flex: 1 1 auto;
+  justify-content: flex-end;
 }
 
-/* Integrated Search Input (Desktop) */
+/* `flex: 1 1 0` + `min-width: 0` makes the pill the only element that gives
+   way as the viewport narrows, so the nav links stay on one line. */
 .navbar-search-form {
-  display: none;
+  display: flex;
   align-items: center;
-  position: relative;
-  width: 250px;
+  gap: 9px;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 430px;
+  height: 42px;
+  padding: 0 16px;
+  background: var(--surface-dim);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-pill);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-@media (min-width: 1024px) {
-  .navbar-search-form {
-    display: flex;
-    width: 280px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .navbar-search-form {
-    width: 310px;
-  }
+.navbar-search-form:focus-within {
+  border-color: var(--cat-tool-accent);
+  box-shadow: var(--focus-ring);
 }
 
 .navbar-search-icon {
-  position: absolute;
-  left: 12px;
+  flex-shrink: 0;
   color: var(--text-muted);
-  pointer-events: none;
 }
 
 .navbar-search-input {
-  width: 100%;
-  height: 36px;
-  padding: 0 12px 0 34px;
-  background-color: var(--surface-dim);
-  border: 1px solid var(--border-card);
-  border-radius: var(--radius-pill);
-  font-family: var(--font-body);
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
   font-size: 13px;
   color: var(--text-primary);
-  transition: all 0.15s ease;
-  outline: none;
-}
-
-.navbar-search-input:focus {
-  background-color: var(--surface-card);
-  border-color: var(--text-muted);
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.04);
 }
 
 .navbar-search-input::placeholder {
   color: var(--text-muted);
-  font-size: 12.5px;
 }
 
-/* Language Selector Pill */
-.navbar-lang-pill {
+/* Strip the WebKit search decorations so the pill stays flat */
+.navbar-search-input::-webkit-search-decoration,
+.navbar-search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.navbar-lang-btn {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-card);
+  background: var(--surface-card);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.navbar-lang-btn:hover {
+  background: var(--surface-dim);
+  color: var(--text-primary);
+}
+
+/* Mobile-only controls, hidden on desktop */
+.navbar-mobile-search-btn,
+.navbar-menu-btn {
   display: none;
   align-items: center;
-  gap: 4px;
-  height: 34px;
-  padding: 0 12px;
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-card);
-  border-radius: var(--radius-pill);
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-@media (min-width: 768px) {
-  .navbar-lang-pill {
-    display: inline-flex;
-  }
-}
-
-.navbar-lang-pill:hover {
-  background-color: var(--surface-dim);
-}
-
-/* Mobile Search Icon Button */
-.navbar-mobile-search-btn {
-  display: flex;
-  align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border: 1px solid var(--border-card);
+  background: var(--surface-card);
   border-radius: var(--radius-pill);
   color: var(--text-primary);
-  border: 1px solid var(--border-card);
-  background-color: var(--surface-card);
-  cursor: pointer;
 }
 
-@media (min-width: 1024px) {
-  .navbar-mobile-search-btn {
-    display: none;
-  }
-}
-
-/* Mobile Hamburger Button */
-.navbar-menu-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  border: 1px solid var(--border-card);
-  background-color: var(--surface-card);
-  transition: background-color 0.15s ease;
-  cursor: pointer;
-}
-
+.navbar-mobile-search-btn:hover,
 .navbar-menu-btn:hover {
-  background-color: var(--surface-dim);
+  background: var(--surface-dim);
 }
 
-@media (min-width: 960px) {
-  .navbar-menu-btn {
+.navbar-wrapper :is(.navbar-link, .navbar-lang-btn, .navbar-mobile-search-btn, .navbar-menu-btn, .navbar-brand):focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+/* Below 1080px the five nav links plus a usable search pill no longer fit,
+   so navigation folds into the drawer. */
+@media (max-width: 1079px) {
+  .navbar-nav {
     display: none;
+  }
+
+  .navbar-menu-btn {
+    display: flex;
   }
 }
 
+@media (max-width: 719px) {
+  .navbar-inner {
+    height: 64px;
+    gap: 12px;
+  }
+
+  .navbar-logo {
+    width: 108px;
+  }
+
+  .navbar-tagline {
+    display: none;
+  }
+
+  /* The pill is replaced by an icon that focuses the hero search */
+  .navbar-search-form,
+  .navbar-lang-btn {
+    display: none;
+  }
+
+  .navbar-mobile-search-btn {
+    display: flex;
+  }
+}

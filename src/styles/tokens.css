@@ -108,3 +108,59 @@
   --focus-ring: 0 0 0 3px rgba(47, 197, 208, 0.4);
   --focus-ring-ink: 0 0 0 3px rgba(30, 42, 68, 0.3);
 }
+
+/* ==========================================================================
+   HOMEPAGE IDENTITY LAYER
+   Added for the Chotto homepage redesign ("Chotto - Trang chu" design handoff).
+   Everything below is derived from the six brand colours already declared
+   above — no new hues, only the surfaces, radii and deepened text variants the
+   homepage composition needs.
+   ========================================================================== */
+
+:root {
+  /* --- Brand-derived interactive colours ---------------------------------- */
+  /* Ngọc (#2FC5D0) only reaches 2.0:1 on white, so solid teal controls use the
+     deepened variant for AA text contrast. The bright brand hue stays for
+     borders, fills and focus rings. */
+  --brand-teal-deep: #0B7F8A;        /* 4.7:1 on white */
+  --brand-teal-deep-hover: #0A6E78;  /* 5.6:1 on white */
+  /* Facebook's exact blue is kept for the icon-only social chip, where the
+     3:1 non-text threshold applies. The labelled button needs 4.5:1 for its
+     white text, which #1877F2 misses at 4.23:1, so it uses Facebook's own
+     darker hover blue (4.73:1) as its resting fill. */
+  --brand-facebook: #1877F2;
+  --brand-facebook-solid: #166FE5;
+  --brand-facebook-solid-hover: #1466D8;
+  --brand-youtube: #FF0000;
+
+  /* --- Homepage surfaces -------------------------------------------------- */
+  --surface-panel: #FDFCFA;      /* Inset panel behind tool & topic grids */
+  --surface-note: #FBF1BE;       /* Sticky-note yellow (hero annotation) */
+  --border-panel: #EFEBE2;       /* Panel edge, one step softer than cards */
+  --border-hairline: #F0EDE6;    /* List row dividers */
+  --border-dashed: #D8D3C8;      /* "Xem thêm" placeholder tile */
+
+  /* Scrim behind handwriting laid over photography */
+  --scrim-paper-strong: rgba(251, 249, 245, 0.92);
+  --scrim-paper-soft: rgba(251, 249, 245, 0.74);
+
+  /* --- Homepage typography ------------------------------------------------ */
+  /* Dancing Script carries a vietnamese subset; the fallbacks are only there
+     for the brief window before the webfont resolves. */
+  --font-hand: 'Dancing Script', 'Be Vietnam Pro', cursive;
+
+  /* --- Homepage radii ----------------------------------------------------- */
+  --radius-hero: 22px;
+  --radius-panel: 20px;
+  --radius-banner: 18px;
+  --radius-media-card: 16px;
+  --radius-tile: 15px;
+  --radius-icon-box: 13px;
+
+  /* --- Homepage elevation ------------------------------------------------- */
+  --shadow-hero: 0 8px 30px rgba(30, 42, 68, 0.05);
+  --shadow-card: 0 2px 8px rgba(30, 42, 68, 0.03);
+  --shadow-float: 0 6px 22px rgba(30, 42, 68, 0.09);
+  --shadow-chip: 0 2px 6px rgba(30, 42, 68, 0.05);
+  --shadow-note: 0 10px 24px rgba(30, 42, 68, 0.14);
+}

@@ -1,80 +1,142 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './ToolShowcase.css';
-import { getToolsByIds, buildToolUrl } from '../../services/toolRegistry';
-import { ToolCard } from '../cards/ToolCard';
-import { ExternalLinkIcon } from '../common/Icons';
-import { TOOLIO_BASE_URL } from '../../config/constants';
+import { getToolById, buildToolUrl } from '../../services/toolRegistry';
+import { ArrowRightIcon } from '../common/Icons';
+import { HOME_TOOL_TILES } from '../../data/homepage.js';
 
-// Homepage decides which tool IDs to feature for discovery
-export const FEATURED_TOOL_IDS = [
-  'japan-tax-simulator',
-  'id-photo-studio',
-  'pdf-toolkit',
-  'social-insurance-jp',
-];
+/**
+ * Tile glyphs.
+ *
+ * Drawn inline on a 48-unit grid rather than pulled from /icons, because these
+ * six need a shared stroke weight (3.5) and a single brand accent each — the
+ * public icon set is a different, heavier family.
+ */
+const TILE_ICONS = {
+  calculator: (
+    <svg width="24" height="24" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <rect x="11" y="7" width="26" height="34" rx="5" stroke="var(--chotto-ink)" strokeWidth="3.5" />
+      <rect x="16" y="12" width="16" height="7" rx="2" fill="var(--chotto-green)" />
+      <circle cx="18" cy="26" r="2.2" fill="var(--chotto-ink)" />
+      <circle cx="24" cy="26" r="2.2" fill="var(--chotto-ink)" />
+      <circle cx="30" cy="26" r="2.2" fill="var(--chotto-ink)" />
+      <circle cx="18" cy="33" r="2.2" fill="var(--chotto-ink)" />
+      <circle cx="24" cy="33" r="2.2" fill="var(--chotto-ink)" />
+      <circle cx="30" cy="33" r="2.2" fill="var(--chotto-green)" />
+    </svg>
+  ),
+  truck: (
+    <svg width="24" height="24" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <rect x="12" y="7" width="24" height="28" rx="6" stroke="var(--chotto-ink)" strokeWidth="3.5" />
+      <rect x="17" y="13" width="14" height="8" rx="2" fill="var(--chotto-cyan)" />
+      <path d="M17 41l3-6M31 41l-3-6" stroke="var(--chotto-ink)" strokeWidth="3.5" strokeLinecap="round" />
+      <circle cx="18" cy="29" r="2.2" fill="var(--chotto-ink)" />
+      <circle cx="30" cy="29" r="2.2" fill="var(--chotto-ink)" />
+    </svg>
+  ),
+  shield: (
+    <svg width="24" height="24" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path
+        d="M24 6l14 5v13c0 9-6 15.5-14 18-8-2.5-14-9-14-18V11z"
+        stroke="var(--chotto-ink)"
+        strokeWidth="3.5"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M17 24l5 5 9-10"
+        stroke="var(--chotto-green)"
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  life: <img src="/icons/icon-life.svg" alt="" width="26" height="26" />,
+  doc: <img src="/icons/icon-doc.svg" alt="" width="26" height="26" />,
+  jar: (
+    <svg width="24" height="24" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path
+        d="M18 8h12l-3 6h-6z"
+        fill="var(--chotto-orange)"
+        stroke="var(--chotto-ink)"
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M27 14c8 3 13 10 13 17 0 5-4 8-16 8S8 36 8 31c0-7 5-14 13-17z"
+        stroke="var(--chotto-ink)"
+        strokeWidth="3.5"
+        strokeLinejoin="round"
+      />
+      <path d="M24 22v13M20 26h8M20 31h8" stroke="var(--chotto-ink)" strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  ),
+};
 
+/**
+ * "Công cụ tiện ích" — a row of compact tool tiles opening in Toolio.
+ *
+ * Tiles whose tool is missing from the registry snapshot are skipped rather
+ * than rendered as dead links.
+ */
 export function ToolShowcase() {
-  const featuredTools = getToolsByIds(FEATURED_TOOL_IDS);
+  const tiles = HOME_TOOL_TILES.map((tile) => {
+    const tool = getToolById(tile.toolId);
+    if (!tool) return null;
+    const url = buildToolUrl(tool.id, { source: 'homepage' });
+    if (!url) return null;
+    return { ...tile, tool, url };
+  }).filter(Boolean);
 
   return (
-    <section className="section" id="tools" aria-labelledby="tools-heading">
+    <section className="tools-section" id="tools" aria-labelledby="tools-heading">
       <div className="container">
-        {/* Section Header */}
-        <div className="tool-showcase-header">
-          <div>
-            <div className="section-eyebrow">
-              Công cụ tiện ích
+        <div className="chotto-panel">
+          <div className="section-head-bar">
+            <div className="section-head-icon head-icon-tool">
+              <img src="/icons/icon-tool.svg" alt="" width="26" height="26" />
             </div>
-            <h2 id="tools-heading" className="text-h2">
-              Một chút công cụ
-            </h2>
-            <p className="text-body">
-              Các miniapp độc lập trên nền tảng Toolio giúp bạn tính toán, tạo biểu mẫu và xử lý tác vụ tại chỗ.
-            </p>
+            <div className="section-head-left">
+              <h2 id="tools-heading" className="section-title-with-icon">Công cụ tiện ích</h2>
+              <p className="section-desc-subtle">
+                Những công cụ nhỏ giúp bạn tiết kiệm thời gian và xử lý mọi việc dễ dàng hơn.
+              </p>
+            </div>
+            <Link to="/topics/tools" className="section-link-more">
+              <span>Xem tất cả</span>
+              <ArrowRightIcon size={14} />
+            </Link>
           </div>
 
-          <a
-            href={TOOLIO_BASE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary btn-sm"
-          >
-            <span>Khám phá toàn bộ công cụ</span>
-            <ExternalLinkIcon size={14} className="icon-inline-right" />
-          </a>
-        </div>
+          <div className="tool-tile-grid">
+            {tiles.map((tile) => (
+              <a
+                key={tile.toolId}
+                href={tile.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="tool-tile"
+                /* The registry name is the real, unabbreviated label */
+                aria-label={`${tile.tool.name} — mở trong Toolio`}
+                title={tile.tool.name}
+              >
+                <span className={`tool-tile-icon head-icon-${tile.tint}`}>
+                  {TILE_ICONS[tile.icon]}
+                </span>
+                <span className="tool-tile-label">{tile.label}</span>
+                <span className="tool-tile-caption">{tile.caption}</span>
+              </a>
+            ))}
 
-        {/* Informative ecosystem notice (Decoupled architecture) */}
-        <div className="tool-notice-box">
-          <div className="text-body">
-            <strong>Nguyên tắc Chotto:</strong> Nội dung là điểm bắt đầu, công cụ là điểm kết thúc. Các công cụ xử lý dữ liệu ngay trên trình duyệt của bạn, bảo mật tuyệt đối.
+            <Link to="/topics/tools" className="tool-tile tool-tile-more">
+              <span className="tool-tile-more-dots" aria-hidden="true">•••</span>
+              <span className="tool-tile-label">{'Xem thêm\ncông cụ'}</span>
+            </Link>
           </div>
-          <span className="chotto-chip tool-notice-badge">
-            toolio.chottoday.com
-          </span>
-        </div>
-
-        {/* 4 Selected Miniapps Grid */}
-        <div className="tool-grid">
-          {featuredTools.map((tool) => {
-            const toolUrl = buildToolUrl(tool.id, { source: 'homepage' });
-            if (!toolUrl) return null;
-            return (
-              <div key={tool.id} className="tool-grid-item">
-                <ToolCard
-                  title={tool.name}
-                  description={tool.description}
-                  category={tool.domain === 'japan-life' ? 'Đời sống Nhật' : 'Tiện ích'}
-                  categoryKey="tool"
-                  badge={tool.processing === 'browser' ? 'Chạy trên trình duyệt' : 'Xử lý an toàn'}
-                  stats={tool.domain === 'japan-life' ? 'Nhật Bản' : 'Đa năng'}
-                  toolioPath={toolUrl}
-                />
-              </div>
-            );
-          })}
         </div>
       </div>
     </section>
   );
 }
+
+export default ToolShowcase;

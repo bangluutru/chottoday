@@ -4,6 +4,7 @@ import './SearchBar.css';
 import { SearchIcon, CloseIcon, ArrowRightIcon, ExternalLinkIcon } from '../common/Icons';
 import { discover, setEphemeralQuery } from '../../services/discovery/index.js';
 import { buildToolUrl } from '../../services/toolRegistry/index.js';
+import { HOME_SEARCH_CHIPS } from '../../data/homepage.js';
 
 export const SearchBar = forwardRef(function SearchBar(
   { onSearch, initialValue = '' },
@@ -15,15 +16,8 @@ export const SearchBar = forwardRef(function SearchBar(
   const containerRef = useRef(null);
   const navigate = useNavigate();
 
-  // Natural problem-oriented quick intent hints matching visual SOT
-  const quickIntents = [
-    'Mất thẻ zairyu',
-    'Lương 30 man',
-    'Nghỉ việc',
-    'Đổi bằng lái',
-    'Thuế',
-    'Nenkin',
-  ];
+  // Quick intent chips sit directly under the field, as in the design
+  const quickIntents = HOME_SEARCH_CHIPS;
 
   // Perform intelligent real-time discovery
   useEffect(() => {
@@ -110,7 +104,7 @@ export const SearchBar = forwardRef(function SearchBar(
                 setShowSuggestions(false);
               }
             }}
-            placeholder="Bạn đang gặp vấn đề gì? Ví dụ: mất thẻ zairyu, lương 30 man, nghỉ việc…"
+            placeholder="Bạn đang tìm gì? (ví dụ: thuế, đổi bằng lái…)"
             aria-label="Nhập vấn đề hoặc từ khóa cần tìm kiếm"
             autoComplete="off"
             spellCheck="false"
@@ -255,8 +249,7 @@ export const SearchBar = forwardRef(function SearchBar(
       </form>
 
       {/* Quick Intents / Suggested queries */}
-      <div className="quick-intents-wrapper" aria-label="Gợi ý tìm kiếm phổ biến">
-        <span className="quick-intents-label">Vấn đề phổ biến:</span>
+      <div className="quick-intents-wrapper" role="group" aria-label="Gợi ý tìm kiếm phổ biến">
         {quickIntents.map((intent) => (
           <button
             key={intent}
@@ -267,6 +260,10 @@ export const SearchBar = forwardRef(function SearchBar(
             {intent}
           </button>
         ))}
+        {/* Overflow affordance: the full keyword set lives on the topics grid */}
+        <a href="/#topics" className="intent-chip intent-chip-more" aria-label="Xem thêm từ khoá">
+          •••
+        </a>
       </div>
     </div>
   );
