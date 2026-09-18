@@ -19,7 +19,7 @@ export function Navbar({
     const trimmed = navSearch.trim();
     if (!trimmed) return;
     setEphemeralQuery(trimmed);
-    navigate('/articles');
+    navigate(`/search?q=${encodeURIComponent(trimmed)}`);
     setNavSearch('');
   };
 
@@ -39,16 +39,16 @@ export function Navbar({
           <NavLink to="/articles" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
             Bài viết
           </NavLink>
-          <NavLink to="/topics/tools" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
+          <NavLink to="/tools" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
             Công cụ
           </NavLink>
           <a href="/#topics" className="navbar-link navbar-dropdown-link">
             <span>Chủ đề</span>
             <ChevronDownIcon size={11} />
           </a>
-          <a href="/#community" className="navbar-link">
+          <NavLink to="/about" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
             Về Chotto
-          </a>
+          </NavLink>
         </nav>
 
         {/* Right actions: the search pill takes all remaining width and is the

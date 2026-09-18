@@ -5,6 +5,31 @@ import { getToolById, isToolAvailable, buildToolUrl } from '../../services/toolR
 import { trackEvent } from '../../services/analytics';
 
 /**
+ * Stable anchor for a level-2 heading.
+ *
+ * Index-based rather than slugified from the text: two sections can legitimately
+ * repeat a heading, and a Vietnamese slug would change the moment an editor
+ * fixes a typo, silently breaking every in-page link to it.
+ */
+export function headingAnchorId(index) {
+  return `muc-${index + 1}`;
+}
+
+/**
+ * Level-2 headings of an article, in order, for the table of contents.
+ * Shares `headingAnchorId` with the renderer so the two can never drift.
+ */
+export function buildTableOfContents(sections = []) {
+  const toc = [];
+  sections.forEach((section) => {
+    if (section.type === 'heading' && section.level !== 3) {
+      toc.push({ id: headingAnchorId(toc.length), text: section.text });
+    }
+  });
+  return toc;
+}
+
+/**
  * Lightweight inline text parser converting **bold** to <strong>
  * without pulling in heavy Markdown parser dependencies.
  */
@@ -24,6 +49,9 @@ function renderFormattedText(text) {
 export function ArticleRenderer({ sections = [] }) {
   if (!sections || sections.length === 0) return null;
 
+  // Counts level-2 headings as they are rendered so anchors match the TOC.
+  let headingIndex = -1;
+
   return (
     <div className="article-reader">
       {sections.map((section, idx) => {
@@ -36,10 +64,16 @@ export function ArticleRenderer({ sections = [] }) {
             );
 
           case 'heading': {
-            const HeadingTag = section.level === 3 ? 'h3' : 'h2';
-            const headingClass = section.level === 3 ? 'article-h3' : 'article-h2';
+            const isSubheading = section.level === 3;
+            const HeadingTag = isSubheading ? 'h3' : 'h2';
+            const headingClass = isSubheading ? 'article-h3' : 'article-h2';
+            if (!isSubheading) headingIndex += 1;
             return (
-              <HeadingTag key={idx} className={headingClass}>
+              <HeadingTag
+                key={idx}
+                id={isSubheading ? undefined : headingAnchorId(headingIndex)}
+                className={headingClass}
+              >
                 {renderFormattedText(section.text)}
               </HeadingTag>
             );

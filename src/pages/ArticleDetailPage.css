@@ -9,9 +9,11 @@
   padding-bottom: 72px;
 }
 
+/* The measure widened from 820px to the site container when the article gained
+   its sidebar; the prose column below keeps the comfortable reading width. */
 .article-container {
   width: 100%;
-  max-width: 820px;
+  max-width: var(--container-max-width);
   margin-left: auto;
   margin-right: auto;
   padding-left: var(--gutter-mobile);
@@ -42,40 +44,6 @@
 
 .article-not-found-btn {
   display: inline-flex;
-}
-
-/* Breadcrumb */
-.breadcrumb-nav {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-}
-
-.breadcrumb-link {
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color 0.15s ease;
-}
-
-.breadcrumb-link:hover {
-  color: var(--text-primary);
-}
-
-.breadcrumb-separator {
-  color: var(--border-divider);
-}
-
-.breadcrumb-current {
-  color: var(--text-secondary);
-  font-weight: 500;
-  max-width: 320px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* Article Header */
@@ -639,5 +607,275 @@
 
   .share-btn {
     flex: 1;
+  }
+}
+
+/* ==========================================================================
+   LAYOUT: ARTICLE (3/4) + SIDEBAR (1/4)
+   Design: "Chotto - Bai viet chi tiet" (handoff §6)
+   ========================================================================== */
+
+.article-layout {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 18px;
+}
+
+.article-main {
+  flex: 3 1 560px;
+  min-width: 0;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-panel);
+  padding: 28px 26px 32px;
+}
+
+/* --- Orientation row: table of contents + tool card ---------------------- */
+
+.article-orientation-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: stretch;
+  margin-bottom: 34px;
+}
+
+.article-toc {
+  flex: 1 1 262px;
+  min-width: 0;
+  background-color: var(--surface-canvas);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-media-card);
+  padding: 18px 20px 20px;
+}
+
+.article-toc-title {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.article-toc-list {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.article-toc-list a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.article-toc-list a:hover {
+  color: var(--brand-teal-deep-hover);
+}
+
+.article-tool-card {
+  flex: 1 1 262px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--cat-tool-bg);
+  border: 1px solid var(--cat-tool-border);
+  border-radius: var(--radius-media-card);
+  padding: 18px 20px 20px;
+}
+
+.article-tool-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background-color: var(--surface-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.article-tool-name {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.article-tool-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0 0 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.article-tool-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  margin-top: auto;
+  background-color: var(--chotto-ink);
+  color: var(--text-inverse);
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.article-tool-btn:hover {
+  opacity: 0.92;
+  color: var(--text-inverse);
+}
+
+.article-tool-note {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--cat-tool-text);
+  margin-top: 10px;
+}
+
+/* --- Sidebar ------------------------------------------------------------- */
+
+.article-aside {
+  flex: 1 1 236px;
+  min-width: 0;
+  max-width: 284px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 88px;
+}
+
+.article-aside-card {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-banner);
+  padding: 18px;
+}
+
+.article-aside-title {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.article-aside-related {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid var(--border-hairline);
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.article-aside-related:hover {
+  opacity: 0.82;
+}
+
+.article-aside-thumb {
+  width: 56px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.article-aside-related-body {
+  min-width: 0;
+}
+
+.article-aside-related-title {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 13.5px;
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.article-aside-related-meta {
+  display: block;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.article-aside-cta {
+  background: var(--gradient-mint);
+  border: 1px solid var(--border-mint);
+  border-radius: var(--radius-banner);
+  padding: 20px;
+}
+
+.article-aside-cta-note {
+  font-family: var(--font-hand);
+  font-size: 21px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 14px;
+}
+
+.article-aside-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px;
+  background-color: var(--brand-facebook-solid);
+  color: #ffffff;
+  border-radius: var(--radius-pill);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.article-aside-cta-btn:hover {
+  background-color: var(--brand-facebook-solid-hover);
+  color: #ffffff;
+}
+
+/* The sidebar share row wraps instead of squeezing its labels. */
+.article-aside-card .share-buttons-group {
+  flex-wrap: wrap;
+}
+
+.article-aside-card .share-btn {
+  white-space: nowrap;
+}
+
+.share-btn.feedback-btn {
+  text-decoration: none;
+}
+
+@media (max-width: 899px) {
+  .article-aside {
+    position: static;
+    max-width: none;
+    flex-basis: 100%;
+  }
+
+  .article-main {
+    padding: 22px 18px 26px;
   }
 }

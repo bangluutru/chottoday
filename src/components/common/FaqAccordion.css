@@ -1,0 +1,76 @@
+/* ==========================================================================
+   FAQ ACCORDION — /tools/:slug (lg) and /about sidebar (sm)
+   ========================================================================== */
+
+.faq-item {
+  border-top: 1px solid var(--border-hairline);
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 15px 2px;
+  min-height: var(--touch-target-min);
+  background: transparent;
+  border: 0;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  line-height: 1.45;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.faq-question:hover {
+  color: var(--brand-teal-deep-hover);
+}
+
+.faq-question:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: 8px;
+}
+
+.faq-sign {
+  flex-shrink: 0;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brand-teal-deep);
+}
+
+.faq-answer p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0 0 16px;
+  padding-right: 34px;
+  text-wrap: pretty;
+}
+
+/* Sidebar scale */
+.faq-accordion-sm .faq-question {
+  padding: 13px 2px;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.faq-accordion-sm .faq-sign {
+  font-size: 19px;
+}
+
+.faq-accordion-sm .faq-answer p {
+  font-size: 13.5px;
+  margin-bottom: 14px;
+  padding-right: 28px;
+}
+
+@media (max-width: 519px) {
+  .faq-answer p {
+    padding-right: 0;
+  }
+}

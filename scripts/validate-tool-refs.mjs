@@ -70,12 +70,49 @@ const homepageRefs = HOME_TOOL_TILES.map((tile) => ({
   toolId: tile.toolId,
 }));
 
+// 5b. Load Tool Catalogue (/tools and /tools/:slug)
+// Entries with a `calculator` run on chottoday.com itself and reference no
+// Toolio tool; everything else must resolve against the snapshot.
+const { TOOL_CATALOGUE } = await import('../src/data/tools.js');
+const { TOOL_PAGES } = await import('../src/data/toolPages.js');
+
+const catalogueRefs = TOOL_CATALOGUE.filter((entry) => !entry.calculator).map((entry) => ({
+  source: `tools:${entry.slug}`,
+  toolId: entry.toolId,
+}));
+
+// Sidebar picks on a tool page point at catalogue slugs, not Toolio IDs, so
+// they are checked against the catalogue rather than the snapshot.
+const catalogueSlugs = new Set(TOOL_CATALOGUE.map((entry) => entry.slug));
+const brokenSlugRefs = [];
+
+// Articles a catalogue entry claims must actually exist.
+const articleSlugs = new Set(ALL_ARTICLES.map((article) => article.slug));
+for (const entry of TOOL_CATALOGUE) {
+  for (const claimed of entry.articleSlugs || []) {
+    if (!articleSlugs.has(claimed)) {
+      brokenSlugRefs.push({ source: `tools:${entry.slug} (articleSlugs)`, slug: claimed });
+    }
+  }
+}
+for (const [pageSlug, page] of Object.entries(TOOL_PAGES)) {
+  if (!catalogueSlugs.has(pageSlug)) {
+    brokenSlugRefs.push({ source: 'toolPages', slug: pageSlug });
+  }
+  for (const relatedSlug of page.relatedToolSlugs || []) {
+    if (!catalogueSlugs.has(relatedSlug)) {
+      brokenSlugRefs.push({ source: `toolPages:${pageSlug}`, slug: relatedSlug });
+    }
+  }
+}
+
 // 6. Validation Execution
 const allRefs = [
   ...articleRefs.map((r) => ({ ...r, group: 'Articles' })),
   ...categoryRefs.map((r) => ({ ...r, group: 'Categories' })),
   ...problemRefs.map((r) => ({ ...r, group: 'Problems' })),
   ...homepageRefs.map((r) => ({ ...r, group: 'Homepage' })),
+  ...catalogueRefs.map((r) => ({ ...r, group: 'Tool catalogue' })),
 ];
 
 const orphans = [];
@@ -94,14 +131,23 @@ console.log(`Articles:    ${String(articleRefs.length).padStart(2)} references`)
 console.log(`Categories:  ${String(categoryRefs.length).padStart(2)} references`);
 console.log(`Problems:    ${String(problemRefs.length).padStart(2)} references`);
 console.log(`Homepage:    ${String(homepageRefs.length).padStart(2)} references`);
+console.log(`Tools:       ${String(catalogueRefs.length).padStart(2)} references`);
 console.log(`Total:       ${String(allRefs.length).padStart(2)}`);
 console.log(`Resolved:    ${String(resolvedCount).padStart(2)}`);
 console.log(`Orphan:      ${String(orphans.length).padStart(2)}`);
 
-if (orphans.length > 0) {
-  console.error('\n❌ Validation FAILED: Found orphan tool IDs:');
-  for (const o of orphans) {
-    console.error(`  - ${o.toolId} (in ${o.source})`);
+if (orphans.length > 0 || brokenSlugRefs.length > 0) {
+  if (orphans.length > 0) {
+    console.error('\n❌ Validation FAILED: Found orphan tool IDs:');
+    for (const o of orphans) {
+      console.error(`  - ${o.toolId} (in ${o.source})`);
+    }
+  }
+  if (brokenSlugRefs.length > 0) {
+    console.error('\n❌ Validation FAILED: Found catalogue slugs with no entry:');
+    for (const o of brokenSlugRefs) {
+      console.error(`  - ${o.slug} (in ${o.source})`);
+    }
   }
   process.exit(1);
 } else {

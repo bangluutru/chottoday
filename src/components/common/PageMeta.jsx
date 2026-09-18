@@ -51,6 +51,7 @@ export function PageMeta({
   ogDescription,
   ogImage = DEFAULT_IMAGE,
   ogType = 'website',
+  robots = 'index, follow',
   structuredData,
 }) {
   const location = useLocation();
@@ -77,6 +78,10 @@ export function PageMeta({
     // 3. Meta Description
     setMetaTag('name', 'description', description);
 
+    // 3b. Robots — written on every page so a noindex view (search results)
+    // cannot leak onto the next route during client-side navigation.
+    setMetaTag('name', 'robots', robots);
+
     // 4. OpenGraph tags
     setMetaTag('property', 'og:title', finalOgTitle);
     setMetaTag('property', 'og:description', finalOgDesc);
@@ -97,7 +102,7 @@ export function PageMeta({
       // Clean up structured data on page transition
       setStructuredDataTag(null);
     };
-  }, [title, description, canonical, ogTitle, ogDescription, ogImage, ogType, structuredData, location.pathname]);
+  }, [title, description, canonical, ogTitle, ogDescription, ogImage, ogType, robots, structuredData, location.pathname]);
 
   return null;
 }

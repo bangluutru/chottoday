@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './Footer.css';
 import { FacebookIcon, YouTubeIcon, TikTokIcon, InstagramIcon } from '../common/Icons';
 import { ChottoWordmark } from '../common/ChottoWordmark';
+import { FANPAGE_URL } from '../../config/constants';
 
 const LANGUAGES = ['VI', 'JA', 'EN'];
 
@@ -17,20 +18,15 @@ export function Footer() {
           </Link>
 
           <nav className="footer-nav" aria-label="Liên kết chân trang">
-            <a href="/#community" className="footer-nav-link">Về Chotto</a>
+            <Link to="/about" className="footer-nav-link">Về Chotto</Link>
             <span className="footer-nav-sep" aria-hidden="true">|</span>
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="footer-nav-link"
-            >
-              Liên hệ
-            </a>
+            <Link to="/about#lien-he" className="footer-nav-link">Liên hệ</Link>
             <span className="footer-nav-sep" aria-hidden="true">|</span>
-            <Link to="/articles" className="footer-nav-link">Chính sách</Link>
+            <Link to="/#topics" className="footer-nav-link">Chủ đề</Link>
             <span className="footer-nav-sep" aria-hidden="true">|</span>
-            <Link to="/articles" className="footer-nav-link">Điều khoản</Link>
+            <Link to="/tools" className="footer-nav-link">Công cụ</Link>
+            <span className="footer-nav-sep" aria-hidden="true">|</span>
+            <Link to="/search" className="footer-nav-link">Tìm kiếm</Link>
             <span className="footer-nav-sep" aria-hidden="true">|</span>
             <a href="/sitemap.xml" className="footer-nav-link">Sitemap</a>
           </nav>
@@ -38,7 +34,7 @@ export function Footer() {
           <div className="footer-end">
             <div className="footer-socials" aria-label="Mạng xã hội Chotto">
               <a
-                href="https://facebook.com"
+                href={FANPAGE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer-social-btn social-facebook"

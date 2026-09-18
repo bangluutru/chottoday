@@ -53,7 +53,7 @@ export const SearchBar = forwardRef(function SearchBar(
     if (onSearch) {
       onSearch(trimmed);
     } else {
-      navigate('/articles');
+      navigate(`/search?q=${encodeURIComponent(trimmed)}`);
     }
   };
 
@@ -72,7 +72,7 @@ export const SearchBar = forwardRef(function SearchBar(
     const trimmed = query.trim();
     setShowSuggestions(false);
     setEphemeralQuery(trimmed);
-    navigate('/articles');
+    navigate(trimmed ? `/search?q=${encodeURIComponent(trimmed)}` : '/search');
   };
 
   const articles = discoveryResult?.results?.articles?.slice(0, 3) || [];

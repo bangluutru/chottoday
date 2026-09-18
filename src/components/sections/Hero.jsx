@@ -21,7 +21,9 @@ export function Hero({ searchInputRef, onSearch, showNotes = true }) {
             className="hero-bg-img"
             width="1920"
             height="960"
-            fetchPriority="high"
+            /* eslint-disable-next-line react/no-unknown-property --
+               React 18 forwards only the lowercase attribute to the DOM. */
+            fetchpriority="high"
             loading="eager"
           />
         </picture>

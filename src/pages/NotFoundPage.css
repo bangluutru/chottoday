@@ -1,28 +1,302 @@
 /* ==========================================================================
-   404 NOT FOUND PAGE STYLES
+   404 — Design: "Chotto - Trang 404" (handoff §2 / §6)
    ========================================================================== */
 
-.not-found-container {
-  text-align: center;
-  padding: 72px 0;
+.notfound-page {
+  padding: 36px 0 48px;
 }
 
-.not-found-eyebrow {
-  color: var(--cat-health-text);
+/* The 404 design runs on a narrower 1000px measure than the rest of the site. */
+.notfound-container {
+  max-width: 1000px;
 }
 
-.not-found-title {
-  margin-bottom: 16px;
-}
-
-.not-found-desc {
-  max-width: 520px;
-  margin: 0 auto 28px;
-}
-
-.not-found-actions {
+.notfound-top {
   display: flex;
-  justify-content: center;
-  gap: 12px;
+  align-items: center;
   flex-wrap: wrap;
+  gap: 28px;
+}
+
+.notfound-main {
+  flex: 1 1 420px;
+  min-width: 0;
+}
+
+.notfound-mark {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.notfound-mark-ring {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+.notfound-mark-digits {
+  font-family: var(--font-heading);
+  font-size: 56px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.notfound-mark-zero {
+  color: var(--chotto-coral);
+}
+
+.notfound-title {
+  font-family: var(--font-heading);
+  font-size: 34px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+  color: var(--text-primary);
+}
+
+.notfound-desc {
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0 0 24px;
+  max-width: 480px;
+  text-wrap: pretty;
+}
+
+.notfound-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 56px;
+  padding: 0 8px 0 18px;
+  background-color: var(--surface-card);
+  border: 1px solid rgba(30, 42, 68, 0.1);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 6px 20px rgba(30, 42, 68, 0.08);
+  max-width: 520px;
+  margin-bottom: 18px;
+}
+
+.notfound-search:focus-within {
+  border-color: var(--chotto-cyan);
+  box-shadow: var(--focus-ring);
+}
+
+.notfound-search-icon {
+  flex-shrink: 0;
+  color: var(--text-primary);
+}
+
+.notfound-search-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.notfound-search-btn {
+  display: inline-flex;
+  align-items: center;
+  height: 42px;
+  padding: 0 24px;
+  background-color: var(--brand-teal-deep);
+  color: #ffffff;
+  border: 0;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  font-weight: 600;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.notfound-search-btn:hover {
+  background-color: var(--brand-teal-deep-hover);
+}
+
+.notfound-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.notfound-btn-ink,
+.notfound-btn-plain {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 22px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.notfound-btn-ink {
+  background-color: var(--chotto-ink);
+  color: var(--text-inverse);
+}
+
+.notfound-btn-ink:hover {
+  background-color: #0f1930;
+  color: var(--text-inverse);
+}
+
+.notfound-btn-arrow {
+  font-size: 17px;
+  line-height: 1;
+}
+
+.notfound-btn-plain {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  color: var(--text-primary);
+}
+
+.notfound-btn-plain:hover {
+  border-color: var(--chotto-cyan);
+  color: var(--text-primary);
+}
+
+/* --- Sticky note + photo ------------------------------------------------- */
+
+.notfound-side {
+  flex: 1 1 300px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.notfound-note {
+  width: 230px;
+  margin: 0;
+  padding: 20px 18px;
+  background-color: var(--surface-note);
+  border-radius: 4px;
+  box-shadow: 0 12px 28px rgba(30, 42, 68, 0.15);
+  transform: rotate(3deg);
+  font-family: var(--font-hand);
+  font-size: 22px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.notfound-note-face {
+  display: block;
+  text-align: right;
+  font-size: 18px;
+  margin-top: 6px;
+}
+
+.notfound-photo {
+  width: 100%;
+  max-width: 320px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: var(--radius-media-card);
+  border: 1px solid var(--border-card);
+}
+
+/* --- Popular destinations ------------------------------------------------ */
+
+.notfound-popular {
+  margin-top: 34px;
+}
+
+.notfound-popular-title {
+  font-family: var(--font-heading);
+  font-size: 19px;
+  font-weight: 800;
+  margin: 0 0 14px;
+  color: var(--text-primary);
+}
+
+.notfound-popular-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+}
+
+.notfound-popular-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-tile);
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.notfound-popular-card:hover {
+  border-color: var(--chotto-cyan);
+  transform: translateY(-2px);
+}
+
+.notfound-popular-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notfound-popular-label {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* --- Narrow viewports ---------------------------------------------------- */
+
+@media (max-width: 519px) {
+  .notfound-mark-digits {
+    font-size: 44px;
+  }
+
+  .notfound-title {
+    font-size: 27px;
+  }
+
+  .notfound-search {
+    height: auto;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    border-radius: 20px;
+  }
+
+  .notfound-search-input {
+    height: 36px;
+    flex: 1 1 140px;
+  }
+
+  .notfound-search-btn {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
 }

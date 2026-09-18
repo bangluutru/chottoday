@@ -11,7 +11,7 @@
 
 import { TOOLIO_BASE_URL } from '../../config/constants.js';
 
-const ALLOWED_SOURCES = new Set(['homepage', 'article', 'category', 'problem', 'search']);
+const ALLOWED_SOURCES = new Set(['homepage', 'article', 'category', 'problem', 'search', 'tools']);
 
 // Canonical Toolio tool route format: '#/tools/:toolId' (optional leading slash or query)
 const CANONICAL_ROUTE_REGEX = /^(\/)?#\/tools\/[a-z0-9-]+(\?.*)?$/;
@@ -38,7 +38,7 @@ export function isValidToolioRoute(route) {
  *
  * @param {Object} tool - Normalized tool object from Toolio snapshot
  * @param {Object} [context] - Optional navigation context
- * @param {'homepage'|'article'|'category'|'problem'|'search'} [context.source] - Discovery trigger source
+ * @param {'homepage'|'article'|'category'|'problem'|'search'|'tools'} [context.source] - Discovery trigger source
  * @returns {string|null} Fully qualified Toolio URL, or null if invalid
  */
 export function buildToolUrlFromTool(tool, context = {}) {

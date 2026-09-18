@@ -1,0 +1,36 @@
+/* ==========================================================================
+   BREADCRUMB — shared across /tools, /tools/:slug, /topics/* and articles
+   ========================================================================== */
+
+.chotto-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.chotto-breadcrumb-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a.chotto-breadcrumb-link:hover {
+  color: var(--text-primary);
+}
+
+.chotto-breadcrumb-sep {
+  color: var(--border-dashed);
+}
+
+/* The current page wraps rather than truncating: Vietnamese titles are long
+   and an ellipsis at 390px hides more than it saves. */
+.chotto-breadcrumb-current {
+  color: var(--text-primary);
+  font-weight: 500;
+  min-width: 0;
+}

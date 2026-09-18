@@ -13,17 +13,26 @@ ChottoDay là nền tảng thông tin, cẩm nang hướng dẫn và cổng kế
 CHOTTO ECOSYSTEM
 chottoday.com (ChottoDay — Repo này)
 │
-├── Trang chủ (Homepage Skeleton)
-├── Cẩm nang bài viết (Articles Discovery)
-├── Hướng dẫn từng bước (Step-by-step Guides)
-├── 6 Chủ đề đời sống (Topics & Taxonomy)
-├── Tìm kiếm thông minh (Search UI)
+├── /                     Trang chủ (Homepage)
+├── /articles             Cẩm nang bài viết (Articles Discovery)
+├── /articles/:slug       Bài viết chi tiết
+├── /topics/:category     Chủ đề đời sống (Topics & Taxonomy)
+├── /problems             Tra cứu theo tình huống
+├── /search               Tìm kiếm thông minh (Search UI)
+├── /about                Về Chotto + Liên hệ (#lien-he)
+├── /tools                Tất cả công cụ tiện ích
+├── /tools/:slug          Công cụ Chotto tự chạy (vd. tính lương thực nhận)
 │
-└── Công cụ (Contextual Recommendation)
+└── Công cụ Toolio (Contextual Recommendation)
       │
       ▼
 toolio.chottoday.com (Toolio — Interactive Miniapps & Utilities)
 ```
+
+> `/tools` gộp cả hai loại: công cụ Chotto tự dựng (chạy ngay trên trang, có
+> trang riêng `/tools/:slug`) và miniapp Toolio (mở sang toolio.chottoday.com).
+> Danh mục nằm ở `src/data/tools.js`; tên và URL của miniapp luôn được phân giải
+> từ `src/services/toolRegistry` nên không bao giờ lệch với Toolio.
 
 ---
 
@@ -58,12 +67,25 @@ npm install
 # Khởi chạy dev server
 npm run dev
 
-# Build production bundle
+# Build production bundle (kèm prerender + sitemap)
 npm run build
 
 # Xem thử production build
 npm run preview
+
+# Kiểm định nội dung và tham chiếu công cụ
+npm run validate
+
+# Chạy test (discovery + công thức tính lương thực nhận)
+npm test
 ```
+
+### Biến môi trường
+
+| Biến | Mục đích |
+| --- | --- |
+| `VITE_TOOLIO_BASE_URL` | Base URL của Toolio miniapps. |
+| `VITE_CONTACT_ENDPOINT` | Endpoint nhận form liên hệ ở `/about#lien-he`. Bỏ trống thì form không giả vờ gửi thành công mà hướng người dùng sang email. |
 
 ---
 

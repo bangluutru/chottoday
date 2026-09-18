@@ -4,11 +4,11 @@
 
 .community-card {
   position: relative;
-  border: 1px solid #CFE6EF;
+  border: 1px solid var(--border-mint);
   border-radius: var(--radius-banner);
   overflow: hidden;
   /* Cool paper wash: the only gradient surface on the page */
-  background: linear-gradient(135deg, #EAF6FB 0%, #EAF7F8 55%, #EDF7EE 100%);
+  background: var(--gradient-mint-wide);
   display: flex;
   align-items: stretch;
   min-height: 250px;

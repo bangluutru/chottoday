@@ -157,14 +157,26 @@ export function MobileMenu({ isOpen, onClose, triggerRef }) {
                 </Link>
               </li>
               <li>
-                <Link to="/topics/tools" className="mobile-nav-item" onClick={onClose}>
+                <Link to="/tools" className="mobile-nav-item" onClick={onClose}>
                   <span>Công cụ Chotto</span>
                   <ArrowRightIcon size={16} color="var(--text-muted)" />
                 </Link>
               </li>
               <li>
-                <Link to="/#about" className="mobile-nav-item" onClick={onClose}>
+                <Link to="/search" className="mobile-nav-item" onClick={onClose}>
+                  <span>Tìm kiếm</span>
+                  <ArrowRightIcon size={16} color="var(--text-muted)" />
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="mobile-nav-item" onClick={onClose}>
                   <span>Về Chotto</span>
+                  <ArrowRightIcon size={16} color="var(--text-muted)" />
+                </Link>
+              </li>
+              <li>
+                <Link to="/about#lien-he" className="mobile-nav-item" onClick={onClose}>
+                  <span>Liên hệ</span>
                   <ArrowRightIcon size={16} color="var(--text-muted)" />
                 </Link>
               </li>
@@ -172,7 +184,7 @@ export function MobileMenu({ isOpen, onClose, triggerRef }) {
           </nav>
 
           <div className="mobile-categories-section">
-            <div className="mobile-section-title">6 Nhóm Chủ Đề</div>
+            <div className="mobile-section-title">{categories.length} Nhóm Chủ Đề</div>
             <div className="mobile-cat-grid" role="list">
               {categories.map((cat) => (
                 <Link

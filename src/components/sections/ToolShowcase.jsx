@@ -102,7 +102,7 @@ export function ToolShowcase() {
                 Những công cụ nhỏ giúp bạn tiết kiệm thời gian và xử lý mọi việc dễ dàng hơn.
               </p>
             </div>
-            <Link to="/topics/tools" className="section-link-more">
+            <Link to="/tools" className="section-link-more">
               <span>Xem tất cả</span>
               <ArrowRightIcon size={14} />
             </Link>
@@ -128,7 +128,7 @@ export function ToolShowcase() {
               </a>
             ))}
 
-            <Link to="/topics/tools" className="tool-tile tool-tile-more">
+            <Link to="/tools" className="tool-tile tool-tile-more">
               <span className="tool-tile-more-dots" aria-hidden="true">•••</span>
               <span className="tool-tile-label">{'Xem thêm\ncông cụ'}</span>
             </Link>

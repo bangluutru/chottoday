@@ -25,6 +25,8 @@ const SITE_URL = 'https://chottoday.com';
 const { ALL_ARTICLES } = await import('../src/content/articles/articlesList.js');
 const { CATEGORY_DEFINITIONS } = await import('../src/content/categories/categoryMap.js');
 const { isArticlePublished } = await import('../src/services/content/articleModel.js');
+const { getInternalTools } = await import('../src/data/tools.js');
+const { TOOL_PAGES } = await import('../src/data/toolPages.js');
 
 if (!fs.existsSync(distDir)) {
   console.error('❌ dist/ directory not found. Run "vite build" before prerendering.');
@@ -194,6 +196,114 @@ const problemsMeta = {
 writePage('problems', injectMeta(baseHtml, problemsMeta));
 console.log('  ✓ Prerendered: /problems');
 
+// B3. Tools Index (/tools)
+const toolsMeta = {
+  title: 'Công cụ tiện ích | Chotto',
+  description:
+    'Nhập vài thông tin, có ngay con số. Công cụ tính lương thực nhận, thuế, nenkin, chi phí chuyển nhà và thủ tục hành chính tại Nhật — miễn phí, không cần đăng ký.',
+  canonical: `${SITE_URL}/tools`,
+  ogTitle: 'Công cụ tiện ích | Chotto',
+  ogDescription:
+    'Công cụ tính lương, thuế, nenkin và thủ tục hành chính tại Nhật, miễn phí và không lưu dữ liệu.',
+  ogImage: `${SITE_URL}/images/og/og-default.png`,
+  ogUrl: `${SITE_URL}/tools`,
+  ogType: 'website',
+  structuredData: {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Công cụ tiện ích Chotto',
+    url: `${SITE_URL}/tools`,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'Chotto',
+      url: SITE_URL,
+    },
+  },
+};
+writePage('tools', injectMeta(baseHtml, toolsMeta));
+console.log('  ✓ Prerendered: /tools');
+
+// B4. Chotto-hosted tools (/tools/:slug)
+// Only catalogue entries ChottoDay renders itself get a page; Toolio entries
+// live on toolio.chottoday.com and are never indexed from here.
+const internalTools = getInternalTools();
+for (const entry of internalTools) {
+  const page = TOOL_PAGES[entry.slug] || {};
+  const toolTitle = page.seo?.title || entry.name;
+  const toolDescription = page.seo?.description || entry.description;
+  const toolMeta = {
+    title: `${toolTitle} | Chotto`,
+    description: toolDescription,
+    canonical: `${SITE_URL}/tools/${entry.slug}`,
+    ogTitle: `${toolTitle} | Chotto`,
+    ogDescription: toolDescription,
+    ogImage: `${SITE_URL}/images/og/og-default.png`,
+    ogUrl: `${SITE_URL}/tools/${entry.slug}`,
+    ogType: 'website',
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: toolTitle,
+      description: toolDescription,
+      url: `${SITE_URL}/tools/${entry.slug}`,
+      applicationCategory: 'FinanceApplication',
+      operatingSystem: 'Web',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'JPY',
+      },
+    },
+  };
+  writePage(`tools/${entry.slug}`, injectMeta(baseHtml, toolMeta));
+  console.log(`  ✓ Prerendered: /tools/${entry.slug}`);
+}
+
+// B5. About (/about)
+const aboutMeta = {
+  title: 'Về Chotto | Chotto',
+  description:
+    'Chotto tập hợp thông tin, hướng dẫn và công cụ nhỏ dành cho người Việt sống tại Nhật — viết lại bằng tiếng Việt, ngắn gọn và dễ làm theo.',
+  canonical: `${SITE_URL}/about`,
+  ogTitle: 'Về Chotto | Chotto',
+  ogDescription:
+    'Chotto tập hợp thông tin, hướng dẫn và công cụ nhỏ dành cho người Việt sống tại Nhật.',
+  ogImage: `${SITE_URL}/images/og/og-default.png`,
+  ogUrl: `${SITE_URL}/about`,
+  ogType: 'website',
+  structuredData: {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: 'Về Chotto',
+    url: `${SITE_URL}/about`,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'Chotto',
+      url: SITE_URL,
+    },
+  },
+};
+writePage('about', injectMeta(baseHtml, aboutMeta));
+console.log('  ✓ Prerendered: /about');
+
+// B6. Search (/search)
+// Result views carry the visitor's raw query, so the page ships noindex and
+// stays out of the sitemap; the canonical is always the bare /search URL.
+const searchMeta = {
+  title: 'Tìm kiếm & khám phá | Chotto',
+  description:
+    'Tìm bài viết, công cụ và chủ đề trên Chotto: thuế, nenkin, thủ tục hành chính, nhà ở, sức khoẻ và cuộc sống tại Nhật.',
+  canonical: `${SITE_URL}/search`,
+  robots: 'noindex, follow',
+  ogTitle: 'Tìm kiếm & khám phá | Chotto',
+  ogDescription: 'Tìm bài viết, công cụ và chủ đề trên Chotto.',
+  ogImage: `${SITE_URL}/images/og/og-default.png`,
+  ogUrl: `${SITE_URL}/search`,
+  ogType: 'website',
+};
+writePage('search', injectMeta(baseHtml, searchMeta));
+console.log('  ✓ Prerendered: /search (noindex)');
+
 // C. Categories (/topics/:category)
 for (const cat of CATEGORY_DEFINITIONS) {
   const catMeta = {
@@ -324,6 +434,14 @@ const sitemapUrls = [
   { loc: `${SITE_URL}/`, changefreq: 'daily', priority: '1.0', lastmod: latestArticleDate },
   { loc: `${SITE_URL}/articles`, changefreq: 'daily', priority: '0.9', lastmod: latestArticleDate },
   { loc: `${SITE_URL}/problems`, changefreq: 'weekly', priority: '0.9', lastmod: latestArticleDate },
+  { loc: `${SITE_URL}/tools`, changefreq: 'weekly', priority: '0.9', lastmod: latestArticleDate },
+  ...internalTools.map((entry) => ({
+    loc: `${SITE_URL}/tools/${entry.slug}`,
+    changefreq: 'monthly',
+    priority: '0.8',
+    lastmod: latestArticleDate,
+  })),
+  { loc: `${SITE_URL}/about`, changefreq: 'monthly', priority: '0.6', lastmod: latestArticleDate },
   ...CATEGORY_DEFINITIONS.map((c) => {
     const catArticles = publishedArticles.filter((a) => a.category === c.id);
     const catLastmod = catArticles.reduce(

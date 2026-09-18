@@ -140,6 +140,13 @@
   --border-hairline: #F0EDE6;    /* List row dividers */
   --border-dashed: #D8D3C8;      /* "Xem thêm" placeholder tile */
 
+  /* Mint CTA band: the pale blue-to-green wash behind "hỏi Chotto" panels.
+     Declared here because five surfaces share it (homepage community block,
+     /tools CTA, /search, /about sidebar, article and tool sidebars). */
+  --gradient-mint: linear-gradient(135deg, #EAF6FB 0%, #EDF7EE 100%);
+  --gradient-mint-wide: linear-gradient(135deg, #EAF6FB 0%, #EAF7F8 55%, #EDF7EE 100%);
+  --border-mint: #CFE6EF;
+
   /* Scrim behind handwriting laid over photography */
   --scrim-paper-strong: rgba(251, 249, 245, 0.92);
   --scrim-paper-soft: rgba(251, 249, 245, 0.74);

@@ -10,6 +10,10 @@ import { ArticlesIndexPage } from './pages/ArticlesIndexPage';
 import { ArticleDetailPage } from './pages/ArticleDetailPage';
 import { CategoryPage } from './pages/CategoryPage';
 import { ProblemDiscoveryPage } from './pages/ProblemDiscoveryPage';
+import { ToolsIndexPage } from './pages/ToolsIndexPage';
+import { ToolDetailPage } from './pages/ToolDetailPage';
+import { SearchResultsPage } from './pages/SearchResultsPage';
+import { AboutPage } from './pages/AboutPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { setEphemeralQuery } from './services/discovery/searchStore.js';
 
@@ -28,7 +32,7 @@ export function App() {
         searchInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     } else {
-      navigate('/articles');
+      navigate('/search');
     }
   };
 
@@ -47,7 +51,7 @@ export function App() {
   const handleSearch = (query) => {
     if (!query) return;
     setEphemeralQuery(query);
-    navigate('/articles');
+    navigate(`/search?q=${encodeURIComponent(query)}`);
   };
 
   return (
@@ -84,6 +88,10 @@ export function App() {
           <Route path="/articles/:slug" element={<ArticleDetailPage />} />
           <Route path="/topics/:category" element={<CategoryPage />} />
           <Route path="/problems" element={<ProblemDiscoveryPage />} />
+          <Route path="/tools" element={<ToolsIndexPage />} />
+          <Route path="/tools/:slug" element={<ToolDetailPage />} />
+          <Route path="/search" element={<SearchResultsPage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>

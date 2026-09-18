@@ -12,6 +12,21 @@ export const TOOLIO_BASE_URL =
   'https://toolio.chottoday.com';
 
 /**
+ * VITE_CONTACT_ENDPOINT: where the /about contact form POSTs its JSON payload.
+ *
+ * Intentionally empty by default. With no endpoint configured the form never
+ * claims a message was sent — it points the visitor at CONTACT_EMAIL instead.
+ */
+export const CONTACT_ENDPOINT =
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_CONTACT_ENDPOINT) ||
+  (typeof process !== 'undefined' && process.env?.VITE_CONTACT_ENDPOINT) ||
+  '';
+
+export const CONTACT_EMAIL = 'hello@chottoday.com';
+
+export const FANPAGE_URL = 'https://www.facebook.com/chottoday';
+
+/**
  * Builds an absolute URL pointing to a Toolio tool or subpath.
  * @param {string} path - Relative subpath or hash route, e.g. '/#/tools/japan-tax-simulator'
  * @returns {string} - Full external Toolio URL

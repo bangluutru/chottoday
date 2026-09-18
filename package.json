@@ -11,7 +11,8 @@
     "validate:tool-refs": "node scripts/validate-tool-refs.mjs",
     "validate": "npm run validate:content && npm run validate:tool-refs",
     "test:discovery": "node scripts/test-discovery.mjs",
-    "test": "npm run test:discovery"
+    "test": "npm run test:discovery && npm run test:net-salary",
+    "test:net-salary": "node scripts/test-net-salary.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
