@@ -33,5 +33,8 @@ jobs:
       - name: Validate discovery engine & zero-hallucination tests
         run: npm run test:discovery
 
+      - name: Validate net-salary calculator formula
+        run: npm run test:net-salary
+
       - name: Build production bundle & prerender SEO metadata
         run: npm run build
