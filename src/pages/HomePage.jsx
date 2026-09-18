@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Hero } from '../components/sections/Hero';
-import { UsefulToday } from '../components/sections/UsefulToday';
+import { ToolShowcase } from '../components/sections/ToolShowcase';
+import { LatestContent } from '../components/sections/LatestContent';
 import { CategoryGrid } from '../components/category/CategoryGrid';
 import { HomeContentColumns } from '../components/sections/HomeContentColumns';
-import { CommunityBlock } from '../components/sections/CommunityBlock';
 import { PageMeta } from '../components/common/PageMeta';
 import { ArrowRightIcon } from '../components/common/Icons';
 
@@ -12,48 +12,49 @@ export function HomePage({ searchInputRef, onSearch }) {
   return (
     <>
       <PageMeta
-        title="Vấn đề nhỏ, có Chotto giúp một chút."
-        description="Thông tin, hướng dẫn và công cụ hữu ích cho người Việt sống tại Nhật Bản. Từ thủ tục hành chính, thuế, việc làm đến cuộc sống thường ngày."
+        title="Sống ở Nhật, dễ hơn một chút"
+        description="Thông tin, hướng dẫn và công cụ hữu ích dành cho người Việt tại Nhật. Từ thủ tục hành chính, thuế, việc làm đến cuộc sống thường ngày."
         canonical="/"
       />
 
-      {/* 1. HERO WITH LIVE DISCOVERY SEARCH */}
+      {/* 1. HERO — photo band with the discovery search */}
       <Hero searchInputRef={searchInputRef} onSearch={onSearch} />
 
-      {/* 2. HÔM NAY CÓ GÌ HỮU ÍCH? */}
-      <UsefulToday />
+      {/* 2. CÔNG CỤ TIỆN ÍCH */}
+      <ToolShowcase />
 
-      {/* 3. KHÁM PHÁ THEO CHỦ ĐỀ */}
-      <section className="section topics-section" id="topics" aria-labelledby="topics-heading">
+      {/* 3. BÀI VIẾT MỚI NHẤT */}
+      <LatestContent />
+
+      {/* 4. KHÁM PHÁ THEO CHỦ ĐỀ */}
+      <section className="topics-section" id="topics" aria-labelledby="topics-heading">
         <div className="container">
-          <div className="section-head-bar">
-            <div className="section-head-left">
-              <h2 id="topics-heading" className="section-title-with-icon">
-                <span className="section-icon-emoji" role="img" aria-label="Cây non">🌱</span>
-                <span>Khám phá theo chủ đề</span>
-              </h2>
-              <p className="section-desc-subtle">
-                Chọn chủ đề bạn quan tâm để xem tất cả bài viết hướng dẫn và công cụ hỗ trợ liên quan.
-              </p>
+          <div className="chotto-panel">
+            <div className="section-head-bar">
+              <div className="section-head-icon head-icon-life">
+                <img src="/icons/icon-study.svg" alt="" width="26" height="26" />
+              </div>
+              <div className="section-head-left">
+                <h2 id="topics-heading" className="section-title-with-icon">Khám phá theo chủ đề</h2>
+                <p className="section-desc-subtle">
+                  Chọn chủ đề bạn quan tâm để xem tất cả hướng dẫn và công cụ liên quan.
+                </p>
+              </div>
+              <Link to="/articles" className="section-link-more">
+                <span>Xem tất cả</span>
+                <ArrowRightIcon size={14} />
+              </Link>
             </div>
-            <Link to="/articles" className="section-link-more">
-              <span>Xem tất cả</span>
-              <ArrowRightIcon size={14} />
-            </Link>
-          </div>
 
-          <CategoryGrid />
+            <CategoryGrid />
+          </div>
         </div>
       </section>
 
-      {/* 4. TWO-COLUMN SECTION: MỚI TRÊN CHOTTO + MỘT CHÚT CÔNG CỤ */}
+      {/* 5. CÓ THỂ BẠN ĐANG QUAN TÂM + CỘNG ĐỒNG CHOTTO */}
       <HomeContentColumns />
-
-      {/* 5. CHOTTO FACEBOOK COMMUNITY BANNER */}
-      <CommunityBlock />
     </>
   );
 }
 
 export default HomePage;
-

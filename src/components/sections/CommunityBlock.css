@@ -1,136 +1,159 @@
 /* ==========================================================================
-   COMMUNITY BANNER STYLES - HOMEPAGE REFRESH SOT
+   COMMUNITY CARD — fanpage CTA beside the interest list
    ========================================================================== */
 
-.community-section {
-  padding-top: 24px;
-  padding-bottom: 48px;
-}
-
-.community-banner-card {
+.community-card {
   position: relative;
-  border-radius: 20px;
+  border: 1px solid #CFE6EF;
+  border-radius: var(--radius-banner);
   overflow: hidden;
-  border: 1px solid var(--border-card);
-  background: linear-gradient(135deg, #FFF1F2 0%, #EFF6FF 50%, #ECFDF5 100%);
-  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
-  display: grid;
-  grid-template-columns: 1fr;
-  align-items: stretch;
-}
-
-@media (min-width: 800px) {
-  .community-banner-card {
-    grid-template-columns: 1.25fr 0.75fr;
-  }
-}
-
-.community-banner-content {
-  padding: 32px 28px;
+  /* Cool paper wash: the only gradient surface on the page */
+  background: linear-gradient(135deg, #EAF6FB 0%, #EAF7F8 55%, #EDF7EE 100%);
   display: flex;
-  flex-direction: column;
+  align-items: stretch;
+  min-height: 250px;
+}
+
+.community-card-body {
   position: relative;
   z-index: 2;
+  flex: 1;
+  min-width: 0;
+  padding: 24px 20px 22px 24px;
+  display: flex;
+  flex-direction: column;
 }
 
-@media (min-width: 768px) {
-  .community-banner-content {
-    padding: 40px 36px;
-  }
-}
-
-.community-banner-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
-  border-radius: var(--radius-pill);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 14px;
-  align-self: flex-start;
-}
-
-.community-tag-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: #FF5A5F;
-  flex-shrink: 0;
-}
-
-.community-banner-title {
-  font-family: var(--font-heading);
-  font-size: 22px;
-  line-height: 1.28;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 6px;
-  letter-spacing: -0.01em;
-}
-
-@media (min-width: 768px) {
-  .community-banner-title {
-    font-size: 27px;
-  }
-}
-
-.community-banner-note {
-  font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif;
-  font-size: 16px;
+.community-card-script {
+  font-family: var(--font-hand);
+  font-size: 23px;
+  line-height: 1.5;
   font-weight: 600;
-  color: #DB2777;
-  margin-bottom: 12px;
+  color: var(--text-primary);
+  margin: 0 0 18px;
 }
 
-.community-banner-desc {
-  font-family: var(--font-body);
-  font-size: 14px;
-  line-height: 1.6;
+/* `margin-top: auto` keeps the brand lockup and button anchored to the foot
+   however tall the script above grows. */
+.community-card-foot {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.community-card-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.community-card-tagline {
+  font-size: 11.5px;
   color: var(--text-secondary);
-  max-width: 480px;
-  margin-bottom: 22px;
 }
 
-.community-banner-btn {
+.community-card-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 22px;
-  background-color: #1877F2;
+  gap: 9px;
+  height: 42px;
+  padding: 0 20px;
+  background-color: var(--brand-facebook-solid);
   color: #ffffff;
-  font-family: var(--font-body);
+  border-radius: var(--radius-pill);
   font-size: 14px;
   font-weight: 600;
-  border-radius: 10px;
   text-decoration: none;
-  box-shadow: 0 4px 14px rgba(24, 119, 242, 0.28);
-  transition: background-color 0.15s ease, transform 0.15s ease;
-  align-self: flex-start;
+  box-shadow: 0 4px 14px rgba(22, 111, 229, 0.26);
+  transition: background-color 0.15s ease;
 }
 
-.community-banner-btn:hover {
-  background-color: #166FE5;
-  transform: translateY(-2px);
+.community-card-btn:hover {
+  background-color: var(--brand-facebook-solid-hover);
+  color: #ffffff;
 }
 
-.community-banner-visual {
-  width: 100%;
-  height: 100%;
-  min-height: 200px;
-  overflow: hidden;
+.community-card-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-ink);
+}
+
+/* --- Photo column --------------------------------------------------------- */
+
+.community-card-visual {
   position: relative;
+  width: 42%;
+  min-width: 180px;
+  overflow: hidden;
 }
 
-.community-banner-img {
+.community-card-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  object-position: 74% 30%;
 }
 
+/* Feathers the photo into the gradient rather than cutting it with a hard seam */
+.community-card-img-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(234, 246, 251, 0.9) 0%,
+    rgba(234, 246, 251, 0.25) 35%,
+    rgba(234, 246, 251, 0) 60%
+  );
+}
+
+.community-card-overlay-note {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  right: 14px;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(251, 249, 245, 0.82);
+  font-family: var(--font-hand);
+  font-size: 21px;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: right;
+}
+
+@media (max-width: 719px) {
+  /* Below this width a 42% photo column is too narrow to read as a photo,
+     so the card stacks and the image becomes a banner. */
+  .community-card {
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .community-card-visual {
+    width: 100%;
+    min-height: 170px;
+    order: -1;
+  }
+
+  .community-card-img-scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(234, 246, 251, 0) 40%,
+      rgba(234, 246, 251, 0.85) 100%
+    );
+  }
+
+  .community-card-body {
+    padding: 20px 18px;
+  }
+
+  .community-card-script {
+    font-size: 21px;
+  }
+}

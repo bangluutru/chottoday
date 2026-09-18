@@ -1,156 +1,116 @@
 /* ==========================================================================
-   LATEST CONTENT SECTION STYLES (Phase 2 Compact Editorial List)
+   BÀI VIẾT MỚI NHẤT — four picture cards
    ========================================================================== */
 
-.latest-content-header {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: var(--space-5);
+.articles-section {
+  padding-top: 22px;
+  padding-bottom: 0;
 }
 
-@media (min-width: 768px) {
-  .latest-content-header {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
-  }
+.article-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
 }
 
-/* Compact Editorial List */
-.latest-editorial-list {
+.article-media-card {
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-media-card);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
-}
-
-.latest-editorial-item {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
   text-decoration: none;
-  color: inherit;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  transition: border-color 0.18s ease, transform 0.18s ease;
 }
 
-.latest-editorial-item:last-child {
-  border-bottom: none;
+.article-media-card:hover {
+  border-color: var(--cat-tool-accent);
+  transform: translateY(-2px);
 }
 
-.latest-editorial-item:hover {
-  background-color: var(--bg-hover);
+.article-media-card:focus-visible {
+  outline: none;
+  border-color: var(--cat-tool-accent);
+  box-shadow: var(--focus-ring);
 }
 
-.latest-editorial-item:focus-visible {
-  outline: 2px solid var(--primary-accent);
-  outline-offset: -2px;
+.article-media-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
 }
 
-.editorial-main-info {
+.article-media-body {
+  padding: 16px 16px 14px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-}
-
-.editorial-cat-meta {
-  display: flex;
-  align-items: center;
   gap: 8px;
+  flex: 1;
 }
 
-.editorial-cat-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: var(--radius-full);
-  flex-shrink: 0;
-}
-
-.editorial-cat-name {
-  font-size: 0.75rem;
+/* Reuses the global .chip-* palette classes for its colours */
+.article-media-chip {
+  align-self: flex-start;
+  padding: 4px 11px;
+  border-radius: var(--radius-pill);
+  font-size: 11.5px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
+  line-height: 1.4;
 }
 
-.editorial-title {
+.article-media-title {
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: 16px;
+  line-height: 1.34;
   font-weight: 700;
   color: var(--text-primary);
-  line-height: 1.4;
   margin: 0;
-  transition: color var(--transition-fast);
+  /* Titles vary in length; clamping keeps the four cards aligned */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.latest-editorial-item:hover .editorial-title {
-  color: var(--primary-accent);
+.article-media-excerpt {
+  font-size: 12.8px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin: 0;
+  text-wrap: pretty;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.editorial-secondary-meta {
+/* `margin-top: auto` pins the meta row to the card foot regardless of how
+   much the title and excerpt above it consumed. */
+.article-media-meta {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.8125rem;
+  font-size: 11.5px;
   color: var(--text-muted);
+  margin-top: auto;
+  padding-top: 8px;
 }
 
-.editorial-meta-divider {
-  color: var(--border-subtle);
+.article-media-dot {
+  color: var(--border-divider);
 }
 
-.editorial-action-icon {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-  transition: transform var(--transition-fast), color var(--transition-fast);
-}
-
-.latest-editorial-item:hover .editorial-action-icon {
-  transform: translateX(4px);
-  color: var(--primary-accent);
-}
-
-/* Desktop Horizontal Layout */
-@media (min-width: 768px) {
-  .latest-editorial-item {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 24px;
-    gap: 20px;
+@media (max-width: 719px) {
+  .articles-section {
+    padding-top: 18px;
   }
 
-  .editorial-main-info {
-    flex-direction: row;
-    align-items: center;
-    gap: 16px;
-    flex: 1;
-    min-width: 0;
-  }
-
-  .editorial-cat-meta {
-    width: 140px;
-    flex-shrink: 0;
-  }
-
-  .editorial-title {
-    font-size: 1.0625rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .editorial-secondary-meta {
-    flex-shrink: 0;
-    gap: 12px;
+  .article-card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 }

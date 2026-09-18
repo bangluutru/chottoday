@@ -1,135 +1,60 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './HomeContentColumns.css';
-import { getToolsByIds, buildToolUrl } from '../../services/toolRegistry';
-import { ClockIcon, ArrowRightIcon, ExternalLinkIcon } from '../common/Icons';
+import { CommunityBlock } from './CommunityBlock';
+import { getArticleBySlug } from '../../content/articles';
+import { ArrowRightIcon } from '../common/Icons';
+import { HOME_INTEREST_SLUGS } from '../../data/homepage.js';
 
+/**
+ * Closing two-column row: a ranked reading list beside the community card.
+ *
+ * The list is built from real article slugs, so a rank never points at a
+ * missing page — unresolved slugs drop out and the numbering closes up.
+ */
 export function HomeContentColumns() {
-  const tools = getToolsByIds([
-    'japan-tax-simulator',
-    'moving-cost-jp',
-    'national-pension-jp',
-    'id-photo-studio',
-  ]);
-
-  const latestArticles = [
-    {
-      slug: 'luong-30-man-thuc-nhan-bao-nhieu',
-      title: 'Cách chuyển vùng và nạp tiền Suica, Pasmo trên điện thoại',
-      category: 'Đời sống',
-      categoryKey: 'life',
-      thumb: '/images/thumbs/thumb-train.jpg',
-      readingTime: 4,
-      updatedAt: '16/09/2026',
-    },
-    {
-      slug: 'mat-the-zairyu-thi-lam-gi',
-      title: 'Thủ tục xin nhập học trường tiểu học cho con tại Nhật Bản',
-      category: 'Học tập',
-      categoryKey: 'study',
-      thumb: '/images/thumbs/thumb-school.jpg',
-      readingTime: 6,
-      updatedAt: '14/09/2026',
-    },
-    {
-      slug: 'luong-30-man-thuc-nhan-bao-nhieu',
-      title: 'Đi khám bệnh lần đầu tại Nhật: từ vựng triệu chứng & quy trình',
-      category: 'Sức khỏe',
-      categoryKey: 'health',
-      thumb: '/images/thumbs/thumb-clinic.jpg',
-      readingTime: 5,
-      updatedAt: '12/09/2026',
-    },
-  ];
+  const interest = HOME_INTEREST_SLUGS
+    .map((slug) => getArticleBySlug(slug))
+    .filter(Boolean);
 
   return (
-    <section className="section home-columns-section" aria-label="Nội dung mới và Công cụ tiện ích">
+    <section className="home-columns-section" id="community" aria-label="Nội dung quan tâm và cộng đồng Chotto">
       <div className="container">
         <div className="home-columns-grid">
-          {/* Left Column: Mới trên Chotto */}
-          <div className="home-column">
-            <div className="column-head-bar">
-              <h2 className="column-title">
-                <span className="column-icon-emoji" role="img" aria-label="Nhà">🏠</span>
-                <span>Mới trên Chotto</span>
-              </h2>
-              <Link to="/articles" className="column-link-more">
-                <span>Xem tất cả</span>
-                <ArrowRightIcon size={13} />
-              </Link>
-            </div>
-
-            <div className="column-items-list" role="feed" aria-label="Bài viết mới trên Chotto">
-              {latestArticles.map((art, idx) => (
-                <Link
-                  key={idx}
-                  to={`/articles/${art.slug}`}
-                  className="article-row-card"
-                  aria-label={art.title}
-                >
-                  <img
-                    src={art.thumb}
-                    alt={art.title}
-                    className="article-row-thumb"
-                    loading="lazy"
-                    width="96"
-                    height="72"
+          <div className="interest-card">
+            <div className="interest-card-head">
+              <span className="interest-card-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 48 48" fill="none">
+                  <path
+                    d="M24 6c2 7-6 10-6 17a6 6 0 0012 0c0-3-1-5-1-5 6 3 9 8 9 13 0 7-6 11-14 11s-14-4-14-11c0-11 10-16 14-25z"
+                    stroke="var(--chotto-ink)"
+                    strokeWidth="3.2"
+                    strokeLinejoin="round"
+                    fill="#FEF0D8"
                   />
-                  <div className="article-row-content">
-                    <div className="article-row-tag">
-                      <span className={`article-tag-chip tag-${art.categoryKey}`}>
-                        {art.category}
-                      </span>
-                    </div>
-                    <h3 className="article-row-title">{art.title}</h3>
-                    <div className="article-row-meta">
-                      <ClockIcon size={12} />
-                      <span>{art.readingTime} phút đọc · {art.updatedAt}</span>
-                    </div>
-                  </div>
-                </Link>
+                  <path
+                    d="M24 40c-4 0-6-2-6-5s3-4 4-7c3 3 8 4 8 8 0 2.5-2 4-6 4z"
+                    fill="var(--chotto-coral)"
+                  />
+                </svg>
+              </span>
+              <h2 className="interest-card-title">Có thể bạn đang quan tâm</h2>
+            </div>
+
+            <ol className="interest-list">
+              {interest.map((article, idx) => (
+                <li key={article.slug}>
+                  <Link to={`/articles/${article.slug}`} className="interest-row">
+                    <span className="interest-rank" aria-hidden="true">{idx + 1}</span>
+                    <span className="interest-row-title">{article.title}</span>
+                    <ArrowRightIcon size={15} className="interest-row-arrow" />
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
 
-          {/* Right Column: Một chút công cụ */}
-          <div className="home-column">
-            <div className="column-head-bar">
-              <h2 className="column-title">
-                <span className="column-icon-emoji" role="img" aria-label="Cờ lê">🔧</span>
-                <span>Một chút công cụ</span>
-              </h2>
-              <Link to="/topics/tools" className="column-link-more">
-                <span>Xem tất cả</span>
-                <ArrowRightIcon size={13} />
-              </Link>
-            </div>
-
-            <div className="column-items-list" role="feed" aria-label="Công cụ tiện ích Toolio">
-              {tools.map((tool) => {
-                const toolUrl = buildToolUrl(tool.id, { source: 'homepage' });
-                return (
-                  <a
-                    key={tool.id}
-                    href={toolUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="tool-row-card"
-                    aria-label={`Mở công cụ ${tool.name}`}
-                  >
-                    <div className="tool-row-info">
-                      <h3 className="tool-row-title">{tool.name}</h3>
-                      <p className="tool-row-desc">{tool.description}</p>
-                    </div>
-                    <div className="tool-row-btn">
-                      <span>Dùng ngay</span>
-                      <ExternalLinkIcon size={12} />
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
-          </div>
+          <CommunityBlock />
         </div>
       </div>
     </section>
