@@ -10,6 +10,9 @@ import { ArticlesIndexPage } from './pages/ArticlesIndexPage';
 import { ArticleDetailPage } from './pages/ArticleDetailPage';
 import { CategoryPage } from './pages/CategoryPage';
 import { ProblemDiscoveryPage } from './pages/ProblemDiscoveryPage';
+import { ToolsIndexPage } from './pages/ToolsIndexPage';
+import { ToolDetailPage } from './pages/ToolDetailPage';
+import { AboutPage } from './pages/AboutPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { setEphemeralQuery } from './services/discovery/searchStore.js';
 
@@ -84,6 +87,9 @@ export function App() {
           <Route path="/articles/:slug" element={<ArticleDetailPage />} />
           <Route path="/topics/:category" element={<CategoryPage />} />
           <Route path="/problems" element={<ProblemDiscoveryPage />} />
+          <Route path="/tools" element={<ToolsIndexPage />} />
+          <Route path="/tools/:toolId" element={<ToolDetailPage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>

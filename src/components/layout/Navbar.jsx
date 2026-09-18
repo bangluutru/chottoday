@@ -56,14 +56,17 @@ export function Navbar({
             <ChevronDownIcon size={12} />
           </a>
           <NavLink
-            to="/topics/tools"
+            to="/tools"
             className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}
           >
             Công cụ
           </NavLink>
-          <a href="/#about" className="navbar-link">
+          <NavLink
+            to="/about"
+            className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}
+          >
             Về Chotto
-          </a>
+          </NavLink>
         </nav>
 
         {/* Right Actions */}

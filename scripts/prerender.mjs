@@ -25,6 +25,7 @@ const SITE_URL = 'https://chottoday.com';
 const { ALL_ARTICLES } = await import('../src/content/articles/articlesList.js');
 const { CATEGORY_DEFINITIONS } = await import('../src/content/categories/categoryMap.js');
 const { isArticlePublished } = await import('../src/services/content/articleModel.js');
+const { TOOLIO_SNAPSHOT } = await import('../src/services/toolRegistry/toolioSnapshot.js');
 
 if (!fs.existsSync(distDir)) {
   console.error('❌ dist/ directory not found. Run "vite build" before prerendering.');
@@ -194,6 +195,102 @@ const problemsMeta = {
 writePage('problems', injectMeta(baseHtml, problemsMeta));
 console.log('  ✓ Prerendered: /problems');
 
+// B3. Tools Index (/tools)
+const TOOLS_INDEX_DESCRIPTION =
+  'Toàn bộ miniapp Toolio mà Chotto giới thiệu: tính thuế, bảo hiểm, ảnh thẻ, PDF, hóa đơn và các tiện ích xử lý ngay trên trình duyệt.';
+const toolsMeta = {
+  title: 'Tất cả công cụ | Chotto',
+  description: TOOLS_INDEX_DESCRIPTION,
+  canonical: `${SITE_URL}/tools`,
+  ogTitle: 'Tất cả công cụ | Chotto',
+  ogDescription: TOOLS_INDEX_DESCRIPTION,
+  ogImage: `${SITE_URL}/images/og/og-default.png`,
+  ogUrl: `${SITE_URL}/tools`,
+  ogType: 'website',
+  structuredData: {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Tất cả công cụ Chotto',
+    description: TOOLS_INDEX_DESCRIPTION,
+    url: `${SITE_URL}/tools`,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'Chotto',
+      url: SITE_URL,
+    },
+  },
+};
+writePage('tools', injectMeta(baseHtml, toolsMeta));
+console.log('  ✓ Prerendered: /tools');
+
+// B4. Tool Detail Pages (/tools/:toolId)
+for (const tool of TOOLIO_SNAPSHOT) {
+  const toolMeta = {
+    title: `${tool.name} | Chotto`,
+    description: tool.description,
+    canonical: `${SITE_URL}/tools/${tool.id}`,
+    ogTitle: `${tool.name} | Chotto`,
+    ogDescription: tool.description,
+    ogImage: `${SITE_URL}/images/og/og-default.png`,
+    ogUrl: `${SITE_URL}/tools/${tool.id}`,
+    ogType: 'website',
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: tool.name,
+      description: tool.description,
+      applicationCategory: 'UtilitiesApplication',
+      operatingSystem: 'Web',
+      url: `${SITE_URL}/tools/${tool.id}`,
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'JPY',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Chotto',
+        url: SITE_URL,
+      },
+    },
+  };
+  writePage(`tools/${tool.id}`, injectMeta(baseHtml, toolMeta));
+}
+console.log(`  ✓ Prerendered: /tools/:toolId (${TOOLIO_SNAPSHOT.length} pages)`);
+
+// B5. About (/about)
+const ABOUT_DESCRIPTION =
+  'Chotto là nền tảng thông tin, cẩm nang hướng dẫn và cổng kết nối công cụ cho người Việt đang sinh sống, học tập và làm việc tại Nhật Bản.';
+const aboutMeta = {
+  title: 'Về Chotto | Chotto',
+  description: ABOUT_DESCRIPTION,
+  canonical: `${SITE_URL}/about`,
+  ogTitle: 'Về Chotto | Chotto',
+  ogDescription: ABOUT_DESCRIPTION,
+  ogImage: `${SITE_URL}/images/og/og-default.png`,
+  ogUrl: `${SITE_URL}/about`,
+  ogType: 'website',
+  structuredData: {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: 'Về Chotto',
+    description: ABOUT_DESCRIPTION,
+    url: `${SITE_URL}/about`,
+    mainEntity: {
+      '@type': 'Organization',
+      name: 'Chotto',
+      url: SITE_URL,
+      description: ABOUT_DESCRIPTION,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/chotto-logo-full.svg`,
+      },
+    },
+  },
+};
+writePage('about', injectMeta(baseHtml, aboutMeta));
+console.log('  ✓ Prerendered: /about');
+
 // C. Categories (/topics/:category)
 for (const cat of CATEGORY_DEFINITIONS) {
   const catMeta = {
@@ -324,6 +421,8 @@ const sitemapUrls = [
   { loc: `${SITE_URL}/`, changefreq: 'daily', priority: '1.0', lastmod: latestArticleDate },
   { loc: `${SITE_URL}/articles`, changefreq: 'daily', priority: '0.9', lastmod: latestArticleDate },
   { loc: `${SITE_URL}/problems`, changefreq: 'weekly', priority: '0.9', lastmod: latestArticleDate },
+  { loc: `${SITE_URL}/tools`, changefreq: 'weekly', priority: '0.9', lastmod: latestArticleDate },
+  { loc: `${SITE_URL}/about`, changefreq: 'monthly', priority: '0.6', lastmod: latestArticleDate },
   ...CATEGORY_DEFINITIONS.map((c) => {
     const catArticles = publishedArticles.filter((a) => a.category === c.id);
     const catLastmod = catArticles.reduce(
@@ -342,6 +441,12 @@ const sitemapUrls = [
     changefreq: 'weekly',
     priority: '0.8',
     lastmod: a.updatedAt || a.publishedAt,
+  })),
+  ...TOOLIO_SNAPSHOT.map((t) => ({
+    loc: `${SITE_URL}/tools/${t.id}`,
+    changefreq: 'monthly',
+    priority: '0.6',
+    lastmod: latestArticleDate,
   })),
 ];
 

@@ -157,13 +157,13 @@ export function MobileMenu({ isOpen, onClose, triggerRef }) {
                 </Link>
               </li>
               <li>
-                <Link to="/topics/tools" className="mobile-nav-item" onClick={onClose}>
+                <Link to="/tools" className="mobile-nav-item" onClick={onClose}>
                   <span>Công cụ Chotto</span>
                   <ArrowRightIcon size={16} color="var(--text-muted)" />
                 </Link>
               </li>
               <li>
-                <Link to="/#about" className="mobile-nav-item" onClick={onClose}>
+                <Link to="/about" className="mobile-nav-item" onClick={onClose}>
                   <span>Về Chotto</span>
                   <ArrowRightIcon size={16} color="var(--text-muted)" />
                 </Link>

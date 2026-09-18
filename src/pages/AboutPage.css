@@ -1,0 +1,371 @@
+/* ==========================================================================
+   ABOUT PAGE (Về Chotto)
+   ========================================================================== */
+
+.about-page-wrapper {
+  padding-top: 32px;
+  padding-bottom: 72px;
+}
+
+/* 1. Hero */
+.about-hero {
+  max-width: 760px;
+  margin-bottom: 40px;
+}
+
+.about-hero-title {
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.about-hero-lead {
+  font-size: 17px;
+  line-height: 28px;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.about-stat-row {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.about-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-stat-number {
+  font-family: var(--font-heading);
+  font-size: 30px;
+  line-height: 34px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.about-stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* 2. Principle band */
+.about-principle-band {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 28px 24px;
+  background-color: var(--cat-tool-bg);
+  border: 1px solid var(--cat-tool-border);
+  border-radius: var(--radius-card);
+  margin-bottom: 48px;
+}
+
+.about-principle-band > svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.about-principle-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  line-height: 27px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+  .about-principle-title {
+    font-size: 23px;
+    line-height: 30px;
+  }
+}
+
+.about-principle-text {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--text-secondary);
+}
+
+/* Shared section rhythm */
+.about-section {
+  margin-bottom: 48px;
+}
+
+.about-section-title {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.about-section-lead {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--text-secondary);
+  max-width: 680px;
+  margin-bottom: 20px;
+}
+
+/* 3. Value cards */
+.about-value-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+  .about-value-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.about-value-card {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  padding: 22px 20px;
+}
+
+.about-value-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background-color: var(--surface-dim);
+  margin-bottom: 14px;
+}
+
+.about-value-title {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.about-value-text {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--text-secondary);
+}
+
+/* 4. Ecosystem */
+.about-eco-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .about-eco-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.about-eco-card {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.about-eco-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.about-eco-name {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.about-eco-text {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.about-eco-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  align-self: flex-start;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.about-eco-link:hover {
+  gap: 8px;
+}
+
+.about-eco-link svg {
+  flex-shrink: 0;
+}
+
+/* 5. Topics */
+.about-topic-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  .about-topic-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-topic-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.about-topic-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 20px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  text-decoration: none;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.about-topic-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--text-muted);
+}
+
+.about-topic-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.about-topic-name {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.about-topic-desc {
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--text-secondary);
+}
+
+/* 6. Editorial principles */
+.about-principle-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .about-principle-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.about-principle-item {
+  padding: 20px;
+  background-color: var(--surface-dim);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+}
+
+.about-principle-item-title {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  line-height: 21px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.about-principle-item-text {
+  font-size: 13px;
+  line-height: 21px;
+  color: var(--text-secondary);
+}
+
+/* 7. Closing CTA */
+.about-cta-band {
+  padding: 36px 28px;
+  background-color: var(--text-primary);
+  border-radius: var(--radius-card);
+  text-align: center;
+}
+
+.about-cta-title {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 800;
+  color: var(--text-inverse);
+  margin-bottom: 10px;
+}
+
+.about-cta-text {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--text-inverse);
+  opacity: 0.82;
+  max-width: 520px;
+  margin: 0 auto 22px;
+}
+
+.about-cta-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.about-cta-actions .btn-primary {
+  background-color: var(--surface-canvas);
+  color: var(--text-primary);
+  border-color: var(--surface-canvas);
+  display: inline-flex;
+  align-items: center;
+}
+
+.about-cta-actions .btn-secondary {
+  background-color: transparent;
+  color: var(--text-inverse);
+  border-color: rgba(251, 249, 245, 0.35);
+  display: inline-flex;
+  align-items: center;
+}
+
+.about-cta-actions .btn-secondary:hover {
+  background-color: rgba(251, 249, 245, 0.12);
+  border-color: var(--text-inverse);
+}

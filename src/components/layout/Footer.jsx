@@ -24,11 +24,11 @@ export function Footer() {
 
           {/* Nav Links */}
           <nav className="footer-nav" aria-label="Liên kết chân trang">
-            <Link to="/#about" className="footer-nav-link">Về Chotto</Link>
+            <Link to="/about" className="footer-nav-link">Về Chotto</Link>
             <span className="footer-nav-dot" aria-hidden="true">·</span>
             <Link to="/articles" className="footer-nav-link">Cẩm nang</Link>
             <span className="footer-nav-dot" aria-hidden="true">·</span>
-            <Link to="/topics/tools" className="footer-nav-link">Công cụ</Link>
+            <Link to="/tools" className="footer-nav-link">Công cụ</Link>
             <span className="footer-nav-dot" aria-hidden="true">·</span>
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="footer-nav-link">Liên hệ</a>
             <span className="footer-nav-dot" aria-hidden="true">·</span>
