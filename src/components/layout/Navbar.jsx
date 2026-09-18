@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-import { SearchIcon, MenuIcon, ChevronDownIcon } from '../common/Icons';
+import { SearchIcon, MenuIcon, ChevronDownIcon, GlobeIcon } from '../common/Icons';
+import { ChottoWordmark } from '../common/ChottoWordmark';
 import { setEphemeralQuery } from '../../services/discovery/searchStore';
 
 export function Navbar({
@@ -25,69 +26,56 @@ export function Navbar({
   return (
     <header className="navbar-wrapper" role="banner">
       <div className="container navbar-inner">
-        {/* Brand Logo with Tagline */}
-        <Link to="/" className="navbar-brand" aria-label="Chotto — Sống dễ hơn ở Nhật">
-          <img
-            src="/chotto-logo-full.svg"
-            alt="Chotto"
-            className="navbar-logo-img"
-            width="136"
-            height="32"
-          />
+        {/* Brand lockup: wordmark stacked over the tagline */}
+        <Link to="/" className="navbar-brand" aria-label="Chotto — Một chút hữu ích, mỗi ngày">
+          <ChottoWordmark width={132} className="navbar-logo" />
+          <span className="navbar-tagline">Một chút hữu ích, mỗi ngày.</span>
         </Link>
 
-        {/* Desktop Navigation Links */}
         <nav className="navbar-nav" aria-label="Chính">
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}
-          >
+          <NavLink to="/" end className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
             Trang chủ
           </NavLink>
-          <NavLink
-            to="/articles"
-            className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}
-          >
+          <NavLink to="/articles" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
             Bài viết
+          </NavLink>
+          <NavLink to="/topics/tools" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
+            Công cụ
           </NavLink>
           <a href="/#topics" className="navbar-link navbar-dropdown-link">
             <span>Chủ đề</span>
-            <ChevronDownIcon size={12} />
+            <ChevronDownIcon size={11} />
           </a>
-          <NavLink
-            to="/topics/tools"
-            className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}
-          >
-            Công cụ
-          </NavLink>
-          <a href="/#about" className="navbar-link">
+          <a href="/#community" className="navbar-link">
             Về Chotto
           </a>
         </nav>
 
-        {/* Right Actions */}
+        {/* Right actions: the search pill takes all remaining width and is the
+            first thing to shrink, so the nav links never wrap. */}
         <div className="navbar-actions">
-          {/* Integrated Search Box (Desktop) */}
           <form className="navbar-search-form" onSubmit={handleNavSearchSubmit} role="search">
-            <SearchIcon size={14} className="navbar-search-icon" />
+            <SearchIcon size={16} className="navbar-search-icon" />
             <input
               type="search"
+              size="1"
               className="navbar-search-input"
-              placeholder="Tìm kiếm... (ví dụ: thuế, nenkin, nhà ở...)"
+              placeholder="Tìm kiếm: thuế, nenkin, nhà ở…"
               value={navSearch}
               onChange={(e) => setNavSearch(e.target.value)}
               aria-label="Tìm kiếm trên Chotto"
             />
           </form>
 
-          {/* Language Selector */}
-          <div className="navbar-lang-pill" title="Ngôn ngữ: Tiếng Việt" aria-label="Tiếng Việt">
-            <span>VI</span>
-            <ChevronDownIcon size={11} />
-          </div>
+          <button
+            type="button"
+            className="navbar-lang-btn"
+            aria-label="Ngôn ngữ: Tiếng Việt"
+            title="Ngôn ngữ: Tiếng Việt"
+          >
+            <GlobeIcon size={18} />
+          </button>
 
-          {/* Mobile Search Icon Button */}
           <button
             type="button"
             className="navbar-mobile-search-btn"
@@ -97,7 +85,6 @@ export function Navbar({
             <SearchIcon size={19} />
           </button>
 
-          {/* Mobile Hamburger Button */}
           <button
             ref={menuTriggerRef}
             id="mobile-menu-trigger"
@@ -115,4 +102,3 @@ export function Navbar({
     </header>
   );
 }
-

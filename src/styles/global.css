@@ -275,3 +275,119 @@
   flex-shrink: 0;
 }
 
+
+/* ==========================================================================
+   SECTION HEADER BAR
+   Icon tile + title + one-line description on the left, "Xem tất cả" on the
+   right. Shared by every homepage section so the rhythm stays identical.
+   ========================================================================== */
+
+.section-head-bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.section-head-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-icon-box);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.section-head-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.section-title-with-icon {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+
+.section-desc-subtle {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.section-link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cat-tool-text);
+  text-decoration: none;
+  flex-shrink: 0;
+  padding-top: 6px;
+  transition: color 0.15s ease;
+}
+
+.section-link-more:hover {
+  color: var(--brand-teal-deep-hover);
+}
+
+/* Icon tile tints, one per category palette */
+.head-icon-life { background-color: var(--cat-life-bg); }
+.head-icon-doc { background-color: var(--cat-doc-bg); }
+.head-icon-work { background-color: var(--cat-work-bg); }
+.head-icon-health { background-color: var(--cat-health-bg); }
+.head-icon-study { background-color: var(--cat-study-bg); }
+.head-icon-tool { background-color: var(--cat-tool-bg); }
+
+/* ==========================================================================
+   INSET PANEL
+   The soft-bordered container behind the tools and topics grids.
+   ========================================================================== */
+
+.chotto-panel {
+  background-color: var(--surface-panel);
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-panel);
+  padding: 26px 24px 28px;
+}
+
+@media (max-width: 719px) {
+  .section-head-bar {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .section-title-with-icon {
+    font-size: 20px;
+  }
+
+  /* Pushed onto its own line so the title keeps its full width */
+  .section-link-more {
+    padding-top: 0;
+    order: 3;
+    width: 100%;
+  }
+
+  .chotto-panel {
+    padding: 20px 16px 22px;
+  }
+}
+
+/* Topics section shares the tools section's rhythm */
+.topics-section {
+  padding-top: 34px;
+  padding-bottom: 0;
+}
+
+@media (max-width: 719px) {
+  .topics-section {
+    padding-top: 26px;
+  }
+}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
+  <!-- Two heads, different sizes: adult and child -->
+  <circle cx="17" cy="15" r="6" stroke="#1E2A44" stroke-width="3.5"/>
+  <circle cx="32" cy="18" r="5" stroke="#1E2A44" stroke-width="3.5"/>
+  <!-- Shoulders, child in orange accent -->
+  <path d="M8 40v-4a9 9 0 0 1 18 0v4" stroke="#FBA93E" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M28 40v-3a8 8 0 0 1 16 0v3" stroke="#1E2A44" stroke-width="3.5" stroke-linecap="round"/>
+</svg>

@@ -2,67 +2,115 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Footer.css';
 import { FacebookIcon, YouTubeIcon, TikTokIcon, InstagramIcon } from '../common/Icons';
+import { ChottoWordmark } from '../common/ChottoWordmark';
+
+const LANGUAGES = ['VI', 'JA', 'EN'];
 
 export function Footer() {
   return (
     <footer className="footer-wrapper" role="contentinfo">
       <div className="container">
         <div className="footer-main-row">
-          {/* Brand & Tagline */}
-          <div className="footer-brand">
-            <Link to="/" aria-label="Trang chủ Chotto">
-              <img
-                src="/chotto-logo-full.svg"
-                alt="Chotto"
-                className="footer-logo"
-                width="120"
-                height="26"
-              />
-            </Link>
-            <span className="footer-tagline">Một chút, mỗi ngày cho người Việt tại Nhật</span>
-          </div>
+          <Link to="/" className="footer-brand" aria-label="Trang chủ Chotto">
+            <ChottoWordmark width={124} />
+            <span className="footer-tagline">Một chút hữu ích, mỗi ngày.</span>
+          </Link>
 
-          {/* Nav Links */}
           <nav className="footer-nav" aria-label="Liên kết chân trang">
-            <Link to="/#about" className="footer-nav-link">Về Chotto</Link>
-            <span className="footer-nav-dot" aria-hidden="true">·</span>
-            <Link to="/articles" className="footer-nav-link">Cẩm nang</Link>
-            <span className="footer-nav-dot" aria-hidden="true">·</span>
-            <Link to="/topics/tools" className="footer-nav-link">Công cụ</Link>
-            <span className="footer-nav-dot" aria-hidden="true">·</span>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="footer-nav-link">Liên hệ</a>
-            <span className="footer-nav-dot" aria-hidden="true">·</span>
-            <span className="footer-nav-link footer-nav-subtle">Điều khoản &amp; Bảo mật</span>
+            <a href="/#community" className="footer-nav-link">Về Chotto</a>
+            <span className="footer-nav-sep" aria-hidden="true">|</span>
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-nav-link"
+            >
+              Liên hệ
+            </a>
+            <span className="footer-nav-sep" aria-hidden="true">|</span>
+            <Link to="/articles" className="footer-nav-link">Chính sách</Link>
+            <span className="footer-nav-sep" aria-hidden="true">|</span>
+            <Link to="/articles" className="footer-nav-link">Điều khoản</Link>
+            <span className="footer-nav-sep" aria-hidden="true">|</span>
+            <a href="/sitemap.xml" className="footer-nav-link">Sitemap</a>
           </nav>
 
-          {/* Social Icons */}
-          <div className="footer-socials" aria-label="Mạng xã hội Chotto">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="footer-social-btn" aria-label="Facebook">
-              <FacebookIcon size={18} />
-            </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="footer-social-btn" aria-label="YouTube">
-              <YouTubeIcon size={18} />
-            </a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="footer-social-btn" aria-label="TikTok">
-              <TikTokIcon size={16} />
-            </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="footer-social-btn" aria-label="Instagram">
-              <InstagramIcon size={16} />
-            </a>
+          <div className="footer-end">
+            <div className="footer-socials" aria-label="Mạng xã hội Chotto">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-social-btn social-facebook"
+                aria-label="Facebook"
+              >
+                <FacebookIcon size={16} color="#ffffff" />
+              </a>
+              <a
+                href="https://youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-social-btn social-youtube"
+                aria-label="YouTube"
+              >
+                <YouTubeIcon size={15} color="#ffffff" />
+              </a>
+              <a
+                href="https://tiktok.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-social-btn social-tiktok"
+                aria-label="TikTok"
+              >
+                <TikTokIcon size={14} color="#ffffff" />
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-social-btn social-instagram"
+                aria-label="Instagram"
+              >
+                <InstagramIcon size={15} color="#ffffff" />
+              </a>
+            </div>
+
+            {/* Visual placeholder: only Vietnamese ships today, so the other
+                two are marked disabled rather than dressed up as live links. */}
+            <div className="footer-lang-switch" role="group" aria-label="Ngôn ngữ">
+              {LANGUAGES.map((lang) => (
+                <button
+                  key={lang}
+                  type="button"
+                  className={`footer-lang-btn ${lang === 'VI' ? 'active' : ''}`}
+                  aria-pressed={lang === 'VI'}
+                  disabled={lang !== 'VI'}
+                  title={lang === 'VI' ? 'Tiếng Việt' : 'Sắp có'}
+                >
+                  {lang}
+                </button>
+              ))}
+            </div>
+
+            <img
+              src="/images/community/fuji-sakura.jpg"
+              alt="Núi Phú Sĩ và hoa anh đào"
+              className="footer-thumb"
+              loading="lazy"
+              width="104"
+              height="44"
+            />
           </div>
         </div>
 
-        {/* Bottom Disclaimer & Copyright */}
         <div className="footer-bottom-bar">
           <p className="footer-disclaimer">
-            Lưu ý: Thông tin trên Chotto được biên soạn và cập nhật dựa trên luật pháp và thực tế tại Nhật Bản, mang tính chất cẩm nang tham khảo và không thay thế tư vấn pháp lý chính thức.
+            Lưu ý: Thông tin trên Chotto được biên soạn và cập nhật dựa trên luật pháp và thực tế tại
+            Nhật Bản, mang tính chất cẩm nang tham khảo và không thay thế tư vấn pháp lý chính thức.
           </p>
-          <div className="footer-copy">
-            © 2026 ChottoDay. Giữ bản quyền.
-          </div>
+          <div className="footer-copy">© 2026 ChottoDay. Giữ bản quyền.</div>
         </div>
       </div>
     </footer>
   );
 }
-
