@@ -29,7 +29,9 @@ export const SOURCES = [
     id: 'isa-news',
     organization: 'Cơ quan Quản lý Xuất nhập cảnh và Lưu trú (出入国在留管理庁)',
     kind: SOURCE_KIND.OFFICIAL,
-    url: 'https://www.moj.go.jp/isa/news/index.html',
+    // Đường dẫn sâu /isa/news/index.html trả 404 ở lần chạy thật đầu tiên.
+    // Trang gốc ổn định hơn nhiều, và parseNoticeList tự nhặt link từ đó.
+    url: 'https://www.moj.go.jp/isa/',
     format: 'html',
     lang: 'ja',
     // Chủ đề mà nguồn này gần như luôn thuộc về → cộng điểm khi xếp hạng.
@@ -40,7 +42,8 @@ export const SOURCES = [
     id: 'mhlw-news',
     organization: 'Bộ Y tế, Lao động và Phúc lợi (厚生労働省)',
     kind: SOURCE_KIND.OFFICIAL,
-    url: 'https://www.mhlw.go.jp/stf/news.html',
+    // /stf/news.html cũng trả 404. Dùng trang gốc, như isa-news.
+    url: 'https://www.mhlw.go.jp/index.html',
     format: 'html',
     lang: 'ja',
     topicHints: ['work', 'health', 'job'],

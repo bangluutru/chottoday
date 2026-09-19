@@ -87,9 +87,12 @@ async function main() {
       await renderCard(record, item, `${base}.png`);
 
       written.push(record);
+      // Tên trường của OpenAI, không phải của Anthropic — lần chạy đầu in ra
+      // "undefined vào / undefined ra" vì đọc nhầm tên còn sót lại.
       console.log(
-        `  ✓ ${record.slug}  (${usage.input_tokens} vào / ${usage.output_tokens} ra` +
-        `, cache đọc ${usage.cache_read_input_tokens ?? 0})`
+        `  ✓ ${record.slug}  (${usage?.prompt_tokens ?? '?'} vào / ` +
+        `${usage?.completion_tokens ?? '?'} ra, cache đọc ` +
+        `${usage?.prompt_tokens_details?.cached_tokens ?? 0})`
       );
     } catch (error) {
       failures.push({ item, error: error.message });
