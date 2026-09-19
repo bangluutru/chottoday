@@ -22,6 +22,8 @@
     "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
+    "@expo-google-fonts/be-vietnam-pro": "^0.4.1",
+    "@expo-google-fonts/nunito": "^0.4.2",
     "@vitejs/plugin-react": "^4.3.1",
     "vite": "^5.4.2"
   }
