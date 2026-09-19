@@ -1,0 +1,10 @@
+厚生労働省 đã cập nhật 労災コメント関連テーブル trong hệ thống xử lý hồ sơ điện tử bảo hiểm tai nạn lao động vào ngày 18/9/2026. Thông tin này chủ yếu liên quan đến các cơ sở y tế được chỉ định và đơn vị đang lập, gửi hồ sơ 労災 điện tử. Hồ sơ giấy vẫn có thể được sử dụng theo thông tin trên trang chính thức. Mời bạn đọc bài đầy đủ để biết phạm vi ảnh hưởng và các điểm cần kiểm tra.
+
+Đọc đầy đủ: https://chottoday.com/articles/cap-nhat-bang-ma-binh-luan-trong-ho-so-boi-thuong-tai-nan-la
+Nguồn: Bộ Y tế, Lao động và Phúc lợi (厚生労働省)
+
+--- CHƯA ĐĂNG ĐƯỢC NGAY, TRA LẠI NHỮNG Ý SAU ---
+- Nguồn chỉ nói 労災コメント関連テーブル đã được cập nhật, không nêu cụ thể từng mã, nội dung hoặc lỗi đã thay đổi.
+- Cần kiểm tra tệp 労災コメント関連テーブル mới nhất và tài liệu仕様説明書 (tài liệu đặc tả) trước khi cập nhật phần mềm hoặc quy trình gửi hồ sơ.
+- Nguồn không nêu cơ sở nào bắt buộc phải thay tệp ngay sau ngày cập nhật hoặc thời điểm bắt đầu áp dụng cụ thể của nội dung thay đổi.
+- Nếu cần biết hồ sơ cụ thể của một cơ sở có bị ảnh hưởng hay không, cần hỏi đơn vị vận hành hệ thống hoặc bộ phận hỗ trợ được 厚生労働省 công bố.

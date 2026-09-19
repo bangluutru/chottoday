@@ -1,0 +1,78 @@
+{
+  "id": "news-2026-09-19-cap-nhat-bang-ma-binh-luan-trong-ho-so-boi-thuong-tai-nan-la",
+  "slug": "cap-nhat-bang-ma-binh-luan-trong-ho-so-boi-thuong-tai-nan-la",
+  "title": "Cập nhật bảng mã bình luận trong hồ sơ bồi thường tai nạn lao động",
+  "excerpt": "厚生労働省 (Bộ Y tế, Lao động và Phúc lợi Nhật Bản) đã cập nhật 労災コメント関連テーブル, bảng liên quan đến mã bình luận trong hệ thống xử lý hồ sơ điện tử bảo hiểm tai nạn lao động. Thông tin này chủ yếu liên quan đến các cơ sở y tế được chỉ định xử lý hồ sơ 労災.",
+  "category": "work",
+  "tags": [],
+  "publishedAt": "2026-09-19",
+  "updatedAt": "2026-09-19",
+  "readingTime": 2,
+  "author": {
+    "name": "Ban Biên Tập Chotto"
+  },
+  "status": "review",
+  "applicability": "Thông tin được đăng ngày 18/9/2026 và áp dụng trong phạm vi tài liệu của 労災レセプト電算処理システム. Đối tượng liên quan là 労災保険指定医療機関等 và các đơn vị lập, gửi hồ sơ yêu cầu thanh toán 労災 bằng phương thức điện tử. Nguồn không nêu thay đổi này áp dụng cho người lao động hoặc người bệnh khi đi khám.",
+  "shortAnswer": "Theo thông báo ngày 18/9/2026, 労災コメント関連テーブル trong phiên bản cập nhật tháng 6/2026 đã được cập nhật. Cơ sở y tế được chỉ định nên kiểm tra tệp mới trên trang của 厚生労働省 nếu đang lập hoặc gửi hồ sơ điện tử 労災.",
+  "keyTakeaways": [
+    "労災コメント関連テーブル đã được cập nhật vào ngày 18/9/2026.",
+    "Bảng này chứa các mã bình luận cần thiết cho việc yêu cầu thanh toán bảo hiểm tai nạn lao động.",
+    "Thông tin thuộc 労災レセプト電算処理システム (hệ thống xử lý hồ sơ yêu cầu thanh toán điện tử bảo hiểm tai nạn lao động).",
+    "Việc yêu cầu bằng hồ sơ điện tử không bắt buộc; sau khi hệ thống hoạt động trên toàn quốc, vẫn có thể yêu cầu bằng hồ sơ giấy theo thông tin trên trang."
+  ],
+  "sections": [
+    {
+      "type": "text",
+      "heading": "Đã thay đổi gì?",
+      "paragraphs": [
+        "Theo thông báo của 厚生労働省, 労災コメント関連テーブル trong mục “労災レセプト電算処理マスタコード” đã được cập nhật.",
+        "Tệp thuộc phiên bản sửa đổi tháng 6 năm 2026. Ngày cập nhật được ghi là 18/9/2026.",
+        "労災コメント関連テーブル là bảng cấp mã bình luận cần thiết cho việc yêu cầu thanh toán bảo hiểm tai nạn lao động."
+      ]
+    },
+    {
+      "type": "text",
+      "heading": "Ai có thể bị ảnh hưởng?",
+      "paragraphs": [
+        "労災レセプト電算処理システム là hệ thống để 労災保険指定医療機関等 (cơ sở y tế được chỉ định của bảo hiểm tai nạn lao động và các đơn vị liên quan) gửi hồ sơ điện tử đến 労働局 (Cục Lao động cấp tỉnh). Cơ quan này tiếp nhận, thẩm tra và thực hiện việc thanh toán.",
+        "Nếu cơ sở đang tạo hoặc gửi hồ sơ điện tử 労災, việc cập nhật bảng mã có thể liên quan đến phần mềm hoặc quy trình lập hồ sơ của cơ sở. Người dùng cần xem hướng dẫn và tệp hiện hành trên trang chính thức của 厚生労働省."
+      ]
+    },
+    {
+      "type": "text",
+      "heading": "Cần lưu ý khi gửi hồ sơ",
+      "paragraphs": [
+        "Theo thông tin trên trang, hồ sơ điện tử có thể được gửi trực tuyến hoặc bằng thiết bị điện tử. Việc gửi hồ sơ điện tử không phải là bắt buộc; hồ sơ giấy vẫn có thể được sử dụng.",
+        "Nếu cần hỗ trợ về hệ thống, trang thông báo công bố 労災レセプト電算処理システム ヘルプデスク (bộ phận hỗ trợ hệ thống) và ネットワークサポートデスク (bộ phận hỗ trợ mạng). Đây là thông tin tham khảo, không thay thế hướng dẫn của cơ quan có thẩm quyền."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-1",
+      "organization": "Bộ Y tế, Lao động và Phúc lợi (厚生労働省)",
+      "title": "2026年9月18日 政策分野 労災レセプト電算処理システム 労災コメント関連テーブル NEW",
+      "url": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/rousai/rezeptsystem/index.html",
+      "accessedAt": "2026-09-19",
+      "type": "government"
+    }
+  ],
+  "review": {
+    "lastVerifiedAt": "2026-09-19",
+    "reviewAfter": "2026-12-18",
+    "reviewer": "CHƯA DUYỆT — người duyệt điền tên vào đây"
+  },
+  "relatedArticleIds": [],
+  "relatedToolIds": [],
+  "seo": {
+    "metaTitle": "Cập nhật bảng mã bình luận trong hồ sơ bồi thường tai nạn lao động",
+    "metaDescription": "厚生労働省 (Bộ Y tế, Lao động và Phúc lợi Nhật Bản) đã cập nhật 労災コメント関連テーブル, bảng liên quan đến mã bình luận trong hệ thống xử lý hồ sơ điện tử bảo hiểm tai nạn lao"
+  },
+  "_needsVerification": [
+    "Nguồn chỉ nói 労災コメント関連テーブル đã được cập nhật, không nêu cụ thể từng mã, nội dung hoặc lỗi đã thay đổi.",
+    "Cần kiểm tra tệp 労災コメント関連テーブル mới nhất và tài liệu仕様説明書 (tài liệu đặc tả) trước khi cập nhật phần mềm hoặc quy trình gửi hồ sơ.",
+    "Nguồn không nêu cơ sở nào bắt buộc phải thay tệp ngay sau ngày cập nhật hoặc thời điểm bắt đầu áp dụng cụ thể của nội dung thay đổi.",
+    "Nếu cần biết hồ sơ cụ thể của một cơ sở có bị ảnh hưởng hay không, cần hỏi đơn vị vận hành hệ thống hoặc bộ phận hỗ trợ được 厚生労働省 công bố."
+  ],
+  "_fanpageCaption": "厚生労働省 đã cập nhật 労災コメント関連テーブル trong hệ thống xử lý hồ sơ điện tử bảo hiểm tai nạn lao động vào ngày 18/9/2026. Thông tin này chủ yếu liên quan đến các cơ sở y tế được chỉ định và đơn vị đang lập, gửi hồ sơ 労災 điện tử. Hồ sơ giấy vẫn có thể được sử dụng theo thông tin trên trang chính thức. Mời bạn đọc bài đầy đủ để biết phạm vi ảnh hưởng và các điểm cần kiểm tra."
+}
