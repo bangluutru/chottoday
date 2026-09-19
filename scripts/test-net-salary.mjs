@@ -153,6 +153,35 @@ for (const region of REGIONS) {
   }
 }
 
+// 6b. The nine reference cases CLAUDE_CODE_TASKS.md Task 6 asks for.
+// Pinned values, so a change to any bracket, rate or deduction shows up here
+// as a concrete yen difference rather than as a silently different answer.
+console.log('\n--- GROUP 6b: 25/30/40 MAN × 0/1/2 DEPENDANTS (bonus 2, Tokyo) ---');
+const REFERENCE_CASES = [
+  { man: 25, dependents: 0, net: 2766542, incomeTax: 70148, residentTax: 147410 },
+  { man: 25, dependents: 1, net: 2818941, incomeTax: 50749, residentTax: 114410 },
+  { man: 25, dependents: 2, net: 2871340, incomeTax: 31350, residentTax: 81410 },
+  { man: 30, dependents: 0, net: 3295870, incomeTax: 92958, residentTax: 192092 },
+  { man: 30, dependents: 1, net: 3348269, incomeTax: 73559, residentTax: 159092 },
+  { man: 30, dependents: 2, net: 3400668, incomeTax: 54160, residentTax: 126092 },
+  { man: 40, dependents: 0, net: 4311453, incomeTax: 179651, residentTax: 283456 },
+  { man: 40, dependents: 1, net: 4383251, incomeTax: 140853, residentTax: 250456 },
+  { man: 40, dependents: 2, net: 4455049, incomeTax: 102055, residentTax: 217456 },
+];
+
+for (const expected of REFERENCE_CASES) {
+  const actual = calculateNetSalary({
+    man: expected.man,
+    bonusMonths: 2,
+    dependents: expected.dependents,
+    region: 'Tokyo',
+  });
+  const label = `${expected.man} man × ${expected.dependents} người phụ thuộc`;
+  assertClose(Math.round(actual.net), expected.net, `${label}: thực nhận năm`, 1);
+  assertClose(Math.round(actual.incomeTax), expected.incomeTax, `${label}: thuế thu nhập`, 1);
+  assertClose(Math.round(actual.residentTax), expected.residentTax, `${label}: thuế thị dân`, 1);
+}
+
 // 7. Presentation helpers
 console.log('\n--- GROUP 7: PRESENTATION ---');
 const rows = buildDeductionRows(base);
