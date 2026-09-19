@@ -29,14 +29,14 @@ jobs:
       # Không có secret thì bỏ qua êm, đừng fail. Cron chạy mỗi ngày, nên một
       # job đỏ vì thiếu cấu hình sẽ gửi mail báo lỗi hằng ngày cho đến khi ai
       # đó chịu tắt nó đi — và lúc đó người ta cũng tắt luôn cảnh báo thật.
-      - name: Kiểm tra ANTHROPIC_API_KEY
+      - name: Kiểm tra OPENAI_API_KEY
         id: guard
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          if [ -z "$ANTHROPIC_API_KEY" ]; then
+          if [ -z "$OPENAI_API_KEY" ]; then
             echo "has_key=false" >> "$GITHUB_OUTPUT"
-            echo "::notice title=Newsroom bỏ qua::Chưa cấu hình secret ANTHROPIC_API_KEY. Thêm ở Settings → Secrets and variables → Actions rồi workflow sẽ tự chạy."
+            echo "::notice title=Newsroom bỏ qua::Chưa cấu hình secret OPENAI_API_KEY. Thêm ở Settings → Secrets and variables → Actions rồi workflow sẽ tự chạy."
           else
             echo "has_key=true" >> "$GITHUB_OUTPUT"
           fi
@@ -73,7 +73,11 @@ jobs:
       - name: Soạn nháp
         if: steps.guard.outputs.has_key == 'true'
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Tên model và endpoint là variables, không phải secrets — chúng không
+          # bí mật, và để ở variables thì đọc được ngay trong log khi cần soi.
+          NEWSROOM_MODEL: ${{ vars.NEWSROOM_MODEL }}
+          OPENAI_BASE_URL: ${{ vars.OPENAI_BASE_URL }}
           NEWSROOM_LIMIT: ${{ github.event.inputs.limit || '5' }}
         run: node scripts/newsroom/run.mjs
 
