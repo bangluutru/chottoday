@@ -2,18 +2,58 @@
    NET SALARY CALCULATOR — form + result columns (handoff §5.2)
    ========================================================================== */
 
+/* Mobile first: one column, form → breakdown → result.
+   A column flex container rather than a grid: a grid item's sticky range is
+   its own grid area (one row), which leaves a docked card nowhere to travel,
+   while a flex item's range is the whole container. */
 .calc-columns {
   display: flex;
-  align-items: stretch;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 16px;
+}
+
+.calc-form-card {
+  order: 1;
+}
+
+.calc-breakdown-card {
+  order: 2;
+}
+
+.calc-result-card {
+  order: 3;
+}
+
+/* Two columns once there is room: the form on the left, the result and its
+   breakdown stacked on the right. Grid areas place them, so the DOM order
+   above costs nothing here. */
+@media (min-width: 769px) {
+  .calc-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'form result'
+      'form breakdown';
+    align-items: start;
+  }
+
+  .calc-form-card {
+    grid-area: form;
+  }
+
+  .calc-result-card {
+    grid-area: result;
+  }
+
+  .calc-breakdown-card {
+    grid-area: breakdown;
+  }
 }
 
 /* --- Form column --------------------------------------------------------- */
 
 .calc-form-card {
-  flex: 1 1 420px;
-  min-width: 300px;
   background-color: var(--surface-card);
   border: 1px solid var(--border-card);
   border-radius: var(--radius-panel);
@@ -188,15 +228,7 @@
   border-top: 1px solid var(--border-hairline);
 }
 
-/* --- Result column ------------------------------------------------------- */
-
-.calc-result-column {
-  flex: 1 1 420px;
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
+/* --- Result ------------------------------------------------------------- */
 
 .calc-result-card {
   background-color: var(--brand-teal-deep);
@@ -243,7 +275,6 @@
 }
 
 .calc-breakdown-card {
-  flex: 1;
   background-color: var(--surface-card);
   border: 1px solid var(--border-card);
   border-radius: var(--radius-panel);
@@ -335,8 +366,28 @@
   }
 }
 
+/* On a phone the form is taller than the screen, so the result card rides the
+   bottom edge and the number stays visible while the fields are filled in
+   (handoff §5.8).
+
+   `bottom` stickiness pulls a box UP into view while its natural position is
+   still below, so the card has to be the last item in the column: it docks
+   10px above the bottom edge for the whole calculator and settles into place
+   at the end. */
+@media (max-width: 768px) {
+  .calc-result-card {
+    position: sticky;
+    bottom: 10px;
+    z-index: 2;
+  }
+}
+
 @media (max-width: 519px) {
   .calc-result-value {
     font-size: 36px;
+  }
+
+  .calc-result-stats {
+    gap: 14px;
   }
 }

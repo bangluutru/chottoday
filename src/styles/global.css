@@ -391,3 +391,59 @@
     padding-top: 26px;
   }
 }
+
+/* ==========================================================================
+   MOBILE RULES (handoff §5.8, "Chotto - Ban mobile")
+   Cross-cutting rules that would otherwise be repeated in every page stylesheet.
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* iOS zooms the page when a focused field is under 16px. */
+  input[type='text'],
+  input[type='email'],
+  input[type='search'],
+  input[type='number'],
+  input[type='tel'],
+  input[type='url'],
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  /* Filter chip rows scroll sideways instead of wrapping into a tall block.
+     The row keeps its own padding so a focus ring is never clipped. */
+  .articles-chips,
+  .tools-filter-row,
+  .category-tag-filter-row,
+  .search-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .articles-chips::-webkit-scrollbar,
+  .tools-filter-row::-webkit-scrollbar,
+  .category-tag-filter-row::-webkit-scrollbar,
+  .search-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .articles-chip,
+  .tools-filter-chip,
+  .category-tag-chip,
+  .search-tab {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  /* The homepage tool tiles settle into a 2×2 block rather than a single
+     column of wide, mostly empty tiles. */
+  .tool-tile-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

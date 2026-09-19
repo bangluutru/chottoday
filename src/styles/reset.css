@@ -14,7 +14,11 @@ html {
   -webkit-text-size-adjust: 100%;
   tab-size: 4;
   scroll-behavior: smooth;
-  overflow-x: hidden;
+  /* `clip`, not `hidden`: both stop sideways scrolling, but `hidden` makes the
+     element a scroll container, which silently disables `position: sticky` for
+     everything inside it (the sticky sidebars and the calculator's result
+     card). */
+  overflow-x: clip;
 }
 
 body {
@@ -26,7 +30,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* Headings: Nunito, letter-spacing -0.02em */

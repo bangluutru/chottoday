@@ -142,56 +142,54 @@ export function NetSalaryCalculator({ disclaimer }) {
       </div>
 
       {/* -------------------------------------------------------------- result */}
-      <div className="calc-result-column">
-        <div className="calc-result-card">
-          <div className="calc-result-label">Thực nhận mỗi tháng (ước tính)</div>
-          <div className="calc-result-value" aria-live="polite">
-            {formatYen(perMonth(result.net))}
+      <div className="calc-result-card">
+        <div className="calc-result-label">Thực nhận mỗi tháng (ước tính)</div>
+        <div className="calc-result-value" aria-live="polite">
+          {formatYen(perMonth(result.net))}
+        </div>
+        <div className="calc-result-stats">
+          <div>
+            <div className="calc-result-stat-label">Thực nhận cả năm</div>
+            <div className="calc-result-stat-value">{formatYen(result.net)}</div>
           </div>
-          <div className="calc-result-stats">
-            <div>
-              <div className="calc-result-stat-label">Thực nhận cả năm</div>
-              <div className="calc-result-stat-value">{formatYen(result.net)}</div>
-            </div>
-            <div>
-              <div className="calc-result-stat-label">Tổng thu nhập năm</div>
-              <div className="calc-result-stat-value">{formatYen(result.gross)}</div>
-            </div>
-            <div>
-              <div className="calc-result-stat-label">Tỷ lệ bị trừ</div>
-              <div className="calc-result-stat-value">
-                {(result.deductionRate * 100).toFixed(1)}%
-              </div>
+          <div>
+            <div className="calc-result-stat-label">Tổng thu nhập năm</div>
+            <div className="calc-result-stat-value">{formatYen(result.gross)}</div>
+          </div>
+          <div>
+            <div className="calc-result-stat-label">Tỷ lệ bị trừ</div>
+            <div className="calc-result-stat-value">
+              {(result.deductionRate * 100).toFixed(1)}%
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="calc-breakdown-card">
-          <h2 className="calc-card-title calc-breakdown-title">Các khoản bị trừ mỗi tháng</h2>
-          <p className="calc-breakdown-sub">Tính trên thu nhập cả năm rồi chia đều 12 tháng.</p>
+      <div className="calc-breakdown-card">
+        <h2 className="calc-card-title calc-breakdown-title">Các khoản bị trừ mỗi tháng</h2>
+        <p className="calc-breakdown-sub">Tính trên thu nhập cả năm rồi chia đều 12 tháng.</p>
 
-          {rows.map((row) => (
-            <div className="calc-row" key={row.key}>
-              <div className="calc-row-head">
-                <span className="calc-row-label">{row.label}</span>
-                <span className="calc-row-amount">{formatYen(row.amount)}</span>
-              </div>
-              <div className="calc-row-track">
-                <div
-                  className="calc-row-bar"
-                  style={{ width: `${row.percent}%`, backgroundColor: row.color }}
-                />
-              </div>
-              <div className="calc-row-note">{row.note}</div>
+        {rows.map((row) => (
+          <div className="calc-row" key={row.key}>
+            <div className="calc-row-head">
+              <span className="calc-row-label">{row.label}</span>
+              <span className="calc-row-amount">{formatYen(row.amount)}</span>
             </div>
-          ))}
-
-          <div className="calc-total">
-            <span className="calc-total-label">Tổng bị trừ</span>
-            <span className="calc-total-amount">
-              {formatYen(perMonth(result.totalDeduction))} / tháng
-            </span>
+            <div className="calc-row-track">
+              <div
+                className="calc-row-bar"
+                style={{ width: `${row.percent}%`, backgroundColor: row.color }}
+              />
+            </div>
+            <div className="calc-row-note">{row.note}</div>
           </div>
+        ))}
+
+        <div className="calc-total">
+          <span className="calc-total-label">Tổng bị trừ</span>
+          <span className="calc-total-amount">
+            {formatYen(perMonth(result.totalDeduction))} / tháng
+          </span>
         </div>
       </div>
     </div>

@@ -1,14 +1,31 @@
 import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './MobileMenu.css';
-import { CloseIcon, ExternalLinkIcon, ArrowRightIcon } from '../common/Icons';
-import { getAllCategories } from '../../content/categories/categoryMap';
-import { TOOLIO_BASE_URL } from '../../config/constants';
+import { CloseIcon, FacebookIcon, SearchIcon } from '../common/Icons';
+import { ChottoWordmark } from '../common/ChottoWordmark';
+import { getCategoryById } from '../../content/categories/categoryMap';
+import { FANPAGE_URL } from '../../config/constants';
+
+/** The five drawer links, each with its brand dot, in design order. */
+const NAV_ITEMS = [
+  { to: '/', label: 'Trang chủ', dot: 'var(--chotto-coral)', end: true },
+  { to: '/articles', label: 'Bài viết', dot: 'var(--chotto-orange)' },
+  { to: '/tools', label: 'Công cụ', dot: 'var(--chotto-cyan)' },
+  { to: '/topics', label: 'Chủ đề', dot: 'var(--chotto-green)' },
+  { to: '/about', label: 'Về Chotto', dot: 'var(--chotto-violet)' },
+];
+
+/** Three shortcuts under the nav, resolved from the taxonomy. */
+const QUICK_TOPIC_IDS = ['newcomer', 'work', 'health'];
+
+const LANGUAGES = ['VI', 'JA', 'EN'];
 
 export function MobileMenu({ isOpen, onClose, triggerRef }) {
   const drawerRef = useRef(null);
   const closeButtonRef = useRef(null);
-  const categories = getAllCategories();
+  const navigate = useNavigate();
+
+  const quickTopics = QUICK_TOPIC_IDS.map(getCategoryById).filter(Boolean);
 
   // Focus trap & ESC key handling
   useEffect(() => {
@@ -100,6 +117,11 @@ export function MobileMenu({ isOpen, onClose, triggerRef }) {
     };
   }, [isOpen]);
 
+  const goToSearch = () => {
+    onClose();
+    navigate('/search');
+  };
+
   return (
     <div
       className={`mobile-menu-backdrop ${isOpen ? 'open' : ''}`}
@@ -117,12 +139,7 @@ export function MobileMenu({ isOpen, onClose, triggerRef }) {
       >
         <div className="mobile-menu-header">
           <Link to="/" onClick={onClose} aria-label="Trang chủ Chotto">
-            <img
-              src="/chotto-logo-full.svg"
-              alt="Chotto"
-              width="120"
-              height="26"
-            />
+            <ChottoWordmark width={92} />
           </Link>
           <button
             ref={closeButtonRef}
@@ -131,86 +148,70 @@ export function MobileMenu({ isOpen, onClose, triggerRef }) {
             onClick={onClose}
             aria-label="Đóng menu"
           >
-            <CloseIcon size={20} />
+            <CloseIcon size={18} />
           </button>
         </div>
 
-        <div className="mobile-menu-content">
-          <nav aria-label="Điều hướng di động">
-            <ul className="mobile-nav-list">
-              <li>
-                <Link to="/" className="mobile-nav-item" onClick={onClose}>
-                  <span>Trang chủ</span>
-                  <ArrowRightIcon size={16} color="var(--text-muted)" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/articles" className="mobile-nav-item" onClick={onClose}>
-                  <span>Bài viết</span>
-                  <ArrowRightIcon size={16} color="var(--text-muted)" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/topics" className="mobile-nav-item" onClick={onClose}>
-                  <span>Chủ đề</span>
-                  <ArrowRightIcon size={16} color="var(--text-muted)" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/tools" className="mobile-nav-item" onClick={onClose}>
-                  <span>Công cụ Chotto</span>
-                  <ArrowRightIcon size={16} color="var(--text-muted)" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/search" className="mobile-nav-item" onClick={onClose}>
-                  <span>Tìm kiếm</span>
-                  <ArrowRightIcon size={16} color="var(--text-muted)" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="mobile-nav-item" onClick={onClose}>
-                  <span>Về Chotto</span>
-                  <ArrowRightIcon size={16} color="var(--text-muted)" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/about#lien-he" className="mobile-nav-item" onClick={onClose}>
-                  <span>Liên hệ</span>
-                  <ArrowRightIcon size={16} color="var(--text-muted)" />
-                </Link>
-              </li>
-            </ul>
-          </nav>
+        {/* Opens the search page rather than typing in the drawer: one field
+            for the query, on the page that owns it. */}
+        <button type="button" className="mobile-menu-search" onClick={goToSearch}>
+          <SearchIcon size={17} />
+          <span>Tìm kiếm trên Chotto</span>
+        </button>
 
-          <div className="mobile-categories-section">
-            <div className="mobile-section-title">{categories.length} Nhóm Chủ Đề</div>
-            <div className="mobile-cat-grid" role="list">
-              {categories.map((cat) => (
-                <Link
-                  key={cat.id}
-                  to={cat.path}
-                  className="mobile-cat-link"
-                  onClick={onClose}
-                >
-                  <span className={`mobile-cat-dot cat-dot-${cat.colorKey}`} />
-                  <span>{cat.name}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
+        <nav className="mobile-menu-nav" aria-label="Điều hướng di động">
+          {NAV_ITEMS.map((item) => (
+            <Link key={item.to} to={item.to} className="mobile-nav-item" onClick={onClose}>
+              <span className="mobile-nav-dot" style={{ backgroundColor: item.dot }} />
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="mobile-menu-chips">
+          {quickTopics.map((category) => (
+            <Link
+              key={category.id}
+              to={category.path}
+              className="mobile-menu-chip"
+              onClick={onClose}
+            >
+              {category.shortName}
+            </Link>
+          ))}
         </div>
 
         <div className="mobile-menu-footer">
-          <a
-            href={TOOLIO_BASE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mobile-external-tool-btn"
-          >
-            <span>Mở Toolio Miniapps</span>
-            <ExternalLinkIcon size={16} />
-          </a>
+          <p className="mobile-menu-note">
+            Một chút hữu ích,
+            <br />
+            mỗi ngày ☺
+          </p>
+          <div className="mobile-menu-footer-row">
+            <a
+              href={FANPAGE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mobile-menu-fb"
+              aria-label="Fanpage Chotto trên Facebook"
+            >
+              <FacebookIcon size={18} color="#ffffff" />
+            </a>
+            <div className="mobile-menu-lang" role="group" aria-label="Ngôn ngữ">
+              {LANGUAGES.map((lang) => (
+                <button
+                  key={lang}
+                  type="button"
+                  className={`mobile-menu-lang-btn ${lang === 'VI' ? 'active' : ''}`}
+                  aria-pressed={lang === 'VI'}
+                  disabled={lang !== 'VI'}
+                  title={lang === 'VI' ? 'Tiếng Việt' : 'Sắp có'}
+                >
+                  {lang}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,9 +1,33 @@
 import React, { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import { SearchIcon, MenuIcon, ChevronDownIcon, GlobeIcon } from '../common/Icons';
 import { ChottoWordmark } from '../common/ChottoWordmark';
 import { setEphemeralQuery } from '../../services/discovery/searchStore';
+
+/**
+ * Section title shown on a phone, where the design replaces the logo with a
+ * back button and the name of the section you are in (handoff §5.8).
+ *
+ * Longest prefix wins, so /articles/<slug> reads "Bài viết". The homepage has
+ * no entry: it keeps the logo.
+ */
+const SECTION_TITLES = [
+  ['/articles', 'Bài viết'],
+  ['/topics', 'Chủ đề'],
+  ['/tools', 'Công cụ'],
+  ['/search', 'Tìm kiếm'],
+  ['/about', 'Về Chotto'],
+  ['/policy', 'Chính sách'],
+  ['/problems', 'Tình huống'],
+];
+
+function sectionTitleFor(pathname) {
+  const match = SECTION_TITLES.filter(([prefix]) => pathname.startsWith(prefix)).sort(
+    (a, b) => b[0].length - a[0].length
+  )[0];
+  return match ? match[1] : null;
+}
 
 export function Navbar({
   onOpenMobileMenu,
@@ -13,6 +37,8 @@ export function Navbar({
 }) {
   const [navSearch, setNavSearch] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const sectionTitle = sectionTitleFor(location.pathname);
 
   const handleNavSearchSubmit = (e) => {
     e.preventDefault();
@@ -31,6 +57,26 @@ export function Navbar({
           <ChottoWordmark width={132} className="navbar-logo" />
           <span className="navbar-tagline">Một chút hữu ích, mỗi ngày.</span>
         </Link>
+
+        {/* Phone only: back + section name in place of the logo. `navigate(-1)`
+            when there is somewhere to go back to, the home page otherwise, so
+            a shared link never traps the visitor. */}
+        {sectionTitle && (
+          <div className="navbar-back-lockup">
+            <button
+              type="button"
+              className="navbar-back-btn"
+              aria-label="Quay lại"
+              onClick={() => {
+                if (window.history.length > 1) navigate(-1);
+                else navigate('/');
+              }}
+            >
+              ‹
+            </button>
+            <span className="navbar-section-title">{sectionTitle}</span>
+          </div>
+        )}
 
         <nav className="navbar-nav" aria-label="Chính">
           <NavLink to="/" end className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>

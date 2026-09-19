@@ -201,21 +201,74 @@
   }
 }
 
-@media (max-width: 719px) {
+/* Phone-only back lockup; hidden on wider screens, where the logo stays. */
+.navbar-back-lockup {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.navbar-back-btn {
+  width: var(--touch-target-min);
+  height: var(--touch-target-min);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-card);
+  background: var(--surface-card);
+  border-radius: var(--radius-pill);
+  color: var(--text-primary);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.navbar-back-btn:hover {
+  background: var(--surface-dim);
+}
+
+.navbar-section-title {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Mobile header shape (handoff §5.8): 56px tall, 96px logo, no tagline, and
+   the search pill collapsed to a 44px round button. On a section page the
+   logo gives way to the back button and the section name. */
+@media (max-width: 768px) {
+  .navbar-back-lockup {
+    display: flex;
+  }
+
+  .navbar-back-lockup + .navbar-nav ~ .navbar-actions,
+  .navbar-back-lockup ~ .navbar-actions {
+    margin-left: auto;
+  }
+
+  .navbar-inner:has(.navbar-back-lockup) .navbar-brand {
+    display: none;
+  }
+
   .navbar-inner {
-    height: 64px;
-    gap: 12px;
+    height: 56px;
+    gap: 10px;
   }
 
   .navbar-logo {
-    width: 108px;
+    width: 96px;
   }
 
   .navbar-tagline {
     display: none;
   }
 
-  /* The pill is replaced by an icon that focuses the hero search */
   .navbar-search-form,
   .navbar-lang-btn {
     display: none;
@@ -223,5 +276,12 @@
 
   .navbar-mobile-search-btn {
     display: flex;
+    width: var(--touch-target-min);
+    height: var(--touch-target-min);
+  }
+
+  .navbar-menu-btn {
+    width: var(--touch-target-min);
+    height: var(--touch-target-min);
   }
 }
