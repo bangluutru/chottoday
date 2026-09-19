@@ -76,7 +76,7 @@ npm run preview
 # Kiểm định nội dung và tham chiếu công cụ
 npm run validate
 
-# Chạy test (discovery + công thức tính lương thực nhận)
+# Chạy test (discovery + công thức tính lương + chính sách chặn bot)
 npm test
 ```
 
@@ -86,6 +86,97 @@ npm test
 | --- | --- |
 | `VITE_TOOLIO_BASE_URL` | Base URL của Toolio miniapps. |
 | `VITE_CONTACT_ENDPOINT` | Endpoint nhận form liên hệ ở `/about#lien-he`. Bỏ trống thì form không giả vờ gửi thành công mà hướng người dùng sang email. |
+
+---
+
+## 🛡️ Chống crawl dữ liệu & chống copy bài viết
+
+Ba lớp, làm ba việc khác nhau. Lớp nào cũng có giới hạn thật của nó, nên ghi rõ
+ở đây để sau này không ai nhầm lẫn là site đã "an toàn tuyệt đối".
+
+### Lớp 1 — `robots.txt`: lời đề nghị
+
+`src/config/crawlerPolicy.js` là **nguồn đúng duy nhất** cho danh sách bot. File
+`public/robots.txt` và `dist/robots.txt` (do `scripts/prerender.mjs` sinh ra)
+đều lấy từ đó.
+
+- **Vẫn cho phép**: Googlebot, Bingbot, coccocbot (Cốc Cốc), DuckDuckBot,
+  Applebot, Yeti — và các bot xem trước liên kết: `facebookexternalhit`,
+  Twitterbot, Zalo, Telegram, WhatsApp, Slack, Discord. Site sống bằng traffic
+  tìm kiếm và bằng thẻ chia sẻ, nên **không bao giờ** được chặn nhóm này.
+- **Từ chối**: 32 bot huấn luyện AI (GPTBot, ClaudeBot, CCBot, Google-Extended,
+  Applebot-Extended, Bytespider, PerplexityBot, Meta-ExternalAgent…) và 14 bot
+  thu thập SEO (AhrefsBot, SemrushBot, MJ12bot, DataForSeoBot…).
+
+Sửa danh sách thì sửa `crawlerPolicy.js`, rồi chạy lại:
+
+```bash
+node --input-type=module -e "import fs from 'fs'; \
+  const { buildRobotsTxt } = await import('./src/config/crawlerPolicy.js'); \
+  fs.writeFileSync('public/robots.txt', buildRobotsTxt('https://chottoday.com'));"
+npm run test:crawler-policy
+```
+
+> `robots.txt` chỉ là **lời đề nghị**. Bot tử tế thì nghe; bot đi ăn cắp dữ liệu
+> thì không. Vì vậy mới có lớp 2.
+
+### Lớp 2 — `functions/_middleware.js`: chặn thật ở edge
+
+Cloudflare Pages Function chạy trước mọi request, trả `403` cho user-agent nằm
+trong danh sách chặn (gồm cả thư viện HTTP vô danh: Scrapy, HTTrack, wget,
+python-requests, Go-http-client…).
+
+Hai nguyên tắc bất di bất dịch của file này:
+
+1. **Fail open.** Mọi lỗi đều rơi xuống `next()`. Một bug ở đây mà làm sập site
+   thì tai hại hơn nhiều so với việc lọt một con bot.
+2. **Không đoán.** Chỉ chặn user-agent tự khai tên. Scraper giả làm Chrome thì
+   không thể phân biệt với độc giả thật — việc đó để Cloudflare lo (lớp 3).
+
+Danh sách trong file này được chép tay từ `crawlerPolicy.js` (để Function không
+phụ thuộc import nào cả); `npm run test:crawler-policy` sẽ đỏ nếu hai bản lệch
+nhau, và in ra đúng nội dung cần dán vào.
+
+`public/_headers` bổ sung `X-Robots-Tag: noai, noimageai` (tuyên bố không đồng ý
+cho huấn luyện AI) và `frame-ancestors 'self'` (chặn nhúng bài vào iframe site
+khác).
+
+### Lớp 3 — Cloudflare Dashboard: việc cần làm bằng tay
+
+Ba mục này **không nằm trong code**, phải bật trong dashboard của
+`chottoday.com`:
+
+| Nơi bật | Mục | Vì sao |
+| --- | --- | --- |
+| Security → Bots | **Block AI Scrapers and Crawlers** = On | Cloudflare nhận diện theo hành vi, bắt được cả bot giả user-agent. |
+| Security → Bots | **Bot Fight Mode** = On | Chặn bot thường ở mức free. |
+| Security → WAF → Rate limiting rules | 60 request / 1 phút / IP cho `/articles/*` | Người đọc thật không bao giờ mở 60 bài/phút; scraper thì có. |
+| Scrape Shield | **Hotlink Protection** = On | Site khác hết lấy ảnh trực tiếp từ đây. |
+
+### Lớp 4 — Chống copy bài viết (phía trình duyệt)
+
+`src/components/article/CopyGuard.jsx`, cấu hình ở
+`src/config/contentProtection.js`, **chỉ bọc phần thân bài viết**:
+
+- chặn bôi đen (`user-select: none`), chặn chuột phải, chặn kéo ảnh ra ngoài;
+- nếu copy vẫn lọt (reader mode, extension), clipboard nhận **tiêu đề + link
+  bài gốc + dòng bản quyền** thay vì nội dung;
+- hiện thông báo nhỏ mời người đọc dùng nút "Sao chép link" — thứ mà đa số họ
+  thực sự muốn;
+- cuối bài có dòng `© ChottoDay` dẫn tới `/policy#ban-quyen`.
+
+**Không bọc**: link, nút, ô nhập liệu, sidebar, trang công cụ, máy tính lương,
+`/policy`, `/about`, `/search` và trang chủ. Người đọc vẫn copy được địa chỉ,
+số tiền hay từ tiếng Nhật ở những chỗ đó — đúng mục đích của site.
+
+Tắt toàn bộ: đặt `COPY_PROTECTION_ENABLED = false`.
+
+> **Nói thẳng về giới hạn:** đây là rào cản, không phải khoá. Ai tắt JavaScript,
+> xem source, hay đọc chính bản HTML prerender mà site cố tình dọn sẵn cho
+> Google thì vẫn lấy được chữ. Không site nào ngăn được điều đó. Cái này chặn
+> trường hợp tiện tay — vốn là đại đa số — và làm cho bản copy lọt ra ngoài vẫn
+> mang tên Chotto. Phần còn lại là chuyện của lớp 2, lớp 3 và điều khoản bản
+> quyền ở `/policy#ban-quyen`.
 
 ---
 
@@ -102,6 +193,9 @@ npm test
       `comingSoon: true` trong `src/data/tools.js` thành `toolId` (nếu là
       miniapp Toolio) hoặc `calculator` + trang nội dung trong
       `src/data/toolPages.js` (nếu Chotto tự dựng).
+- [ ] **Bật 4 mục Cloudflare ở lớp 3** trong bảng "Chống crawl dữ liệu" phía
+      trên. Code đã xong phần của nó; bốn mục kia chỉ bật được bằng tay trong
+      dashboard và là lớp chặn hiệu quả nhất với scraper giả làm Chrome.
 
 ---
 

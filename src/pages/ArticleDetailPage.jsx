@@ -6,6 +6,7 @@ import { getCategoryById } from '../content/categories/categoryMap';
 import { ArticleRenderer, buildTableOfContents } from '../components/article/ArticleRenderer';
 import { Breadcrumb } from '../components/common/Breadcrumb';
 import { ArticleContextualProblem } from '../components/article/ArticleContextualProblem';
+import { CopyGuard } from '../components/article/CopyGuard';
 import {
   ArrowRightIcon,
   ClockIcon,
@@ -222,7 +223,9 @@ export function ArticleDetailPage() {
 
         {/* 2. Article body (3/4) + sidebar (1/4) */}
         <div className="article-layout">
-          <div className="article-main">
+          {/* The body is the part worth stealing, so it is the part guarded.
+              The sidebar, the share buttons and every other page stay normal. */}
+          <CopyGuard className="article-main" title={article.title}>
 
           {/* 2a. Article Header */}
           <header className="article-header">
@@ -456,7 +459,16 @@ export function ArticleDetailPage() {
           {/* 10. Contextual Problem Card (Phase 5) */}
           <ArticleContextualProblem article={article} />
 
-          </div>
+          {/* 11. Per-article rights line — the claim a re-post has to ignore. */}
+          <p className="copy-guard-rights">
+            <span>
+              © {new Date().getFullYear()} ChottoDay. Bài viết do Ban Biên Tập Chotto biên soạn.
+              Bạn được phép trích dẫn ngắn kèm liên kết về bài gốc.
+            </span>
+            <Link to="/policy#ban-quyen">Bản quyền &amp; trích dẫn</Link>
+          </p>
+
+          </CopyGuard>
 
           <aside className="article-aside" aria-label="Chia sẻ và bài liên quan">
             <div className="article-aside-card">

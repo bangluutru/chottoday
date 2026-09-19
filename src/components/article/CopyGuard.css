@@ -1,0 +1,105 @@
+/* ==========================================================================
+   CopyGuard — article body copy protection
+   ========================================================================== */
+
+.copy-guard {
+  position: relative;
+}
+
+/* Selection is blocked for the body text only. Links, buttons, form fields and
+   anything marked data-allow-select opt back in below, so a reader can still
+   copy an address or a Japanese term out of a source link. */
+.copy-guard.is-guarded {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  /* Stops the iOS long-press "copy / look up" callout over the text. */
+  -webkit-touch-callout: none;
+}
+
+.copy-guard.is-guarded a,
+.copy-guard.is-guarded button,
+.copy-guard.is-guarded input,
+.copy-guard.is-guarded textarea,
+.copy-guard.is-guarded [data-allow-select] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
+
+.copy-guard.is-guarded img {
+  /* Stops an image being dragged out into another tab or onto the desktop.
+     Clicks are left alone — some covers sit inside a link. */
+  -webkit-user-drag: none;
+}
+
+/* --- The notice ---------------------------------------------------------- */
+
+.copy-guard-notice {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* Sized to its text, but never wider than the phone it is on. */
+  width: max-content;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 12px 18px;
+  background-color: var(--chotto-ink);
+  color: var(--text-inverse);
+  border-radius: var(--radius-media-card);
+  box-shadow: var(--shadow-float);
+  font-size: 13.5px;
+  line-height: 1.5;
+  text-align: center;
+  /* Never in the way of what the reader was doing. */
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 12px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.copy-guard-notice.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.copy-guard-notice strong {
+  font-family: var(--font-heading);
+  font-weight: 800;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy-guard-notice {
+    transition: opacity 0.2s ease;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* --- Per-article copyright line ------------------------------------------ */
+
+.copy-guard-rights {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-hairline);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.copy-guard-rights a {
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.copy-guard-rights a:hover {
+  color: var(--brand-teal-deep-hover);
+}

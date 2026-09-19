@@ -197,6 +197,21 @@ export function PolicyPage() {
                 mục đích thương mại và không thu thập tự động (scraping) khi chưa có sự đồng
                 ý bằng văn bản.
               </p>
+              <div className="policy-callout policy-callout-life">
+                <p>
+                  <strong>Với bot và trình thu thập dữ liệu:</strong> Chotto{' '}
+                  <strong>không cho phép</strong> thu thập nội dung để huấn luyện mô hình AI
+                  hoặc để bán lại dưới dạng dữ liệu. Danh sách bot bị từ chối được công bố
+                  tại{' '}
+                  <a href="/robots.txt" target="_blank" rel="noopener noreferrer">
+                    /robots.txt
+                  </a>{' '}
+                  và được chặn ở tầng máy chủ. Bot tìm kiếm và bot xem trước liên kết vẫn
+                  được chào đón. Nếu bạn cần dùng nội dung cho mục đích nghiên cứu hoặc phi
+                  lợi nhuận, hãy viết thư cho chúng tôi — phần lớn trường hợp chúng tôi đồng
+                  ý.
+                </p>
+              </div>
 
               <h3 id="thay-doi" className="policy-h3">
                 {heading('thay-doi')}
