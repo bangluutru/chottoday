@@ -14,8 +14,17 @@
 import { inferTopic, rankItems, recencyFactor, scoreItem } from './newsroom/rank.mjs';
 import { SOURCES, SOURCE_KIND, getOfficialSources, getSourceById } from './newsroom/sources.js';
 import {
-  MIN_BODY_CHARS, MIN_BODY_SENTENCES, USER_AGENT, hasEnoughSubstance,
-  measureSubstance, normalizeDate, parseFeed, parseNoticeList, stripHtml,
+  extractDate,
+  hasEnoughSubstance,
+  lastDateIn,
+  measureSubstance,
+  MIN_BODY_CHARS,
+  MIN_BODY_SENTENCES,
+  normalizeDate,
+  parseFeed,
+  parseNoticeList,
+  stripHtml,
+  USER_AGENT,
 } from './newsroom/fetch.mjs';
 import { DRAFT_MODEL, DRAFT_SCHEMA, buildCaption, createClient, slugify, toArticleRecord } from './newsroom/draft.mjs';
 
@@ -201,16 +210,22 @@ assert(normalizeDate('hôm qua') === null, 'An unparseable date returns null, no
 assert(normalizeDate(null) === null, 'A missing date returns null');
 assert(stripHtml('<p>a &amp; b</p>') === 'a & b', 'Entities decode after tags are stripped');
 
+// Every entry carries a date, because an undated link is navigation and is
+// dropped outright — see section 14.
 const noticeHtml =
-  '<a href="/isa/news/01.html">在留資格の変更について</a>' +
-  '<a href="#top">↑</a>' +
-  '<a href="/isa/news/01.html">cùng một link</a>' +
-  '<a href="http://insecure.example/x">link http</a>';
+  '<li>令和8年9月19日<a href="/isa/news/01.html">在留資格の変更について</a></li>' +
+  '<li>令和8年9月19日<a href="#top">↑</a></li>' +
+  '<li>令和8年9月18日<a href="/isa/news/01.html">cùng một link</a></li>' +
+  '<li>令和8年9月17日<a href="http://insecure.example/x">link http</a></li>';
 const notices = parseNoticeList(noticeHtml, 'https://www.moj.go.jp/isa/');
 assert(notices.length === 1, 'Anchors, duplicates and non-HTTPS links are all dropped');
 assert(
   notices[0].url === 'https://www.moj.go.jp/isa/news/01.html',
   'A relative href resolves against the source URL'
+);
+assert(
+  notices[0].publishedAt.startsWith('2026-09-19'),
+  'The surviving entry carries the date that sat next to it'
 );
 
 // 7. Draft record — the part validate-content.mjs will judge ------------
@@ -496,6 +511,84 @@ assert(
   measureSubstance('see index.html and page.html for more').sentences === 0,
   'A dot inside a filename is not counted as a sentence'
 );
+
+// 14. A news entry has a date; a menu link does not -----------------------
+console.log('\n14. Dates separate news from navigation');
+// Changing the ISA source to its top page fixed a 404 and created a worse
+// problem: the parser scraped every nav link, and the pipeline drafted two
+// "articles" from the agency's "About the organisation" and "Regional offices"
+// pages. Both are real prose, so the substance gate passed them — that gate
+// measures fullness, not newsworthiness. A news entry carries a date beside
+// it. Navigation does not.
+assert(extractDate('令和8年9月19日').startsWith('2026-09-19'), 'A Reiwa-era date converts (令和8 = 2026)');
+assert(extractDate('2026年9月19日').startsWith('2026-09-19'), 'A Western-year Japanese date parses');
+assert(extractDate('2026/09/19').startsWith('2026-09-19'), 'A slash date parses');
+assert(extractDate('組織について') === null, 'Text with no date returns null');
+assert(extractDate('') === null, 'Empty text returns null');
+
+const navOnly =
+  '<li><a href="/isa/about/organization/index.html">組織について</a></li>' +
+  '<li><a href="/isa/about/region/index.html">地方出入国在留管理官署</a></li>';
+assert(
+  parseNoticeList(navOnly, 'https://www.moj.go.jp/isa/').length === 0,
+  'A page of pure navigation yields no items at all'
+);
+
+const datedList =
+  '<li>令和8年9月19日<a href="/isa/news/01.html">在留資格の変更申請のオンライン化について</a></li>' +
+  '<li>令和8年9月10日<a href="/isa/news/02.html">在留カードの記載事項変更の届出</a></li>' +
+  '<li>令和8年8月1日<a href="/isa/news/03.html">特定技能制度の運用状況について</a></li>';
+const dated = parseNoticeList(datedList, 'https://www.moj.go.jp/isa/');
+assert(dated.length === 3, 'Every dated entry is kept');
+
+// The date nearest the link wins. Scanning left-to-right would hand each entry
+// the previous entry's date — a silent corruption: the date is valid, just
+// attached to the wrong item, which skews both recency and the article date.
+assert(dated[0].publishedAt.startsWith('2026-09-19'), 'The first entry keeps its own date');
+assert(dated[1].publishedAt.startsWith('2026-09-10'), "The second entry is not given the first entry's date");
+assert(dated[2].publishedAt.startsWith('2026-08-01'), 'The third entry keeps its own date');
+
+assert(
+  lastDateIn('令和8年9月19日 ... 令和8年9月10日').startsWith('2026-09-10'),
+  'lastDateIn returns the nearest date, not the earliest in the string'
+);
+assert(lastDateIn('không có ngày') === null, 'lastDateIn returns null when there is no date');
+
+const mixed =
+  '<li><a href="/isa/about/organization/index.html">組織について</a></li>' +
+  '<li>令和8年9月19日<a href="/isa/news/01.html">在留資格の変更申請について</a></li>' +
+  '<li><a href="/isa/about/region/index.html">地方出入国在留管理官署</a></li>';
+const mixedOut = parseNoticeList(mixed, 'https://www.moj.go.jp/isa/');
+assert(mixedOut.length === 1, 'Navigation around a real notice is stripped, the notice survives');
+assert(mixedOut[0].url.includes('/news/'), 'And the surviving item is the news one');
+
+// A date written AFTER the title, on the last entry of a list. The forward
+// window only runs when no anchor follows: text sitting between two links is
+// ambiguous, and Japanese notice lists put the date first, so that text
+// belongs to the link on its right. Letting both links read it would hand a
+// nav link standing just before a notice that notice's date.
+const trailing =
+  '<li>令和8年9月10日<a href="/isa/news/08.html">在留カードの届出について</a></li>' +
+  '<li><a href="/isa/news/09.html">特定技能制度の運用状況について</a>（2026年9月19日）</li>';
+const trailingOut = parseNoticeList(trailing, 'https://www.moj.go.jp/isa/');
+assert(trailingOut.length === 2, 'A trailing date on the final entry is still found');
+assert(
+  trailingOut[1].publishedAt.startsWith('2026-09-19'),
+  'The final entry takes the date written after its title'
+);
+assert(
+  trailingOut[0].publishedAt.startsWith('2026-09-10'),
+  'And the entry before it keeps its own leading date'
+);
+
+// The same shape, but with a nav link where the news link was: nothing to
+// inherit from, so it drops.
+const navBeforeNews =
+  '<li><a href="/isa/about/region/index.html">地方出入国在留管理官署一覧</a></li>' +
+  '<li>令和8年9月19日<a href="/isa/news/01.html">在留資格の変更申請について</a></li>';
+const navBeforeOut = parseNoticeList(navBeforeNews, 'https://www.moj.go.jp/isa/');
+assert(navBeforeOut.length === 1, 'A nav link standing just before a notice does not borrow its date');
+assert(navBeforeOut[0].url.includes('/news/'), 'Only the dated notice survives');
 
 console.log('\n========================================================');
 console.log(`TOTAL NEWSROOM TESTS: ${passCount + failCount}`);

@@ -100,17 +100,65 @@ export function parseFeed(xml) {
 }
 
 /**
- * Trang thông báo của bộ ngành Nhật: mỗi dòng là một <a> kèm ngày ở gần.
- * Cách đọc này cố tình thô — nó chỉ cần đủ tốt để rank có cái mà xếp; phần
- * nội dung thật được lấy riêng ở fetchArticleBody.
+ * Rút ngày từ một đoạn chữ. Trả null nếu không thấy.
+ *
+ * Nhận cả niên hiệu Nhật (令和8年9月19日) lẫn dương lịch. 令和 bắt đầu từ 2019
+ * nên 令和N = 2018 + N.
+ */
+export function extractDate(text = '') {
+  const reiwa = text.match(/令和\s*(\d{1,2})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/);
+  if (reiwa) {
+    const [, era, m, d] = reiwa;
+    return new Date(Date.UTC(2018 + Number(era), Number(m) - 1, Number(d))).toISOString();
+  }
+  const jp = text.match(/(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/);
+  if (jp) {
+    const [, y, m, d] = jp;
+    return new Date(Date.UTC(+y, +m - 1, +d)).toISOString();
+  }
+  const slash = text.match(/(\d{4})[/.-](\d{1,2})[/.-](\d{1,2})/);
+  if (slash) {
+    const [, y, m, d] = slash;
+    return new Date(Date.UTC(+y, +m - 1, +d)).toISOString();
+  }
+  return null;
+}
+
+/**
+ * Ngày nằm gần cuối chuỗi nhất. Dùng cho phần chữ đứng TRƯỚC một link, nơi
+ * ngày đúng là ngày sát link nhất, còn ngày xa hơn là của mục khác.
+ */
+export function lastDateIn(text = '') {
+  const all = [...text.matchAll(/令和\s*\d{1,2}\s*年\s*\d{1,2}\s*月\s*\d{1,2}\s*日|\d{4}\s*年\s*\d{1,2}\s*月\s*\d{1,2}\s*日|\d{4}[/.-]\d{1,2}[/.-]\d{1,2}/g)];
+  if (all.length === 0) return null;
+  return extractDate(all[all.length - 1][0]);
+}
+
+/**
+ * Đọc danh sách thông báo trên trang cơ quan nhà nước.
+ *
+ * CHỈ giữ link có ngày đăng ở gần. Đây là ranh giới phân biệt tin với điều
+ * hướng, và nó đến từ một lần sai thật: sau khi đổi URL của 入管庁 sang trang
+ * chủ để tránh 404, parser quét luôn mọi link menu, rồi pipeline soạn hai
+ * "bài" từ trang "Giới thiệu tổ chức" và "Danh sách cơ quan vùng". Cả hai đều
+ * là văn xuôi thật nên cổng đủ chất không chặn được — cổng đó đo độ đầy,
+ * không đo tính thời sự.
+ *
+ * Một mục tin bao giờ cũng có ngày bên cạnh. Menu thì không.
  */
 export function parseNoticeList(html, baseUrl) {
   const items = [];
   const anchorRe = /<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
 
-  for (const [, href, inner] of html.matchAll(anchorRe)) {
+  // Con trỏ tới chỗ link TRƯỚC kết thúc. Ngày của một mục chỉ có thể nằm
+  // trong khoảng giữa link trước và link này — nếu quét quá ranh giới đó thì
+  // một link điều hướng đứng ngay sau một tin sẽ thừa hưởng ngày của tin ấy,
+  // và lại lọt vào danh sách.
+  let prevEnd = 0;
+
+  for (const match of html.matchAll(anchorRe)) {
+    const [whole, href, inner] = match;
     const title = stripHtml(inner);
-    // Bỏ link điều hướng, link rỗng, link neo.
     if (title.length < 8) continue;
     if (href.startsWith('#') || href.startsWith('javascript:')) continue;
 
@@ -122,10 +170,41 @@ export function parseNoticeList(html, baseUrl) {
     }
     if (!url.startsWith('https://')) continue;
 
-    items.push({ title, summary: '', url, publishedAt: null });
+    // Ngày thường nằm ngay TRƯỚC link (dạng <li>ngày<a>tiêu đề</a></li>).
+    //
+    // Phải lấy ngày GẦN NHẤT về phía trái, không phải ngày đầu tiên tìm thấy:
+    // cửa sổ quét ngược vươn qua cả mục liền trước, nên "khớp đầu tiên từ trái
+    // sang" sẽ gán cho mục này ngày của mục trước đó. Một lỗi im lặng — ngày
+    // vẫn hợp lệ, chỉ là sai mục — và nó làm hỏng cả xếp hạng theo độ mới lẫn
+    // ngày ghi trong bài.
+    const at = match.index ?? 0;
+    const end = at + whole.length;
+
+    // Cửa sổ ngược: chỉ lấy chữ kể từ chỗ link trước kết thúc, tối đa 160 ký tự.
+    const windowStart = Math.max(prevEnd, at - 160);
+    const before = stripHtml(html.slice(windowStart, at));
+
+    // Cửa sổ xuôi chỉ dùng khi KHÔNG còn link nào phía sau.
+    //
+    // Đoạn chữ nằm giữa hai link là nhập nhằng: nó có thể là ngày đứng sau
+    // link trái, hoặc ngày đứng trước link phải. Danh sách thông báo của cơ
+    // quan Nhật gần như luôn đặt ngày TRƯỚC tiêu đề, nên đoạn đó thuộc về link
+    // bên phải. Nếu cho cả hai cùng đọc thì một link điều hướng đứng ngay
+    // trước một tin sẽ vớ luôn ngày của tin ấy.
+    //
+    // Giữ cửa sổ xuôi cho mục CUỐI danh sách, nơi không còn link nào tranh
+    // chấp — đủ để bắt dạng <a>tiêu đề</a>（2026年9月19日）.
+    const nextAnchor = html.indexOf('<a', end);
+    const after = nextAnchor === -1 ? stripHtml(html.slice(end, end + 80)) : '';
+
+    prevEnd = end;
+
+    const publishedAt = lastDateIn(before) || extractDate(`${title} ${after}`);
+    if (!publishedAt) continue;
+
+    items.push({ title, summary: '', url, publishedAt });
   }
 
-  // Trang thông báo hay lặp link (menu, breadcrumb). Giữ lần xuất hiện đầu.
   const seen = new Set();
   return items.filter((item) => {
     if (seen.has(item.url)) return false;
