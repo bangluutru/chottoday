@@ -1,0 +1,214 @@
+/**
+ * Studio dùng token màu của site để không đẻ ra bảng màu thứ hai.
+ * Giao diện cố tình thô: đây là công cụ nội bộ chạy trên máy, không phải trang
+ * cho người đọc. Công sức thẩm mỹ dồn vào KHUNG XEM THỬ bên phải, vì đó mới là
+ * thứ phải giống site thật.
+ */
+
+.studio {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+.studio-head h1 {
+  font-family: 'Nunito', system-ui, sans-serif;
+  margin: 0 0 4px;
+}
+
+.studio-head p {
+  margin: 0 0 12px;
+  color: var(--color-text-muted, #5A626A);
+}
+
+.studio-grid {
+  display: grid;
+  grid-template-columns: minmax(340px, 1fr) minmax(340px, 1.2fr);
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .studio-grid { grid-template-columns: 1fr; }
+}
+
+.studio-pane {
+  border: 1px solid var(--color-border, #E5E0D8);
+  border-radius: 12px;
+  padding: 16px;
+  background: var(--color-surface, #FFFFFF);
+}
+
+.studio-label {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  margin: 16px 0 6px;
+}
+
+.studio-label:first-child { margin-top: 0; }
+
+.studio input[type='text'],
+.studio input:not([type]),
+.studio select,
+.studio textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border, #E5E0D8);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 14px;
+  background: var(--color-bg, #FBF9F5);
+  color: inherit;
+}
+
+.studio-textarea {
+  min-height: 320px;
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.studio-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.studio-row select { width: auto; }
+
+.studio-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.studio-badge.ok { background: #EDF7EE; color: #2F7A43; }
+.studio-badge.unsure { background: #FEF6EB; color: #8F5310; }
+
+.studio-muted {
+  font-size: 12px;
+  color: var(--color-text-muted, #5A626A);
+  margin-top: 4px;
+}
+
+.studio-unsure { color: #8F5310; }
+
+.studio-error {
+  color: #B32B26;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.studio-ok { color: #2F7A43; font-weight: 700; }
+
+.studio-source {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+@media (max-width: 700px) {
+  .studio-source { grid-template-columns: 1fr; }
+}
+
+.studio-link {
+  background: none;
+  border: none;
+  color: var(--color-accent, #1E2A44);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 0;
+  text-decoration: underline;
+}
+
+.studio-check {
+  border: 1px solid var(--color-border, #E5E0D8);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.studio-block-item { color: #B32B26; margin-top: 4px; }
+.studio-advice-item { color: #8F5310; margin-top: 4px; }
+
+.studio-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.studio-actions button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  background: var(--color-ink, #1E2A44);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.studio-actions button:disabled { opacity: 0.4; cursor: not-allowed; }
+.studio-actions .studio-danger { background: #B32B26; }
+
+.studio-warn,
+.studio-warn-inline {
+  background: #FEF6EB;
+  border: 1px solid #FBA93E;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  margin: 8px 0;
+}
+
+.studio-result {
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.studio-result.ok { background: #EDF7EE; border: 1px solid #66B96B; }
+.studio-result.bad { background: #FDEEED; border: 1px solid #F15A53; }
+.studio-result ul { margin: 4px 0; padding-left: 20px; }
+.studio-next { margin-top: 8px; }
+
+.studio-preview-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted, #5A626A);
+  margin-bottom: 8px;
+}
+
+/* Khung xem thử: nền và bo góc giống trang bài viết thật. */
+.studio-preview {
+  border: 1px solid var(--color-border, #E5E0D8);
+  border-radius: 12px;
+  padding: 24px;
+  background: var(--color-bg, #FBF9F5);
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.studio-preview-title {
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: 28px;
+  line-height: 1.25;
+  margin: 0 0 8px;
+}
+
+.studio-preview-excerpt {
+  color: var(--color-text-muted, #5A626A);
+  margin: 0 0 20px;
+}

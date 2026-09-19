@@ -110,7 +110,27 @@ lời nhắc.
 | Luật kiểm định | `scripts/validate-content.mjs` |
 | Sinh ảnh OG 1200×630 | `scripts/images/card.py` |
 
-Quy trình: viết file → `python3 scripts/images/card.py` sinh ảnh OG →
+### Cách nhanh: Chotto Studio
+
+```bash
+npm run dev     # rồi mở localhost:5173/studio
+```
+
+Dán nội dung AI trả về (markdown hoặc file `.js` — nó tự nhận dạng), chọn ảnh
+bìa, xem thử bằng **đúng bố cục của site**, rồi bấm một nút: studio ghi file bài
+viết, chèn vào `articlesList.js`, và sinh ảnh OG.
+
+Studio **chỉ chạy ở chế độ dev**, không có trong bản build nên không bao giờ
+xuất hiện trên chottoday.com. Đổi máy chỉ cần `git clone && npm install` —
+không có gì lưu riêng trên máy cũ. Riêng ảnh OG cần Python:
+`pip install pillow fonttools brotli` (studio tự kiểm và nhắc nếu thiếu).
+
+Bài studio ghi ra luôn mang `status: 'review'`. Xem thử tại
+`/articles/<slug>`, chạy `npm run validate && npm test && npm run build`, rồi PR.
+
+### Cách thủ công
+
+Viết file → `python3 scripts/images/card.py` sinh ảnh OG →
 `npm run validate && npm test && npm run build` → PR → xem thử trên bản preview
 Cloudflare → merge.
 
