@@ -11,10 +11,9 @@
     "validate:tool-refs": "node scripts/validate-tool-refs.mjs",
     "validate": "npm run validate:content && npm run validate:tool-refs",
     "test:discovery": "node scripts/test-discovery.mjs",
-    "test": "npm run test:discovery && npm run test:net-salary && npm run test:crawler-policy && npm run test:newsroom",
+    "test": "npm run test:discovery && npm run test:net-salary && npm run test:crawler-policy",
     "test:net-salary": "node scripts/test-net-salary.mjs",
-    "test:crawler-policy": "node scripts/test-crawler-policy.mjs",
-    "test:newsroom": "node scripts/test-newsroom.mjs"
+    "test:crawler-policy": "node scripts/test-crawler-policy.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -25,7 +24,6 @@
     "@expo-google-fonts/be-vietnam-pro": "^0.4.1",
     "@expo-google-fonts/nunito": "^0.4.2",
     "@vitejs/plugin-react": "^4.3.1",
-    "openai": "^7.19.0",
     "vite": "^5.4.2"
   }
 }
