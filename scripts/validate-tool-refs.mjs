@@ -76,7 +76,10 @@ const homepageRefs = HOME_TOOL_TILES.map((tile) => ({
 const { TOOL_CATALOGUE } = await import('../src/data/tools.js');
 const { TOOL_PAGES } = await import('../src/data/toolPages.js');
 
-const catalogueRefs = TOOL_CATALOGUE.filter((entry) => !entry.calculator).map((entry) => ({
+// Chotto-hosted calculators and not-yet-built tools reference no Toolio tool.
+const catalogueRefs = TOOL_CATALOGUE.filter(
+  (entry) => !entry.calculator && !entry.comingSoon
+).map((entry) => ({
   source: `tools:${entry.slug}`,
   toolId: entry.toolId,
 }));
@@ -85,6 +88,22 @@ const catalogueRefs = TOOL_CATALOGUE.filter((entry) => !entry.calculator).map((e
 // they are checked against the catalogue rather than the snapshot.
 const catalogueSlugs = new Set(TOOL_CATALOGUE.map((entry) => entry.slug));
 const brokenSlugRefs = [];
+
+// A catalogue entry must be exactly one kind, and the kinds that carry no
+// Toolio tool must supply their own name and description.
+const malformedEntries = [];
+for (const entry of TOOL_CATALOGUE) {
+  const kinds = [entry.toolId, entry.calculator, entry.comingSoon].filter(Boolean).length;
+  if (kinds !== 1) {
+    malformedEntries.push({
+      slug: entry.slug,
+      why: `phải có đúng một trong toolId / calculator / comingSoon (đang có ${kinds})`,
+    });
+  }
+  if ((entry.calculator || entry.comingSoon) && !(entry.name && entry.description)) {
+    malformedEntries.push({ slug: entry.slug, why: 'thiếu name hoặc description' });
+  }
+}
 
 // Articles a catalogue entry claims must actually exist.
 const articleSlugs = new Set(ALL_ARTICLES.map((article) => article.slug));
@@ -131,12 +150,12 @@ console.log(`Articles:    ${String(articleRefs.length).padStart(2)} references`)
 console.log(`Categories:  ${String(categoryRefs.length).padStart(2)} references`);
 console.log(`Problems:    ${String(problemRefs.length).padStart(2)} references`);
 console.log(`Homepage:    ${String(homepageRefs.length).padStart(2)} references`);
-console.log(`Tools:       ${String(catalogueRefs.length).padStart(2)} references`);
+console.log(`Tools:       ${String(catalogueRefs.length).padStart(2)} references (${TOOL_CATALOGUE.length} mục trong danh mục)`);
 console.log(`Total:       ${String(allRefs.length).padStart(2)}`);
 console.log(`Resolved:    ${String(resolvedCount).padStart(2)}`);
 console.log(`Orphan:      ${String(orphans.length).padStart(2)}`);
 
-if (orphans.length > 0 || brokenSlugRefs.length > 0) {
+if (orphans.length > 0 || brokenSlugRefs.length > 0 || malformedEntries.length > 0) {
   if (orphans.length > 0) {
     console.error('\n❌ Validation FAILED: Found orphan tool IDs:');
     for (const o of orphans) {
@@ -147,6 +166,12 @@ if (orphans.length > 0 || brokenSlugRefs.length > 0) {
     console.error('\n❌ Validation FAILED: Found catalogue slugs with no entry:');
     for (const o of brokenSlugRefs) {
       console.error(`  - ${o.slug} (in ${o.source})`);
+    }
+  }
+  if (malformedEntries.length > 0) {
+    console.error('\n❌ Validation FAILED: Malformed catalogue entries:');
+    for (const o of malformedEntries) {
+      console.error(`  - ${o.slug}: ${o.why}`);
     }
   }
   process.exit(1);

@@ -23,7 +23,7 @@ const ALL_LABEL = TOOL_CATEGORIES[0];
  */
 function resolveCatalogue() {
   return TOOL_CATALOGUE.map((entry) => {
-    if (entry.calculator) {
+    if (entry.calculator || entry.comingSoon) {
       return {
         ...entry,
         name: entry.name,
@@ -161,17 +161,24 @@ export function ToolsIndexPage() {
                       </span>
                     </div>
                     <div className="tool-card-name">{tool.name}</div>
+                    {tool.comingSoon && (
+                      <span className="tool-card-soon-badge">Đang phát triển</span>
+                    )}
                     <p className="tool-card-desc">{tool.description}</p>
                     <div className="tool-card-foot">
                       <span className="tool-card-meta">{tool.meta}</span>
-                      <span className="tool-card-cta">
-                        Dùng ngay
-                        {tool.external ? (
-                          <ExternalLinkIcon size={14} />
-                        ) : (
-                          <ArrowRightIcon size={14} />
-                        )}
-                      </span>
+                      {tool.comingSoon ? (
+                        <span className="tool-card-cta tool-card-cta-soon">Sắp có</span>
+                      ) : (
+                        <span className="tool-card-cta">
+                          Dùng ngay
+                          {tool.external ? (
+                            <ExternalLinkIcon size={14} />
+                          ) : (
+                            <ArrowRightIcon size={14} />
+                          )}
+                        </span>
+                      )}
                     </div>
                   </>
                 );
@@ -188,7 +195,11 @@ export function ToolsIndexPage() {
                     {body}
                   </a>
                 ) : (
-                  <Link key={tool.slug} to={tool.to} className="tool-card">
+                  <Link
+                    key={tool.slug}
+                    to={tool.to}
+                    className={`tool-card ${tool.comingSoon ? 'is-coming-soon' : ''}`}
+                  >
                     {body}
                   </Link>
                 );

@@ -25,7 +25,7 @@ const SITE_URL = 'https://chottoday.com';
 const { ALL_ARTICLES } = await import('../src/content/articles/articlesList.js');
 const { CATEGORY_DEFINITIONS } = await import('../src/content/categories/categoryMap.js');
 const { isArticlePublished } = await import('../src/services/content/articleModel.js');
-const { getInternalTools } = await import('../src/data/tools.js');
+const { getInternalTools, getComingSoonTools } = await import('../src/data/tools.js');
 const { TOOL_PAGES } = await import('../src/data/toolPages.js');
 
 if (!fs.existsSync(distDir)) {
@@ -257,6 +257,25 @@ for (const entry of internalTools) {
   };
   writePage(`tools/${entry.slug}`, injectMeta(baseHtml, toolMeta));
   console.log(`  ✓ Prerendered: /tools/${entry.slug}`);
+}
+
+// B4b. Tools that are planned but not built yet
+// They get a page so the link is never dead, and noindex so an empty tool is
+// not findable in search before it exists. They stay out of the sitemap.
+for (const entry of getComingSoonTools()) {
+  const soonMeta = {
+    title: `${entry.name} (đang phát triển) | Chotto`,
+    description: `${entry.description} Công cụ đang được Chotto phát triển.`,
+    canonical: `${SITE_URL}/tools/${entry.slug}`,
+    robots: 'noindex, follow',
+    ogTitle: `${entry.name} (đang phát triển) | Chotto`,
+    ogDescription: entry.description,
+    ogImage: `${SITE_URL}/images/og/og-default.png`,
+    ogUrl: `${SITE_URL}/tools/${entry.slug}`,
+    ogType: 'website',
+  };
+  writePage(`tools/${entry.slug}`, injectMeta(baseHtml, soonMeta));
+  console.log(`  ✓ Prerendered: /tools/${entry.slug} (đang phát triển, noindex)`);
 }
 
 // B5. About (/about)

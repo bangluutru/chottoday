@@ -278,6 +278,33 @@
   white-space: nowrap;
 }
 
+/* --- Đang phát triển ----------------------------------------------------- */
+
+/* Planned tools stay legible but visibly quieter than the ones that work. */
+.tool-card.is-coming-soon {
+  background-color: var(--surface-panel);
+  border-style: dashed;
+}
+
+.tool-card.is-coming-soon:hover {
+  border-color: var(--border-dashed);
+  transform: none;
+}
+
+.tool-card-soon-badge {
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-dim);
+  color: var(--text-muted);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.tool-card-cta-soon {
+  color: var(--text-muted);
+}
+
 /* --- Empty state --------------------------------------------------------- */
 
 .tools-empty {

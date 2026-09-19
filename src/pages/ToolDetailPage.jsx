@@ -16,6 +16,62 @@ const CALCULATORS = {
   'net-salary': NetSalaryCalculator,
 };
 
+/**
+ * A tool from the design that is not built yet.
+ *
+ * It gets a real page rather than a dead link so the visitor lands somewhere
+ * that explains itself, and `noindex` so an empty tool cannot be found in
+ * search before it exists.
+ */
+function ComingSoon({ entry }) {
+  return (
+    <div className="tool-detail-page">
+      <PageMeta
+        title={entry.name}
+        description={`${entry.description} Công cụ đang được Chotto phát triển.`}
+        canonical={`/tools/${entry.slug}`}
+        robots="noindex, follow"
+      />
+
+      <div className="container tool-detail-breadcrumb">
+        <Breadcrumb
+          label="Đường dẫn công cụ"
+          items={[
+            { label: 'Trang chủ', to: '/' },
+            { label: 'Công cụ', to: '/tools' },
+            { label: entry.name },
+          ]}
+        />
+      </div>
+
+      <section className="tool-detail-hero-section">
+        <div className="container">
+          <div className="tool-soon-card">
+            <span className={`tool-soon-icon head-icon-${entry.tint}`}>
+              <img src={entry.icon} alt="" width="30" height="30" />
+            </span>
+            <span className="tool-soon-badge">Đang phát triển</span>
+            <h1 className="tool-soon-title">{entry.name}</h1>
+            <p className="tool-soon-desc">{entry.description}</p>
+            <p className="tool-soon-note">
+              Công cụ này đang được phát triển, bạn vui lòng quay lại sau nhé.
+            </p>
+            <div className="tool-soon-actions">
+              <Link to="/tools" className="tool-soon-primary">
+                Xem công cụ đang có
+                <ArrowRightIcon size={15} />
+              </Link>
+              <Link to="/about#lien-he" className="tool-soon-secondary">
+                Nhắc Chotto làm sớm
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function NotFound() {
   return (
     <div className="container tool-detail-missing">
@@ -39,6 +95,10 @@ export function ToolDetailPage() {
   const entry = getToolCatalogueEntry(slug);
   const page = getToolPage(slug);
   const Calculator = entry?.calculator ? CALCULATORS[entry.calculator] : null;
+
+  if (entry?.comingSoon) {
+    return <ComingSoon entry={entry} />;
+  }
 
   if (!entry || !page || !Calculator) {
     return <NotFound />;

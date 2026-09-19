@@ -6,13 +6,16 @@
  * (`src/services/toolRegistry`), so nothing here can drift out of sync with
  * Toolio. Every `toolId` below is validated by `npm run validate:tool-refs`.
  *
- * Two kinds of entry:
+ * Three kinds of entry:
  *
  *   toolId      A Toolio miniapp. The card opens the Toolio deep link; there is
  *               no ChottoDay page for it.
  *   calculator  A calculator that runs on chottoday.com itself, rendered by
  *               `ToolDetailPage` at /tools/<slug>. These carry their own name
  *               and description because the registry knows nothing about them.
+ *   comingSoon  A tool from the design that is not built yet. It is listed so
+ *               people can see it is planned, and /tools/<slug> tells them to
+ *               come back later — never a dead link or a silent omission.
  *
  * `category` must be one of TOOL_CATEGORIES; `tint` selects a --cat-*-bg
  * swatch for the icon box and the category chip.
@@ -130,6 +133,52 @@ export const TOOL_CATALOGUE = [
     icon: '/icons/icon-family.svg',
     tint: 'work',
   },
+
+  /* ---------------------------------------------------------------------
+     Đang phát triển — in the design, not built yet. Listed rather than
+     hidden so the plan is visible; every one of these lands on a page that
+     says so instead of a dead link.
+     --------------------------------------------------------------------- */
+  {
+    slug: 'furusato-nozei',
+    comingSoon: true,
+    name: 'Furusato Nozei',
+    description: 'Giới hạn quyên góp được khấu trừ theo thu nhập của bạn.',
+    category: 'Tiền & Thuế',
+    meta: 'Tính theo năm',
+    icon: '/icons/icon-life.svg',
+    tint: 'work',
+  },
+  {
+    slug: 'chi-phi-sinh-hoat',
+    comingSoon: true,
+    name: 'Chi phí sinh hoạt',
+    description: 'So sánh tiền nhà, ăn uống, đi lại giữa các tỉnh thành ở Nhật.',
+    category: 'Cuộc sống',
+    meta: '47 tỉnh',
+    icon: '/icons/icon-life.svg',
+    tint: 'health',
+  },
+  {
+    slug: 'doi-bang-lai',
+    comingSoon: true,
+    name: 'Đổi bằng lái',
+    description: 'Quy trình, giấy tờ và chi phí đổi bằng lái Việt Nam sang Nhật.',
+    category: 'Thủ tục',
+    meta: 'Theo tỉnh',
+    icon: '/icons/icon-doc.svg',
+    tint: 'doc',
+  },
+  {
+    slug: 'so-sanh-luong-gio',
+    comingSoon: true,
+    name: 'So sánh lương giờ',
+    description: 'Quy đổi lương giờ, lương tháng, lương năm để dễ so sánh việc làm.',
+    category: 'Công việc',
+    meta: 'Quy đổi nhanh',
+    icon: '/icons/icon-work.svg',
+    tint: 'life',
+  },
 ];
 
 /** Category chip palette: which --cat-* family tints each catalogue category. */
@@ -148,6 +197,11 @@ export function getToolCatalogueEntry(slug) {
 /** Catalogue entries that ChottoDay renders itself at /tools/:slug. */
 export function getInternalTools() {
   return TOOL_CATALOGUE.filter((entry) => Boolean(entry.calculator));
+}
+
+/** Catalogue entries that are planned but not built yet. */
+export function getComingSoonTools() {
+  return TOOL_CATALOGUE.filter((entry) => entry.comingSoon === true);
 }
 
 /**

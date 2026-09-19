@@ -89,5 +89,21 @@ npm test
 
 ---
 
+## 📌 Việc còn lại (TODO)
+
+- [ ] **Nối endpoint thật cho form liên hệ.** `/about#lien-he` đã validate và gửi
+      `POST` JSON `{kind, name, email, message}`, nhưng `VITE_CONTACT_ENDPOINT`
+      còn trống nên form đang báo cho người dùng gửi qua `hello@chottoday.com`.
+      Đặt biến này trong Cloudflare Pages (Settings → Environment variables) rồi
+      build lại là form chạy, không cần sửa code.
+- [ ] **Bốn công cụ đang phát triển.** `furusato-nozei`, `chi-phi-sinh-hoat`,
+      `doi-bang-lai`, `so-sanh-luong-gio` đang hiển thị ở `/tools` với nhãn
+      "Đang phát triển" và trang riêng báo quay lại sau. Khi làm xong, đổi
+      `comingSoon: true` trong `src/data/tools.js` thành `toolId` (nếu là
+      miniapp Toolio) hoặc `calculator` + trang nội dung trong
+      `src/data/toolPages.js` (nếu Chotto tự dựng).
+
+---
+
 ## 📦 Bản Quyền & Giấy Phép
 Bản quyền © 2026 ChottoDay. Mọi quyền được bảo lưu.
