@@ -40,7 +40,7 @@ export function HomePage({ searchInputRef, onSearch }) {
                   Chọn chủ đề bạn quan tâm để xem tất cả hướng dẫn và công cụ liên quan.
                 </p>
               </div>
-              <Link to="/articles" className="section-link-more">
+              <Link to="/topics" className="section-link-more">
                 <span>Xem tất cả</span>
                 <ArrowRightIcon size={14} />
               </Link>

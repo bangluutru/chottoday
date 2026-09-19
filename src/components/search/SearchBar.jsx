@@ -261,9 +261,9 @@ export const SearchBar = forwardRef(function SearchBar(
           </button>
         ))}
         {/* Overflow affordance: the full keyword set lives on the topics grid */}
-        <a href="/#topics" className="intent-chip intent-chip-more" aria-label="Xem thêm từ khoá">
+        <Link to="/topics" className="intent-chip intent-chip-more" aria-label="Xem thêm từ khoá">
           •••
-        </a>
+        </Link>
       </div>
     </div>
   );

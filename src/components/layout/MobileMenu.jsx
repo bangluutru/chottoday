@@ -151,7 +151,7 @@ export function MobileMenu({ isOpen, onClose, triggerRef }) {
                 </Link>
               </li>
               <li>
-                <Link to="/#topics" className="mobile-nav-item" onClick={onClose}>
+                <Link to="/topics" className="mobile-nav-item" onClick={onClose}>
                   <span>Chủ đề</span>
                   <ArrowRightIcon size={16} color="var(--text-muted)" />
                 </Link>

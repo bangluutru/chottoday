@@ -22,13 +22,11 @@ export function Footer() {
             <span className="footer-nav-sep" aria-hidden="true">|</span>
             <Link to="/about#lien-he" className="footer-nav-link">Liên hệ</Link>
             <span className="footer-nav-sep" aria-hidden="true">|</span>
-            <Link to="/#topics" className="footer-nav-link">Chủ đề</Link>
+            <Link to="/policy" className="footer-nav-link">Chính sách</Link>
             <span className="footer-nav-sep" aria-hidden="true">|</span>
-            <Link to="/tools" className="footer-nav-link">Công cụ</Link>
+            <Link to="/policy#dieu-khoan" className="footer-nav-link">Điều khoản</Link>
             <span className="footer-nav-sep" aria-hidden="true">|</span>
             <Link to="/search" className="footer-nav-link">Tìm kiếm</Link>
-            <span className="footer-nav-sep" aria-hidden="true">|</span>
-            <a href="/sitemap.xml" className="footer-nav-link">Sitemap</a>
           </nav>
 
           <div className="footer-end">

@@ -232,7 +232,7 @@ export function ToolsIndexPage() {
                 Gửi đề xuất công cụ
                 <ArrowRightIcon size={15} />
               </Link>
-              <Link to="/#topics" className="tools-cta-secondary">
+              <Link to="/topics" className="tools-cta-secondary">
                 Xem theo chủ đề
               </Link>
             </div>

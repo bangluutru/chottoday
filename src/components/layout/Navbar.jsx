@@ -42,10 +42,13 @@ export function Navbar({
           <NavLink to="/tools" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
             Công cụ
           </NavLink>
-          <a href="/#topics" className="navbar-link navbar-dropdown-link">
+          <NavLink
+            to="/topics"
+            className={({ isActive }) => `navbar-link navbar-dropdown-link ${isActive ? 'active' : ''}`}
+          >
             <span>Chủ đề</span>
             <ChevronDownIcon size={11} />
-          </a>
+          </NavLink>
           <NavLink to="/about" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
             Về Chotto
           </NavLink>

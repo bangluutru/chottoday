@@ -88,7 +88,7 @@ export function CategoryPage() {
           label="Đường dẫn chủ đề"
           items={[
             { label: 'Trang chủ', to: '/' },
-            { label: 'Chủ đề', to: '/#topics' },
+            { label: 'Chủ đề', to: '/topics' },
             { label: category.name },
           ]}
         />
