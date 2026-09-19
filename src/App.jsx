@@ -19,6 +19,13 @@ import { PolicyPage } from './pages/PolicyPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { setEphemeralQuery } from './services/discovery/searchStore.js';
 
+// Chotto Studio: công cụ soạn bài, CHỈ có ở dev. import.meta.env.DEV là hằng
+// số lúc build, nên nhánh này bị loại hẳn khỏi bundle production — studio
+// không bao giờ lên chottoday.com.
+const StudioPage = import.meta.env.DEV
+  ? React.lazy(() => import('./studio/StudioPage.jsx'))
+  : null;
+
 export function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const searchInputRef = useRef(null);
@@ -96,6 +103,16 @@ export function App() {
           <Route path="/search" element={<SearchResultsPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/policy" element={<PolicyPage />} />
+          {StudioPage && (
+            <Route
+              path="/studio"
+              element={
+                <React.Suspense fallback={<div style={{ padding: 40 }}>Đang nạp Studio…</div>}>
+                  <StudioPage />
+                </React.Suspense>
+              }
+            />
+          )}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>

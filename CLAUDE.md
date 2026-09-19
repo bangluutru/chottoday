@@ -18,7 +18,7 @@ Không có backend. Nội dung là file JavaScript trong repo.
 npm run dev        # dev server
 npm run build      # vite build + prerender + sitemap + robots.txt
 npm run validate   # validate:content + validate:tool-refs
-npm test           # discovery 61 + net-salary 91 + crawler-policy 132
+npm test           # discovery 61 + net-salary 91 + crawler-policy 132 + studio 92
 ```
 
 Trước khi push: cả ba đều phải sạch.
@@ -62,6 +62,29 @@ Bốn điều dễ sai:
    sitemap, không hiện ở danh sách, không prerender. Đây là cơ chế xem thử:
    ghép với bản preview Cloudflare của mỗi PR là đọc được bài thật đúng layout
    trước khi merge.
+
+## Chotto Studio
+
+`npm run dev` → `localhost:5173/studio`. Dán markdown hoặc file `.js` AI trả
+về, chọn ảnh bìa, xem thử, bấm ghi. Nó ghi `src/content/articles/<slug>.js`,
+chèn hai dòng vào `articlesList.js`, và gọi `card.py` sinh ảnh OG.
+
+**Chỉ tồn tại ở dev.** Plugin ghi file khai `apply: 'serve'`, route khai
+`import.meta.env.DEV` — cả hai đều bị loại khỏi bản build, nên studio không có
+trên chottoday.com và vì thế không cần xác thực.
+
+Ba điều đã cố tình làm như vậy:
+
+- **Không `eval` nội dung dán vào.** `parseLiteral` là parser chỉ nhận dữ liệu;
+  gặp lời gọi hàm hay biến thì ném lỗi. Nội dung đến từ AI agent, mà agent thì
+  đọc web — `new Function` ở đây là mở đường cho một trang nguồn bị chèn chỉ thị
+  gọi thẳng endpoint ghi file.
+- **`status` luôn `review`, `reviewer` luôn trống.** Studio soạn nháp, không
+  xuất bản. Người duyệt đổi bằng tay sau khi tra nguồn.
+- **Xem thử dùng chính `ArticleRenderer` và CSS thật**, không dựng bản mô phỏng.
+  Bản mô phỏng sẽ lệch dần khỏi site mà không ai nhận ra.
+
+Lớp lõi là hàm thuần trong `src/studio/lib/`, test ở `scripts/test-studio.mjs`.
 
 ## Ảnh
 
