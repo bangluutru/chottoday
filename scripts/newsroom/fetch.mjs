@@ -135,6 +135,29 @@ export function lastDateIn(text = '') {
 }
 
 /**
+ * Dọn tiêu đề lấy từ anchor.
+ *
+ * Lần chạy thật thứ tư đẻ ra tiêu đề `2026年9月18日 政策分野 労災レセプト電算処理
+ * システム 労災コメント関連テーブル NEW` — ngày và nhãn "mới" nằm ngay trong chữ
+ * của link. Tiêu đề đó đi thẳng vào prompt và vào trường `title` của nguồn
+ * trong bản ghi, nên rác ở đây chảy tới tận bài viết.
+ *
+ * CHỈ cắt ngày ở ĐẦU và nhãn "mới" ở CUỐI. Không đụng vào phần giữa: nhãn
+ * phân loại như 政策分野 trông cũng thừa, nhưng đoán xem chữ nào là nhãn chữ
+ * nào là tên thật thì sẽ có ngày cắt nhầm tiêu đề.
+ */
+export function cleanTitle(raw = '') {
+  return raw
+    .replace(
+      /^\s*(?:令和\s*\d{1,2}\s*年\s*\d{1,2}\s*月\s*\d{1,2}\s*日|\d{4}\s*年\s*\d{1,2}\s*月\s*\d{1,2}\s*日|\d{4}[/.-]\d{1,2}[/.-]\d{1,2})\s*[)\]）】:：|｜–—-]*\s*/,
+      ''
+    )
+    .replace(/[\s　]*(?:NEW|New|new|新着|NEW!|新規)\s*$/, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
  * Đọc danh sách thông báo trên trang cơ quan nhà nước.
  *
  * CHỈ giữ link có ngày đăng ở gần. Đây là ranh giới phân biệt tin với điều
@@ -146,9 +169,16 @@ export function lastDateIn(text = '') {
  *
  * Một mục tin bao giờ cũng có ngày bên cạnh. Menu thì không.
  */
-export function parseNoticeList(html, baseUrl) {
+export function parseNoticeList(html, baseUrl, stats = null) {
   const items = [];
   const anchorRe = /<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
+
+  // Đếm từng lý do loại. Lần chạy #4 làm 国税庁 và 年金機構 rơi từ 19 và 37 tin
+  // xuống 0 — bộ lọc ngày xoá trắng hai cơ quan — mà log chỉ in "✓ 0 tin", y
+  // hệt một nguồn hôm nay không có tin. Không có mấy con số này thì đứng
+  // ngoài không thể biết trang đó không có link nào có ngày, hay nó chết vì
+  // lý do khác.
+  const counts = { anchors: 0, shortTitle: 0, badUrl: 0, noDate: 0, duplicate: 0, kept: 0 };
 
   // Con trỏ tới chỗ link TRƯỚC kết thúc. Ngày của một mục chỉ có thể nằm
   // trong khoảng giữa link trước và link này — nếu quét quá ranh giới đó thì
@@ -158,17 +188,19 @@ export function parseNoticeList(html, baseUrl) {
 
   for (const match of html.matchAll(anchorRe)) {
     const [whole, href, inner] = match;
-    const title = stripHtml(inner);
-    if (title.length < 8) continue;
-    if (href.startsWith('#') || href.startsWith('javascript:')) continue;
+    counts.anchors++;
+    const rawTitle = stripHtml(inner);
+    if (rawTitle.length < 8) { counts.shortTitle++; continue; }
+    if (href.startsWith('#') || href.startsWith('javascript:')) { counts.badUrl++; continue; }
 
     let url;
     try {
       url = new URL(href, baseUrl).toString();
     } catch {
+      counts.badUrl++;
       continue;
     }
-    if (!url.startsWith('https://')) continue;
+    if (!url.startsWith('https://')) { counts.badUrl++; continue; }
 
     // Ngày thường nằm ngay TRƯỚC link (dạng <li>ngày<a>tiêu đề</a></li>).
     //
@@ -199,18 +231,28 @@ export function parseNoticeList(html, baseUrl) {
 
     prevEnd = end;
 
-    const publishedAt = lastDateIn(before) || extractDate(`${title} ${after}`);
-    if (!publishedAt) continue;
+    // Đọc ngày từ tiêu đề THÔ, trước khi dọn: ở trang 厚労省 ngày nằm ngay
+    // trong chữ của link, nên dọn trước là tự tay vứt mất dấu hiệu.
+    const publishedAt = lastDateIn(before) || extractDate(`${rawTitle} ${after}`);
+    if (!publishedAt) { counts.noDate++; continue; }
 
+    const title = cleanTitle(rawTitle);
+    if (title.length < 8) { counts.shortTitle++; continue; }
+
+    counts.kept++;
     items.push({ title, summary: '', url, publishedAt });
   }
 
   const seen = new Set();
-  return items.filter((item) => {
-    if (seen.has(item.url)) return false;
+  const unique = items.filter((item) => {
+    if (seen.has(item.url)) { counts.duplicate++; return false; }
     seen.add(item.url);
     return true;
   });
+  counts.kept = unique.length;
+
+  if (stats) Object.assign(stats, counts);
+  return unique;
 }
 
 async function fetchText(url, { timeout = FETCH_TIMEOUT_MS } = {}) {
@@ -315,18 +357,19 @@ export function hasEnoughSubstance(text = '') {
 
 /** Lấy một nguồn. Không bao giờ ném — lỗi trả về trong kết quả. */
 export async function fetchSource(source) {
+  const stats = source.format === 'rss' ? null : {};
   try {
     const text = await fetchText(source.url);
     const items =
-      source.format === 'rss' ? parseFeed(text) : parseNoticeList(text, source.url);
+      source.format === 'rss' ? parseFeed(text) : parseNoticeList(text, source.url, stats);
 
     const usable = items
       .filter((item) => item.title && item.url)
       .slice(0, MAX_ITEMS_PER_SOURCE);
 
-    return { source, items: usable, ok: true, error: null };
+    return { source, items: usable, ok: true, error: null, stats, bytes: text.length };
   } catch (error) {
-    return { source, items: [], ok: false, error: error.message || String(error) };
+    return { source, items: [], ok: false, error: error.message || String(error), stats, bytes: 0 };
   }
 }
 
@@ -340,17 +383,41 @@ export async function fetchAllSources(sources = SOURCES) {
   const alive = results.filter((r) => r.ok);
   const dead = results.filter((r) => !r.ok);
 
+  // Một nguồn trả 0 tin KHÔNG phải chuyện bình thường.
+  //
+  // Lần chạy #4 in "✓ nta-news 0 tin" và "✓ nenkin-news 0 tin" — dấu tick,
+  // coi như thành công — trong khi thật ra bộ lọc ngày vừa xoá trắng hai cơ
+  // quan (19 và 37 tin ở lần trước). Một nguồn hỏng trông y hệt một nguồn
+  // hôm nay không có tin, và cái nhìn giống nhau ấy để lỗi sống nguyên một
+  // vòng. Tách riêng nhóm này ra, kèm số liệu nói rõ trang tải về được bao
+  // nhiêu và link bị loại vì lý do gì.
+  const empty = alive.filter((r) => r.items.length === 0);
+
   console.log('Thu thập tin');
   for (const result of results) {
-    const mark = result.ok ? '✓' : '✗';
+    const mark = !result.ok ? '✗' : result.items.length === 0 ? '⚠' : '✓';
     const detail = result.ok ? `${result.items.length} tin` : result.error;
-    console.log(`  ${mark} ${result.source.id.padEnd(16)} ${detail}`);
+    const st = result.stats;
+    const why = st
+      ? `  (${result.bytes} byte, ${st.anchors} link: ` +
+        `${st.noDate} thiếu ngày, ${st.shortTitle} tiêu đề ngắn, ` +
+        `${st.badUrl} link hỏng, ${st.duplicate} trùng)`
+      : '';
+    console.log(`  ${mark} ${result.source.id.padEnd(16)} ${detail}${why}`);
   }
   console.log(`  ${alive.length}/${results.length} nguồn trả lời`);
 
   if (dead.length) {
     console.warn(
       `  ⚠ Nguồn chết: ${dead.map((d) => d.source.id).join(', ')} — sửa URL trong sources.js`
+    );
+  }
+  if (empty.length) {
+    console.warn(
+      `  ⚠ Nguồn tải được nhưng KHÔNG ra tin nào: ${empty.map((e) => e.source.id).join(', ')}\n` +
+      '    Xem số trong ngoặc ở trên. "thiếu ngày" cao mà "link" cũng cao nghĩa là\n' +
+      '    trang đó đặt ngày ở chỗ parseNoticeList chưa với tới — sửa parser, đừng\n' +
+      '    nới lỏng bộ lọc, vì nới lỏng là mời link điều hướng quay lại.'
     );
   }
 
@@ -361,5 +428,5 @@ export async function fetchAllSources(sources = SOURCES) {
       flattened.push({ item, source: result.source });
     }
   }
-  return { entries: flattened, results };
+  return { entries: flattened, results, empty };
 }

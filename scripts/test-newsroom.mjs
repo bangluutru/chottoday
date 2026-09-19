@@ -14,6 +14,7 @@
 import { inferTopic, rankItems, recencyFactor, scoreItem } from './newsroom/rank.mjs';
 import { SOURCES, SOURCE_KIND, getOfficialSources, getSourceById } from './newsroom/sources.js';
 import {
+  cleanTitle,
   extractDate,
   hasEnoughSubstance,
   lastDateIn,
@@ -26,7 +27,10 @@ import {
   stripHtml,
   USER_AGENT,
 } from './newsroom/fetch.mjs';
-import { DRAFT_MODEL, DRAFT_SCHEMA, buildCaption, createClient, slugify, toArticleRecord } from './newsroom/draft.mjs';
+import {
+  DRAFT_MODEL, DRAFT_SCHEMA, SCREEN_SCHEMA, buildCaption, buildScreenSystemPrompt,
+  buildScreenUserContent, createClient, screenItems, slugify, toArticleRecord,
+} from './newsroom/draft.mjs';
 
 let passCount = 0;
 let failCount = 0;
@@ -589,6 +593,130 @@ const navBeforeNews =
 const navBeforeOut = parseNoticeList(navBeforeNews, 'https://www.moj.go.jp/isa/');
 assert(navBeforeOut.length === 1, 'A nav link standing just before a notice does not borrow its date');
 assert(navBeforeOut[0].url.includes('/news/'), 'Only the dated notice survives');
+
+// 15. Title cleanup -------------------------------------------------------
+console.log('\n15. Titles arrive dirty');
+// Run #4 produced the title "2026年9月18日 政策分野 労災レセプト電算処理システム
+// 労災コメント関連テーブル NEW" — the date and the "new" badge were inside the
+// link text itself, and went straight into the prompt and the source record.
+assert(
+  cleanTitle('2026年9月18日 労災コメント関連テーブル NEW') === '労災コメント関連テーブル',
+  'A leading date and a trailing NEW badge are both stripped'
+);
+assert(
+  cleanTitle('令和8年9月19日 在留資格の変更について') === '在留資格の変更について',
+  'A leading Reiwa date is stripped'
+);
+assert(
+  cleanTitle('2026/09/19｜在留カードの届出') === '在留カードの届出',
+  'A slash date and its separator are stripped'
+);
+assert(
+  cleanTitle('特定技能制度の運用状況について 新着') === '特定技能制度の運用状況について',
+  'A trailing 新着 badge is stripped'
+);
+// Only the ends are touched. Guessing which middle words are labels would
+// eventually amputate a real title.
+assert(
+  cleanTitle('政策分野 労災レセプト電算処理システム') === '政策分野 労災レセプト電算処理システム',
+  'A category label in the middle is left alone'
+);
+assert(
+  cleanTitle('2026年度の税制改正について') === '2026年度の税制改正について',
+  'A year that is part of the title, not a date stamp, survives'
+);
+assert(cleanTitle('') === '', 'An empty title stays empty');
+
+// The date is read from the RAW title, before cleaning — on the MHLW page the
+// date lives inside the link text, so cleaning first would throw away the
+// very signal the filter runs on.
+const dateInAnchor =
+  '<li><a href="/stf/newpage_01.html">2026年9月18日 労災コメント関連テーブル NEW</a></li>';
+const inAnchor = parseNoticeList(dateInAnchor, 'https://www.mhlw.go.jp/index.html');
+assert(inAnchor.length === 1, 'A date inside the link text still counts as a date');
+assert(inAnchor[0].publishedAt.startsWith('2026-09-18'), 'And it is read correctly');
+assert(inAnchor[0].title === '労災コメント関連テーブル', 'While the stored title is clean');
+
+// 16. Parser diagnostics --------------------------------------------------
+console.log('\n16. The parser says why it dropped things');
+// Run #4 printed "✓ nta-news 0 tin" and "✓ nenkin-news 0 tin" — a tick, read
+// as success — while the date filter had in fact wiped out two agencies that
+// returned 19 and 37 items the run before. A dead source and a quiet source
+// looked identical, and that cost a full run to notice.
+const diagHtml =
+  '<li>令和8年9月19日<a href="/isa/news/01.html">在留資格の変更について</a></li>' +
+  '<li><a href="/isa/about/region/index.html">地方出入国在留管理官署一覧</a></li>' +
+  '<li><a href="#top">↑</a></li>' +
+  '<li>令和8年9月18日<a href="/isa/news/01.html">在留資格の変更について</a></li>';
+const diag = {};
+const diagOut = parseNoticeList(diagHtml, 'https://www.moj.go.jp/isa/', diag);
+assert(diag.anchors === 4, 'Every anchor is counted');
+assert(diag.noDate === 1, 'The undated nav link is counted as noDate');
+assert(diag.shortTitle === 1, 'The short anchor is counted separately');
+assert(diag.duplicate === 1, 'The repeated URL is counted as a duplicate');
+assert(diag.kept === diagOut.length, 'kept matches what actually came back');
+assert(diagOut.length === 1, 'And only the first dated notice survives');
+
+// A page of pure navigation must be distinguishable from an empty page: both
+// yield no items, but the counters tell them apart.
+const navDiag = {};
+parseNoticeList(
+  '<li><a href="/isa/about/organization/index.html">組織についてのご案内</a></li>',
+  'https://www.moj.go.jp/isa/',
+  navDiag
+);
+assert(navDiag.anchors === 1 && navDiag.noDate === 1, 'A nav-only page reports anchors seen and dates missing');
+const emptyDiag = {};
+parseNoticeList('<p>không có link nào</p>', 'https://www.moj.go.jp/isa/', emptyDiag);
+assert(emptyDiag.anchors === 0, 'A page with no links at all reports zero anchors');
+
+// 17. Relevance screen ----------------------------------------------------
+console.log('\n17. The screen asks what keyword counting cannot');
+// Run #4 ranked 【東京出入国在留管理局】入国警備官（公安職）の選考採用募集中です！
+// first, at 9.8 — a civil-service job ad. Real news, real date, real agency,
+// real prose. It matched 入国, 在留 and 募集. It is useless to the readers.
+// Third instance of one bug class: counting words, missing meaning.
+assert(SCREEN_SCHEMA.additionalProperties === false, 'The screen schema is strict');
+assert(
+  SCREEN_SCHEMA.properties.decisions.items.required.join(',') === 'index,keep,reason',
+  'Every decision carries an index, a verdict and a reason'
+);
+const screenPrompt = buildScreenSystemPrompt();
+assert(screenPrompt.includes('tuyển dụng công chức'), 'The screen is told to drop civil-service job ads');
+assert(screenPrompt.includes('đặc tả hệ thống'), 'And internal technical specifications');
+assert(screenPrompt.includes('hãy GIỮ'), 'And to keep, not drop, when it is unsure');
+assert(
+  buildScreenUserContent([{ title: 'A', organization: 'X' }, { title: 'B', organization: 'Y' }])
+    .includes('1. [X] A'),
+  'Items are numbered from 1 so decisions can be matched back'
+);
+
+// Failure must keep everything, never drop everything. A screen that fails
+// closed makes a broken morning look exactly like a quiet one — the same trap
+// the zero-item sources just sprang.
+const throwingClient = { chat: { completions: { create: async () => { throw new Error('mạng hỏng'); } } } };
+const failed = await screenItems([{ title: 'tin A' }, { title: 'tin B' }], { client: throwingClient });
+assert(failed.decisions.length === 2, 'A failed screen still returns one decision per item');
+assert(failed.decisions.every((d) => d.keep), 'A failed screen keeps every item');
+assert(failed.failed.includes('mạng hỏng'), 'And reports why, so the run README can say so');
+
+// An item the model forgets to mention is kept, for the same reason.
+const partialClient = {
+  chat: { completions: { create: async () => ({
+    choices: [{ message: { content: JSON.stringify({ decisions: [
+      { index: 1, keep: false, reason: 'tuyển công chức' },
+    ] }) } }],
+    usage: { prompt_tokens: 10, completion_tokens: 5 },
+  }) } },
+};
+const partial = await screenItems([{ title: 'tin A' }, { title: 'tin B' }], { client: partialClient });
+assert(partial.decisions[0].keep === false, 'A decision the model did give is honoured');
+assert(partial.decisions[0].reason === 'tuyển công chức', 'Along with its reason, for the reviewer to read');
+assert(partial.decisions[1].keep === true, 'An item the model skipped is kept, not silently dropped');
+assert(partial.failed === null, 'A partial answer is not treated as a failure');
+
+const emptyScreen = await screenItems([], {});
+assert(emptyScreen.decisions.length === 0, 'Screening an empty list makes no call at all');
 
 console.log('\n========================================================');
 console.log(`TOTAL NEWSROOM TESTS: ${passCount + failCount}`);
