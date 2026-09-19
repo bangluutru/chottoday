@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """
-Newsroom — vẽ ảnh card 1200x630 cho mỗi tin.
+Chotto — vẽ ảnh card 1200x630 cho bài viết (OG/social, và sau này là ảnh bìa).
+
+Trước đây file này phục vụ pipeline soạn tin tự động. Pipeline đó đã gỡ bỏ;
+phần vẽ ảnh giữ lại vì nó độc lập và vẫn đúng việc — chỉ cần stdlib, Pillow và
+fontTools, không phụ thuộc gì vào phần đã gỡ.
 
 Vì sao render bằng template thay vì sinh ảnh bằng AI: model sinh ảnh viết sai
 dấu tiếng Việt và bịa kanji. Một tấm card nói về 在留カード mà kanji sai thì
@@ -269,7 +273,7 @@ def render_card(item, out_path, max_title_lines=4):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Vẽ card tin 1200x630 cho fanpage')
+    parser = argparse.ArgumentParser(description='Vẽ card 1200x630 cho bài viết Chotto')
     parser.add_argument('--item', help='JSON một tin (title, topic, organization, publishedAt)')
     parser.add_argument('--items-file', help='File JSON chứa mảng tin')
     parser.add_argument('--out', required=True, help='File PNG, hoặc thư mục khi dùng --items-file')
