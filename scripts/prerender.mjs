@@ -27,6 +27,9 @@ const { CATEGORY_DEFINITIONS } = await import('../src/content/categories/categor
 const { isArticlePublished } = await import('../src/services/content/articleModel.js');
 const { getInternalTools, getComingSoonTools } = await import('../src/data/tools.js');
 const { TOOL_PAGES } = await import('../src/data/toolPages.js');
+const { buildRobotsTxt, ALLOWED_CRAWLERS, ROBOTS_DISALLOWED } = await import(
+  '../src/config/crawlerPolicy.js'
+);
 
 if (!fs.existsSync(distDir)) {
   console.error('❌ dist/ directory not found. Run "vite build" before prerendering.');
@@ -545,12 +548,14 @@ console.log(`  ✓ dist/sitemap.xml generated with ${sitemapUrls.length} indexab
 
 // 4. Generate robots.txt
 console.log('🤖 Generating robots.txt...');
-const robotsTxt = `User-agent: *
-Allow: /
-
-Sitemap: ${SITE_URL}/sitemap.xml
-`;
+// The allow/disallow lists live in src/config/crawlerPolicy.js so that the file
+// served in production, the copy in public/ and the edge middleware cannot
+// disagree about who is welcome. See README §"Chống crawl dữ liệu".
+const robotsTxt = buildRobotsTxt(SITE_URL);
 fs.writeFileSync(path.join(distDir, 'robots.txt'), robotsTxt, 'utf8');
-console.log('  ✓ dist/robots.txt generated pointing to sitemap.xml');
+console.log(
+  `  \u2713 dist/robots.txt generated: ${ALLOWED_CRAWLERS.length} allowed, ` +
+    `${ROBOTS_DISALLOWED.length} disallowed, sitemap referenced`
+);
 
 console.log('🎉 Prerender and SEO generation completed successfully!');

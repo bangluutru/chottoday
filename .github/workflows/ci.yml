@@ -36,5 +36,8 @@ jobs:
       - name: Validate net-salary calculator formula
         run: npm run test:net-salary
 
+      - name: Validate crawler policy (robots.txt + edge middleware in sync)
+        run: npm run test:crawler-policy
+
       - name: Build production bundle & prerender SEO metadata
         run: npm run build

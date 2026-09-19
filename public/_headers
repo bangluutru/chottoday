@@ -1,0 +1,25 @@
+# Cloudflare Pages response headers.
+#
+# Two jobs here: signal that the content is not training data, and stop the
+# pages being re-hosted inside someone else's frame. Nothing in this file
+# touches indexing — the site depends on search traffic, so no rule may ever
+# add "noindex" to /*. Per-page noindex (for example /search) is set by
+# PageMeta and by scripts/prerender.mjs, not here.
+
+/*
+  # Opt out of AI training corpora. Not enforceable, but it is the declaration
+  # the crawlers that do honour an opt-out look for. Enforcement lives in
+  # functions/_middleware.js.
+  X-Robots-Tag: noai, noimageai
+  # Re-hosting a whole article inside a frame is the cheapest way to steal it.
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy: frame-ancestors 'self'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: browsing-topics=(), interest-cohort=()
+
+# Images are the other thing that gets lifted wholesale. The filenames are not
+# content-hashed, so caching is left as Pages sets it — a replaced photo has to
+# be able to reach readers the same day.
+/images/*
+  X-Robots-Tag: noai, noimageai
