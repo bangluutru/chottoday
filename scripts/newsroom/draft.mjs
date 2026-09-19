@@ -125,6 +125,136 @@ export const DRAFT_SCHEMA = {
   additionalProperties: false,
 };
 
+/**
+ * VÒNG SÀNG — model tự quyết tin nào đáng soạn, chạy TRƯỚC khi soạn.
+ *
+ * Vì sao cần một tầng nữa, sau xếp hạng và sau cổng đủ chất: hai tầng kia
+ * không đo được "có ích cho ai". Lần chạy thật thứ tư đẩy lên đầu bảng, 9.8
+ * điểm, tin 【東京出入国在留管理局】入国警備官（公安職）の選考採用募集中です！
+ * — thông báo tuyển công chức làm nhân viên cảnh bị nhập cảnh. Tin thật, có
+ * ngày thật, nguồn chính thống thật, đầy văn xuôi thật. Nó khớp 入国, 在留,
+ * 募集 nên điểm cao. Và nó hoàn toàn vô dụng với người Việt đang sống ở Nhật.
+ *
+ * Đó là lần thứ ba cùng một lớp lỗi: bộ đếm từ khoá bắt đúng CHỮ mà trượt
+ * đúng Ý (trước đó là H-1B, rồi trang điều hướng). Thêm từ khoá loại trừ chỉ
+ * chặn được đúng loại rác vừa gặp; loại rác sau lại lọt. Nên hỏi thẳng model
+ * một câu mà bộ đếm từ khoá không bao giờ trả lời được.
+ *
+ * Một lệnh gọi cho cả danh sách, chỉ tiêu đề — rẻ hơn nhiều so với soạn một
+ * bài rác rồi vứt.
+ */
+export const SCREEN_SCHEMA = {
+  type: 'object',
+  properties: {
+    decisions: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          index: { type: 'integer', description: 'Số thứ tự của tin trong danh sách' },
+          keep: { type: 'boolean', description: 'true nếu tin này đáng soạn cho độc giả Chotto' },
+          reason: { type: 'string', description: 'Một câu ngắn, vì sao giữ hoặc vì sao bỏ' },
+        },
+        required: ['index', 'keep', 'reason'],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ['decisions'],
+  additionalProperties: false,
+};
+
+export function buildScreenSystemPrompt() {
+  return `Bạn sàng tin cho Chotto — trang thông tin tiếng Việt cho người Việt đang sinh sống, học tập và làm việc tại Nhật Bản.
+
+Bạn nhận một danh sách tiêu đề thông báo (phần lớn tiếng Nhật) đã qua lọc máy. Với TỪNG tin, quyết định: người Việt bình thường đang sống ở Nhật có cần biết tin này không?
+
+GIỮ khi tin ảnh hưởng tới đời sống hoặc thủ tục của cư dân:
+- tư cách lưu trú, visa, thẻ cư trú, thủ tục nhập cư, nhập tịch
+- thuế, lương, bảo hiểm xã hội, hưu trí, bảo hiểm y tế
+- quyền lợi lao động, hợp đồng, tai nạn lao động, thất nghiệp
+- y tế, tiêm chủng, dịch bệnh
+- nhà ở, điện nước, rác, bằng lái, thủ tục hành chính địa phương
+- trợ cấp, nuôi con, học hành
+- thiên tai và an toàn
+- thay đổi giá cả, chính sách ảnh hưởng tới túi tiền
+
+BỎ khi tin không phải việc của cư dân, dù tiêu đề có đầy từ khoá nhập cư hay lao động:
+- tuyển dụng công chức, thông báo thi tuyển vào cơ quan nhà nước
+- tài liệu kỹ thuật nội bộ: đặc tả hệ thống, bảng mã, định dạng dữ liệu, hướng dẫn cho nhà cung cấp phần mềm
+- đấu thầu, mua sắm công, thông báo hợp đồng
+- thống kê, báo cáo nghiên cứu không kèm việc gì cư dân phải làm
+- hội thảo, sự kiện dành cho giới chuyên môn
+- tin nội bộ của cơ quan: bổ nhiệm, cơ cấu tổ chức, lịch làm việc
+- tin về nước khác, hoặc về người Nhật ra nước ngoài
+
+Khi phân vân giữa giữ và bỏ, hãy GIỮ — người duyệt còn đọc lại, còn tin bị bỏ thì không ai thấy nữa.
+
+Trả lời cho ĐỦ mọi tin trong danh sách, đúng số thứ tự đã cho.`;
+}
+
+export function buildScreenUserContent(items) {
+  return [
+    'DANH SÁCH TIN CẦN SÀNG:',
+    '',
+    ...items.map((item, i) =>
+      `${i + 1}. [${item.organization || item.sourceId || '?'}] ${item.title}`
+    ),
+  ].join('\n');
+}
+
+/**
+ * Gọi model sàng danh sách. Trả về mảng quyết định theo đúng thứ tự đầu vào.
+ *
+ * HỎNG THÌ GIỮ HẾT, không phải bỏ hết. Một lỗi mạng mà làm cả buổi sáng ra 0
+ * bài thì nhìn y hệt "hôm nay không có tin đáng viết" — tức là lỗi tự giấu
+ * mình, đúng kiểu đã mất một vòng chạy để phát hiện ở chỗ nguồn 0 tin. Giữ
+ * hết thì cùng lắm người duyệt đọc phải vài bài rác, và log nói rõ vì sao.
+ */
+export async function screenItems(items, { client, today } = {}) {
+  if (items.length === 0) return { decisions: [], usage: null, failed: null };
+
+  const openai = client || createClient();
+  try {
+    const response = await createCompletion(openai, {
+      model: DRAFT_MODEL,
+      messages: [
+        { role: 'system', content: buildScreenSystemPrompt() },
+        { role: 'user', content: buildScreenUserContent(items) },
+      ],
+      response_format: {
+        type: 'json_schema',
+        json_schema: { name: 'chotto_screen', schema: SCREEN_SCHEMA, strict: true },
+      },
+    });
+
+    const content = response.choices?.[0]?.message?.content;
+    if (!content) throw new Error('vòng sàng không trả về nội dung');
+
+    const parsed = JSON.parse(content);
+    const byIndex = new Map();
+    for (const d of parsed.decisions || []) {
+      byIndex.set(Number(d.index), d);
+    }
+
+    // Tin model quên nhắc tới thì GIỮ, cùng lý do như trên.
+    const decisions = items.map((item, i) => {
+      const d = byIndex.get(i + 1);
+      if (!d) return { keep: true, reason: 'vòng sàng không nhắc tới tin này — giữ lại cho chắc' };
+      return { keep: Boolean(d.keep), reason: String(d.reason || '') };
+    });
+
+    return { decisions, usage: response.usage, failed: null };
+  } catch (error) {
+    const why = error?.message || String(error);
+    return {
+      decisions: items.map(() => ({ keep: true, reason: `vòng sàng hỏng (${why}) — giữ lại` })),
+      usage: null,
+      failed: why,
+    };
+  }
+}
+
 export function buildUserContent(item, sourceBody = '') {
   return [
     `NGUỒN: ${item.organization || item.sourceId || 'không rõ'}`,

@@ -20,7 +20,7 @@ import { promisify } from 'node:util';
 
 import { fetchAllSources, fetchArticleBody, hasEnoughSubstance } from './fetch.mjs';
 import { rankItems } from './rank.mjs';
-import { buildCaption, draftArticle } from './draft.mjs';
+import { buildCaption, draftArticle, screenItems } from './draft.mjs';
 import { getSourceById } from './sources.js';
 
 const execFileAsync = promisify(execFile);
@@ -53,15 +53,58 @@ async function main() {
     process.exit(1);
   }
 
-  const ranked = rankItems(entries, { limit });
-  console.log(`\nXếp hạng: ${ranked.length} tin đáng soạn (từ ${entries.length} tin thô)`);
-  for (const item of ranked) {
+  // Xếp hạng RỘNG hơn số bài cần soạn, để vòng sàng có cái mà chọn.
+  //
+  // Nếu chỉ xếp đúng `limit` tin rồi mới sàng thì một buổi sáng mà cả hai tin
+  // đầu bảng đều là rác sẽ ra 0 bài, trong khi tin thứ ba có khi lại đúng
+  // việc. Lấy dư rồi cắt sau.
+  const POOL = Math.max(limit * 5, 12);
+  const pool = rankItems(entries, { limit: POOL });
+  console.log(`\nXếp hạng: ${pool.length} tin qua ngưỡng (từ ${entries.length} tin thô)`);
+  for (const item of pool) {
     console.log(`  ${item.score.toFixed(1).padStart(5)}  [${item.topic || '?'}] ${item.title.slice(0, 70)}`);
   }
 
-  if (ranked.length === 0) {
+  if (pool.length === 0) {
     console.log('\nKhông có tin nào vượt ngưỡng hôm nay. Không tạo draft — đó là kết quả hợp lệ.');
     return;
+  }
+
+  // Vòng sàng: model tự đọc tiêu đề và loại tin không phải việc của cư dân.
+  //
+  // Cần tầng này vì bộ đếm từ khoá đo CHỮ chứ không đo Ý — lần chạy #4 đẩy
+  // một thông báo tuyển công chức lên đầu bảng với 9.8 điểm.
+  const poolWithOrg = pool.map((item) => ({
+    ...item,
+    organization: getSourceById(item.sourceId)?.organization || item.sourceId,
+  }));
+  const screen = await screenItems(poolWithOrg, { today });
+  if (screen.failed) {
+    console.warn(`  ⚠ Vòng sàng hỏng: ${screen.failed} — giữ hết, người duyệt tự lọc.`);
+  }
+
+  const rejected = [];
+  const kept = [];
+  pool.forEach((item, i) => {
+    const decision = screen.decisions[i] || { keep: true, reason: '' };
+    (decision.keep ? kept : rejected).push({ item, reason: decision.reason });
+  });
+
+  if (rejected.length) {
+    console.log(`\nVòng sàng bỏ ${rejected.length} tin:`);
+    for (const r of rejected) {
+      console.log(`  – ${r.item.title.slice(0, 55)} — ${r.reason}`);
+    }
+  }
+  if (screen.usage) {
+    console.log(
+      `  (sàng: ${screen.usage.prompt_tokens ?? '?'} vào / ${screen.usage.completion_tokens ?? '?'} ra)`
+    );
+  }
+
+  const ranked = kept.map((k) => k.item).slice(0, limit);
+  if (ranked.length === 0) {
+    console.log('\nVòng sàng loại hết. Không tạo draft — thà không có bài còn hơn bài vô dụng.');
   }
 
   await fs.mkdir(outDir, { recursive: true });
@@ -119,7 +162,8 @@ async function main() {
   const summary = [
     `# Nháp tin ngày ${dateStamp}`,
     '',
-    `Tự động soạn từ ${entries.length} tin thô, giữ lại ${ranked.length}, bỏ qua ${skipped.length} vì nguồn không đủ chất, soạn xong ${written.length}.`,
+    `Tự động soạn từ ${entries.length} tin thô: ${pool.length} qua xếp hạng, `+
+    `vòng sàng bỏ ${rejected.length}, cổng đủ chất bỏ ${skipped.length}, soạn xong ${written.length}.`,
     '',
     '**Chưa bài nào được xuất bản.** Mọi bản ghi đều mang `status: "review"` và ô',
     '`reviewer` còn để trống. Muốn đưa lên site thì tự tra nguồn, điền tên vào ô đó,',
@@ -150,10 +194,47 @@ async function main() {
           '',
         ]
       : []),
+    ...(rejected.length
+      ? [
+          '## Vòng sàng bỏ',
+          '',
+          'Những tin này qua được xếp hạng bằng từ khoá nhưng model cho rằng không',
+          'phải việc của người Việt đang sống ở Nhật. Danh sách để đây vì vòng sàng',
+          '**có thể bỏ nhầm** — nếu thấy tin nào đáng làm thì mở link và tự viết,',
+          'rồi nói lại để sửa hướng dẫn sàng.',
+          '',
+          ...rejected.map((r) => `- [${r.item.title}](${r.item.url}) — ${r.reason}`),
+          '',
+        ]
+      : []),
+    ...(screen.failed
+      ? [
+          '## Vòng sàng hỏng',
+          '',
+          `Không gọi được vòng sàng (\`${screen.failed}\`), nên **mọi tin đều được giữ**`,
+          'thay vì bỏ hết. Danh sách dưới đây có thể lẫn tin không liên quan.',
+          '',
+        ]
+      : []),
     ...(failures.length
       ? ['## Soạn hỏng', '', ...failures.map((f) => `- ${f.item.url} — ${f.error}`), '']
       : []),
   ].join('\n');
+
+  // Chỉ ghi bảng kê khi thật sự có cái để duyệt.
+  //
+  // Thư mục rỗng thì git không thấy gì, nên workflow không mở PR — và đó là
+  // điều đúng: một PR chỉ chứa bảng kê "hôm nay không có bài" mỗi sáng là
+  // tiếng ồn, mà tiếng ồn hằng ngày thì kết cục quen thuộc là người ta thôi
+  // không mở PR nữa. Những buổi sáng như vậy, log của workflow đã ghi đủ ai
+  // bị loại vì lý do gì.
+  if (written.length === 0 && failures.length === 0) {
+    console.log(
+      `\nKhông có bản nháp nào hôm nay (sàng bỏ ${rejected.length}, ` +
+      `cổng đủ chất bỏ ${skipped.length}). Không mở PR — xem log phía trên.`
+    );
+    return;
+  }
 
   await fs.writeFile(path.join(outDir, 'README.md'), summary, 'utf8');
   console.log(
