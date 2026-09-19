@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #FBF9F5; font-family: 'Be Vietnam Pro', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #0B7F8A; text-decoration: none; }
+  a:hover { color: #0A6E78; }
+  input, select { font-family: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+</style>
+</helmet>
+
+<div style="background:#FBF9F5; color:#1E2A44; min-height:100vh">
+
+  <header style="position:sticky; top:0; z-index:50; background:rgba(251,249,245,0.92); backdrop-filter:blur(12px); border-bottom:1px solid #E6E2D9">
+    <div style="max-width:1240px; margin:0 auto; padding:0 24px; height:72px; display:flex; align-items:center; gap:18px; flex-wrap:nowrap">
+      <a href="Chotto%20-%20Trang%20chu.dc.html" style="display:flex; flex-direction:column; gap:3px; flex-shrink:0">
+        <svg viewBox="0 0 1708 360" role="img" aria-label="Chotto" style="display:block; width:132px; height:auto; overflow:visible">
+          <path d="M 271.92 88.08 A 130 130 0 1 0 271.92 271.92" fill="none" stroke="#66B96B" stroke-width="100" stroke-linecap="round"></path>
+          <g fill="#1E2A44">
+            <rect x="342" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="532" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="442" y="130" width="90" height="100"></rect>
+          </g>
+          <circle cx="832" cy="180" r="130" fill="none" stroke="#FBA93E" stroke-width="100"></circle>
+          <path transform="translate(1002 0)" d="M 175 0 V 71.8 A 27 27 0 1 1 175 108.2 V 310 A 50 50 0 0 1 75 310 V 100 H 50 A 50 50 0 0 1 50 0 Z" fill="#F15A53"></path>
+          <path transform="translate(1002 0)" d="M 181 0 V 60.1 A 33 33 0 1 1 181 119.9 V 310 A 50 50 0 0 0 281 310 V 100 H 306 A 50 50 0 0 0 306 0 Z" fill="#AB8DF5"></path>
+          <circle cx="1528" cy="180" r="130" fill="none" stroke="#2FC5D0" stroke-width="100"></circle>
+        </svg>
+        <span style="font-size:10.5px; color:#666D7A; letter-spacing:0.01em">Một chút hữu ích, mỗi ngày.</span>
+      </a>
+
+      <nav style="display:flex; align-items:center; gap:14px; margin-left:4px; flex:0 0 auto; white-space:nowrap">
+        <a href="Chotto%20-%20Trang%20chu.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Trang chủ</a>
+        <a href="#top" style="font-size:14px; font-weight:600; color:#1E2A44; padding:6px 0; border-bottom:2.5px solid #F15A53">Bài viết</a>
+        <a href="Chotto%20-%20Tat%20ca%20cong%20cu.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Công cụ</a>
+        <a href="Chotto%20-%20Tat%20ca%20chu%20de.dc.html" style="font-size:14px; font-weight:500; color:#3A4354; display:inline-flex; align-items:center; gap:5px" style-hover="color:#1E2A44">
+          Chủ đề
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg>
+        </a>
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Về Chotto</a>
+      </nav>
+
+      <div style="display:flex; align-items:center; gap:10px; margin-left:auto; min-width:0; flex:1 1 auto; justify-content:flex-end">
+        <div style="display:flex; align-items:center; gap:9px; flex:1 1 0; min-width:0; max-width:430px; height:42px; padding:0 16px; background:#F4F1EA; border:1px solid #E6E2D9; border-radius:9999px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666D7A" stroke-width="2.4" stroke-linecap="round" style="flex-shrink:0"><circle cx="11" cy="11" r="7"></circle><path d="M16.5 16.5L21 21"></path></svg>
+          <input type="search" aria-label="Tìm kiếm trên Chotto" value="{{ query }}" onInput="{{ onQuery }}" placeholder="Tìm bài viết: thuế, nenkin, nhà ở…" style="flex:1; min-width:0; border:0; background:transparent; outline:none; font-size:13px; color:#1E2A44">
+        </div>
+        <button type="button" aria-label="Ngôn ngữ" style="width:42px; height:42px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid #E6E2D9; background:#FFFFFF; border-radius:9999px; color:#3A4354" style-hover="background:#F4F1EA">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="top" style="max-width:1240px; margin:0 auto; padding:16px 24px 0; display:flex; align-items:center; gap:8px; font-size:12.5px; color:#666D7A; flex-wrap:wrap">
+    <a href="Chotto%20-%20Trang%20chu.dc.html" style="color:#666D7A">Trang chủ</a>
+    <span style="color:#D8D3C8">/</span>
+    <span style="color:#1E2A44">Bài viết</span>
+  </div>
+
+  <section style="padding:14px 24px 0">
+    <div style="max-width:1240px; margin:0 auto; display:flex; align-items:flex-end; gap:24px; flex-wrap:wrap">
+      <div style="flex:1 1 420px; min-width:0">
+        <h1 style="font-family:'Nunito',sans-serif; font-size:36px; line-height:1.14; font-weight:800; letter-spacing:-0.02em; margin:0 0 10px">
+          Tất cả <span style="color:#0B7F8A">bài viết</span>
+        </h1>
+        <p style="font-size:15px; line-height:1.6; color:#3A4354; margin:0; max-width:580px; text-wrap:pretty">
+          Hướng dẫn và kinh nghiệm sống ở Nhật, viết theo thứ tự việc cần làm. Mỗi bài đều ghi rõ ngày cập nhật gần nhất.
+        </p>
+      </div>
+      <p style="flex:0 0 auto; font-family:'Dancing Script', cursive; font-size:22px; line-height:1.4; font-weight:600; color:#1E2A44; margin:0; padding:10px 16px; border-radius:14px; background:#FBF1BE; box-shadow:0 8px 20px rgba(30,42,68,0.12); transform:rotate(-1.8deg)">
+        Đọc một chút mỗi ngày<br>là đủ &#9786;
+      </p>
+    </div>
+  </section>
+
+  <section style="padding:22px 24px 0">
+    <div style="max-width:1240px; margin:0 auto">
+      <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding-bottom:14px; border-bottom:1px solid #E6E2D9">
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; flex:1 1 420px; min-width:0">
+          <sc-for list="{{ cats }}" as="c" hint-placeholder-count="6">
+            <button type="button" onClick="{{ c.onPick }}" style="height:36px; padding:0 15px; border-radius:9999px; font-size:13.5px; font-weight:600; background:{{ c.bg }}; color:{{ c.fg }}; border:1px solid {{ c.bd }}" style-hover="border-color:#2FC5D0">{{ c.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; flex-shrink:0">
+          <span style="font-size:13px; color:#666D7A">{{ countLabel }}</span>
+          <div style="display:flex; align-items:center; gap:4px; padding:3px; background:#F4F1EA; border:1px solid #E6E2D9; border-radius:9999px">
+            <sc-for list="{{ sorts }}" as="s" hint-placeholder-count="3">
+              <button type="button" onClick="{{ s.onPick }}" style="height:30px; padding:0 14px; border:0; border-radius:9999px; font-size:12.5px; font-weight:600; background:{{ s.bg }}; color:{{ s.fg }}">{{ s.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ showFeatured }}" hint-placeholder-val="{{ true }}">
+    <section style="padding:20px 24px 0">
+      <a href="Chotto%20-%20Bai%20viet%20chi%20tiet.dc.html" style="display:flex; max-width:1240px; margin:0 auto; gap:0; background:#FFFFFF; border:1px solid #E6E2D9; border-radius:20px; overflow:hidden; box-shadow:0 4px 16px rgba(30,42,68,0.05); flex-wrap:wrap" style-hover="border-color:#2FC5D0">
+        <div style="flex:1 1 420px; min-width:260px; min-height:260px; position:relative">
+          <img src="public/images/featured/salary-30man.jpg" alt="Bảng lương và máy tính trên bàn gỗ" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover">
+        </div>
+        <div style="flex:1 1 420px; min-width:280px; padding:28px 28px 26px; display:flex; flex-direction:column">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap">
+            <span style="padding:4px 12px; border-radius:9999px; background:#FBF1BE; color:#7A5A00; font-size:11.5px; font-weight:700">Bài nổi bật</span>
+            <span style="padding:4px 12px; border-radius:9999px; background:#F6F2FE; color:#5B3FB0; font-size:11.5px; font-weight:600">Tiền &amp; Thuế</span>
+          </div>
+          <h2 style="font-family:'Nunito',sans-serif; font-size:27px; line-height:1.24; font-weight:800; letter-spacing:-0.02em; margin:0 0 12px">Lương 30 man thực nhận bao nhiêu? Bóc tách từng dòng trên bảng lương</h2>
+          <p style="font-size:14.5px; line-height:1.7; color:#3A4354; margin:0 0 18px; text-wrap:pretty">Đi qua từng khoản bị trừ trên phiếu lương Nhật — bảo hiểm xã hội, thuế thu nhập, thuế thị dân — kèm ví dụ cụ thể cho mức 25, 30 và 40 man.</p>
+          <div style="display:flex; align-items:center; gap:10px; font-size:12.5px; color:#666D7A; margin-top:auto">
+            <span>8 phút đọc</span><span style="color:#D8D3C8">•</span><span>Cập nhật 12/04/2026</span><span style="color:#D8D3C8">•</span><span>4.2k lượt đọc</span>
+          </div>
+        </div>
+      </a>
+    </section>
+  </sc-if>
+
+  <section style="padding:18px 24px 0">
+    <div style="max-width:1240px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px">
+      <sc-for list="{{ items }}" as="a" hint-placeholder-count="6">
+        <a href="Chotto%20-%20Bai%20viet%20chi%20tiet.dc.html" style="display:flex; flex-direction:column; background:#FFFFFF; border:1px solid #E6E2D9; border-radius:16px; overflow:hidden; box-shadow:0 2px 8px rgba(30,42,68,0.03)" style-hover="border-color:#2FC5D0; transform:translateY(-2px)">
+          <div role="img" aria-label="{{ a.title }}" style="width:100%; height:158px; flex-shrink:0; background-color:#F4F1EA; background-image:url({{ a.thumb }}); background-size:cover; background-position:center"></div>
+          <div style="padding:16px 16px 14px; display:flex; flex-direction:column; gap:8px; flex:1">
+            <span style="align-self:flex-start; padding:4px 11px; border-radius:9999px; font-size:11.5px; font-weight:600; background:{{ a.catBg }}; color:{{ a.catFg }}">{{ a.cat }}</span>
+            <h3 style="font-family:'Nunito',sans-serif; font-size:16.5px; line-height:1.34; font-weight:700; margin:0; color:#1E2A44">{{ a.title }}</h3>
+            <p style="font-size:12.8px; line-height:1.55; color:#3A4354; margin:0; text-wrap:pretty">{{ a.desc }}</p>
+            <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px 8px; font-size:11.5px; color:#666D7A; margin-top:auto; padding-top:10px; border-top:1px solid #F0EDE6">
+              <span style="white-space:nowrap">{{ a.read }} phút đọc</span><span style="white-space:nowrap"><span style="color:#D8D3C8">•</span> {{ a.date }}</span><span style="white-space:nowrap"><span style="color:#D8D3C8">•</span> {{ a.views }}</span>
+            </div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+    <section style="padding:18px 24px 0">
+      <div style="max-width:1240px; margin:0 auto; padding:38px 24px; background:#FFFFFF; border:1px dashed #D8D3C8; border-radius:18px; text-align:center">
+        <p style="font-family:'Dancing Script', cursive; font-size:25px; font-weight:600; color:#1E2A44; margin:0 0 8px">Chưa có bài nào khớp…</p>
+        <p style="font-size:14px; color:#3A4354; margin:0 0 18px">Thử bỏ bộ lọc chủ đề, hoặc gửi câu hỏi để Chotto viết bài bạn cần.</p>
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html#lien-he" style="display:inline-flex; align-items:center; height:44px; padding:0 22px; background:#0B7F8A; color:#FFFFFF; border-radius:9999px; font-size:14px; font-weight:600" style-hover="background:#0A6E78">Gửi yêu cầu chủ đề</a>
+      </div>
+    </section>
+  </sc-if>
+
+  <section style="padding:26px 24px 0">
+    <div style="max-width:1240px; margin:0 auto; display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap">
+      <button type="button" onClick="{{ onPrev }}" aria-label="Trang trước" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid #E6E2D9; background:#FFFFFF; border-radius:12px; color:#3A4354" style-hover="border-color:#2FC5D0">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      </button>
+      <sc-for list="{{ pages }}" as="p" hint-placeholder-count="3">
+        <button type="button" onClick="{{ p.onPick }}" style="min-width:42px; height:42px; padding:0 14px; border-radius:12px; font-family:'Nunito',sans-serif; font-size:15px; font-weight:700; background:{{ p.bg }}; color:{{ p.fg }}; border:1px solid {{ p.bd }}" style-hover="border-color:#2FC5D0">{{ p.label }}</button>
+      </sc-for>
+      <button type="button" onClick="{{ onNext }}" aria-label="Trang sau" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid #E6E2D9; background:#FFFFFF; border-radius:12px; color:#3A4354" style-hover="border-color:#2FC5D0">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
+      </button>
+    </div>
+  </section>
+
+  <footer style="margin-top:38px; border-top:1px solid #E6E2D9; background:#FBF9F5">
+    <div style="max-width:1240px; margin:0 auto; padding:26px 24px 20px; display:flex; align-items:center; flex-wrap:wrap; gap:22px">
+      <a href="Chotto%20-%20Trang%20chu.dc.html" style="display:flex; flex-direction:column; gap:3px">
+        <svg viewBox="0 0 1708 360" role="img" aria-label="Chotto" style="display:block; width:124px; height:auto">
+          <path d="M 271.92 88.08 A 130 130 0 1 0 271.92 271.92" fill="none" stroke="#66B96B" stroke-width="100" stroke-linecap="round"></path>
+          <g fill="#1E2A44">
+            <rect x="342" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="532" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="442" y="130" width="90" height="100"></rect>
+          </g>
+          <circle cx="832" cy="180" r="130" fill="none" stroke="#FBA93E" stroke-width="100"></circle>
+          <path transform="translate(1002 0)" d="M 175 0 V 71.8 A 27 27 0 1 1 175 108.2 V 310 A 50 50 0 0 1 75 310 V 100 H 50 A 50 50 0 0 1 50 0 Z" fill="#F15A53"></path>
+          <path transform="translate(1002 0)" d="M 181 0 V 60.1 A 33 33 0 1 1 181 119.9 V 310 A 50 50 0 0 0 281 310 V 100 H 306 A 50 50 0 0 0 306 0 Z" fill="#AB8DF5"></path>
+          <circle cx="1528" cy="180" r="130" fill="none" stroke="#2FC5D0" stroke-width="100"></circle>
+        </svg>
+        <span style="font-size:10.5px; color:#666D7A">Một chút hữu ích, mỗi ngày.</span>
+      </a>
+      <nav style="display:flex; align-items:center; gap:14px; flex-wrap:wrap">
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html" style="font-size:13px; color:#3A4354">Về Chotto</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html#lien-he" style="font-size:13px; color:#3A4354">Liên hệ</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="Chotto%20-%20Chinh%20sach.dc.html" style="font-size:13px; color:#3A4354">Chính sách</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="Chotto%20-%20Chinh%20sach.dc.html#dieu-khoan" style="font-size:13px; color:#3A4354">Điều khoản</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="Chotto%20-%20Tat%20ca%20chu%20de.dc.html" style="font-size:13px; color:#3A4354">Chủ đề</a>
+      </nav>
+    </div>
+    <div style="max-width:1240px; margin:0 auto; padding:0 24px 22px; font-size:11.5px; color:#666D7A">© 2026 ChottoDay. All rights reserved.</div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240}}">
+const CAT_STYLE = {
+  "Tiền & Thuế": { bg: "#F6F2FE", fg: "#5B3FB0" },
+  "Thủ tục": { bg: "#ECEFF5", fg: "#1E2A44" },
+  "Cuộc sống": { bg: "#FDEEED", fg: "#A6302A" },
+  "Gia đình": { bg: "#FEF6EB", fg: "#8F5310" },
+  "Sức khỏe": { bg: "#E9F8F9", fg: "#0A6E78" },
+  "Công việc": { bg: "#EDF7EE", fg: "#2F6B34" }
+};
+const ART = [
+  { title: "Nenkin là gì? Có lấy lại được khi về Việt Nam?", desc: "Điều kiện nhận lại, thời hạn nộp hồ sơ và những giấy tờ dễ bị thiếu nhất.", cat: "Tiền & Thuế", read: 6, date: "12/04/2026", ts: 20260412, views: 3800, thumb: "public/images/featured/nenkin-tool.jpg" },
+  { title: "Con vào tiểu học ở Nhật cần chuẩn bị những gì?", desc: "Thủ tục nhập học, danh sách đồ dùng và những điều nên hỏi trước ngày khai giảng.", cat: "Gia đình", read: 8, date: "10/04/2026", ts: 20260410, views: 2100, thumb: "public/images/thumbs/thumb-school.jpg" },
+  { title: "Đi tàu ở Nhật: IC card, vé tháng và mẹo tiết kiệm", desc: "Các loại vé, cách nạp tiền và cách chọn tuyến để đi rẻ hơn mỗi tháng.", cat: "Cuộc sống", read: 7, date: "08/04/2026", ts: 20260408, views: 2600, thumb: "public/images/thumbs/thumb-train.jpg" },
+  { title: "10 mẫu câu tiếng Nhật hữu ích khi đi khám bệnh", desc: "Mẫu câu đơn giản khi đăng ký, mô tả triệu chứng và nhận thuốc.", cat: "Sức khỏe", read: 4, date: "05/04/2026", ts: 20260405, views: 3100, thumb: "public/images/thumbs/thumb-clinic.jpg" },
+  { title: "Thẻ cư trú: gia hạn, đổi địa chỉ và những mốc không được quên", desc: "Thời điểm nên bắt đầu làm hồ sơ và giấy tờ cần mang theo.", cat: "Thủ tục", read: 9, date: "02/04/2026", ts: 20260402, views: 4400, thumb: "public/images/featured/zairyu-card.jpg" },
+  { title: "Hiểu bảng lương Nhật trong 5 phút", desc: "Từng dòng trên phiếu lương nghĩa là gì và vì sao tiền về tay ít hơn hợp đồng.", cat: "Tiền & Thuế", read: 5, date: "29/03/2026", ts: 20260329, views: 5200, thumb: "public/images/featured/salary-30man.jpg" },
+  { title: "Chuyển việc ở Nhật: thời điểm, hồ sơ và điều nên hỏi khi phỏng vấn", desc: "Chuẩn bị trước 2–3 tháng và những quyền lợi đừng quên xác nhận lại.", cat: "Công việc", read: 10, date: "26/03/2026", ts: 20260326, views: 1800, thumb: "public/images/hero-clean-japan.webp" },
+  { title: "Thuê nhà lần đầu: tiền ban đầu gồm những khoản nào?", desc: "Tiền đặt cọc, phí môi giới, bảo hiểm cháy nổ và cách thương lượng bớt khoản nào.", cat: "Cuộc sống", read: 8, date: "22/03/2026", ts: 20260322, views: 3300, thumb: "public/images/community/fuji-sakura.jpg" },
+  { title: "Đăng ký nhà trẻ ở Nhật: lịch nộp hồ sơ theo mùa", desc: "Cách tính điểm xét tuyển, mốc thời gian và phương án dự phòng khi trượt.", cat: "Gia đình", read: 9, date: "18/03/2026", ts: 20260318, views: 1500, thumb: "public/images/thumbs/thumb-school.jpg" },
+  { title: "Khai thuế cuối năm (nenmatsu chōsei) cho người đi làm", desc: "Giấy tờ cần nộp cho công ty và những khoản bạn có thể được hoàn lại.", cat: "Tiền & Thuế", read: 7, date: "14/03/2026", ts: 20260314, views: 2900, thumb: "public/images/featured/salary-30man.jpg" },
+  { title: "Bảo hiểm y tế quốc dân và bảo hiểm công ty khác nhau thế nào?", desc: "Ai thuộc diện nào, mức đóng ra sao và khi nghỉ việc thì chuyển đổi thế nào.", cat: "Sức khỏe", read: 6, date: "10/03/2026", ts: 20260310, views: 2000, thumb: "public/images/thumbs/thumb-clinic.jpg" },
+  { title: "Mở tài khoản ngân hàng và chuyển tiền về Việt Nam", desc: "So sánh phí, tỷ giá và thời gian của các kênh chuyển tiền phổ biến.", cat: "Thủ tục", read: 6, date: "06/03/2026", ts: 20260306, views: 3600, thumb: "public/images/hero-clean-japan.webp" }
+];
+const CATS = ["Tất cả", "Tiền & Thuế", "Thủ tục", "Cuộc sống", "Gia đình", "Sức khỏe", "Công việc"];
+const SORTS = [
+  { key: "new", label: "Mới nhất" },
+  { key: "hot", label: "Đọc nhiều" },
+  { key: "short", label: "Đọc nhanh" }
+];
+const PAGE_SIZE = 6;
+const views = (n) => n >= 1000 ? (n / 1000).toFixed(1).replace(".0", "") + "k lượt đọc" : n + " lượt đọc";
+
+class Component extends DCLogic {
+  state = { cat: "Tất cả", sort: "new", query: "", page: 1 };
+
+  filtered() {
+    const q = this.state.query.trim().toLowerCase();
+    let list = ART.filter(a =>
+      (this.state.cat === "Tất cả" || a.cat === this.state.cat) &&
+      (!q || (a.title + " " + a.desc + " " + a.cat).toLowerCase().includes(q))
+    );
+    if (this.state.sort === "new") list = list.slice().sort((a, b) => b.ts - a.ts);
+    if (this.state.sort === "hot") list = list.slice().sort((a, b) => b.views - a.views);
+    if (this.state.sort === "short") list = list.slice().sort((a, b) => a.read - b.read);
+    return list;
+  }
+
+  renderVals() {
+    const list = this.filtered();
+    const pageCount = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+    const page = Math.min(this.state.page, pageCount);
+    const slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+    return {
+      query: this.state.query,
+      onQuery: (e) => this.setState({ query: e.target.value, page: 1 }),
+      countLabel: list.length + " bài viết",
+      isEmpty: list.length === 0,
+      showFeatured: this.state.cat === "Tất cả" && !this.state.query.trim() && page === 1,
+      items: slice.map(a => {
+        const s = CAT_STYLE[a.cat] || CAT_STYLE["Thủ tục"];
+        return { title: a.title, desc: a.desc, cat: a.cat, read: a.read, date: a.date, thumb: a.thumb, views: views(a.views), catBg: s.bg, catFg: s.fg };
+      }),
+      cats: CATS.map(label => {
+        const on = this.state.cat === label;
+        return { label, bg: on ? "#0B7F8A" : "#FFFFFF", fg: on ? "#FFFFFF" : "#3A4354", bd: on ? "#0B7F8A" : "#E6E2D9", onPick: () => this.setState({ cat: label, page: 1 }) };
+      }),
+      sorts: SORTS.map(s => {
+        const on = this.state.sort === s.key;
+        return { label: s.label, bg: on ? "#0B7F8A" : "transparent", fg: on ? "#FFFFFF" : "#3A4354", onPick: () => this.setState({ sort: s.key, page: 1 }) };
+      }),
+      pages: Array.from({ length: pageCount }, (_, i) => i + 1).map(n => {
+        const on = n === page;
+        return { label: String(n), bg: on ? "#1E2A44" : "#FFFFFF", fg: on ? "#FFFFFF" : "#3A4354", bd: on ? "#1E2A44" : "#E6E2D9", onPick: () => this.setState({ page: n }) };
+      }),
+      onPrev: () => this.setState({ page: Math.max(1, page - 1) }),
+      onNext: () => this.setState({ page: Math.min(pageCount, page + 1) })
+    };
+  }
+}
+
+</script>
+</body>
+</html>

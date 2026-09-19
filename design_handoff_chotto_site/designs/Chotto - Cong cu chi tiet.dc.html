@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #FBF9F5; font-family: 'Be Vietnam Pro', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #0B7F8A; text-decoration: none; }
+  a:hover { color: #0A6E78; }
+  input, select { font-family: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+  input[type=range] { accent-color: #0B7F8A; }
+</style>
+</helmet>
+
+<div style="background:#FBF9F5; color:#1E2A44; min-height:100vh">
+
+  <header style="position:sticky; top:0; z-index:50; background:rgba(251,249,245,0.92); backdrop-filter:blur(12px); border-bottom:1px solid #E6E2D9">
+    <div style="max-width:1240px; margin:0 auto; padding:0 24px; height:72px; display:flex; align-items:center; gap:18px; flex-wrap:nowrap">
+      <a href="Chotto%20-%20Trang%20chu.dc.html" style="display:flex; flex-direction:column; gap:3px; flex-shrink:0">
+        <svg viewBox="0 0 1708 360" role="img" aria-label="Chotto" style="display:block; width:132px; height:auto; overflow:visible">
+          <path d="M 271.92 88.08 A 130 130 0 1 0 271.92 271.92" fill="none" stroke="#66B96B" stroke-width="100" stroke-linecap="round"></path>
+          <g fill="#1E2A44">
+            <rect x="342" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="532" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="442" y="130" width="90" height="100"></rect>
+          </g>
+          <circle cx="832" cy="180" r="130" fill="none" stroke="#FBA93E" stroke-width="100"></circle>
+          <path transform="translate(1002 0)" d="M 175 0 V 71.8 A 27 27 0 1 1 175 108.2 V 310 A 50 50 0 0 1 75 310 V 100 H 50 A 50 50 0 0 1 50 0 Z" fill="#F15A53"></path>
+          <path transform="translate(1002 0)" d="M 181 0 V 60.1 A 33 33 0 1 1 181 119.9 V 310 A 50 50 0 0 0 281 310 V 100 H 306 A 50 50 0 0 0 306 0 Z" fill="#AB8DF5"></path>
+          <circle cx="1528" cy="180" r="130" fill="none" stroke="#2FC5D0" stroke-width="100"></circle>
+        </svg>
+        <span style="font-size:10.5px; color:#666D7A; letter-spacing:0.01em">Một chút hữu ích, mỗi ngày.</span>
+      </a>
+
+      <nav style="display:flex; align-items:center; gap:14px; margin-left:4px; flex:0 0 auto; white-space:nowrap">
+        <a href="Chotto%20-%20Trang%20chu.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Trang chủ</a>
+        <a href="Chotto%20-%20Danh%20sach%20bai%20viet.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Bài viết</a>
+        <a href="Chotto%20-%20Tat%20ca%20cong%20cu.dc.html" style="font-size:14px; font-weight:600; color:#1E2A44; padding:6px 0; border-bottom:2.5px solid #F15A53">Công cụ</a>
+        <a href="Chotto%20-%20Tat%20ca%20chu%20de.dc.html" style="font-size:14px; font-weight:500; color:#3A4354; display:inline-flex; align-items:center; gap:5px" style-hover="color:#1E2A44">
+          Chủ đề
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg>
+        </a>
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Về Chotto</a>
+      </nav>
+
+      <div style="display:flex; align-items:center; gap:10px; margin-left:auto; min-width:0; flex:1 1 auto; justify-content:flex-end">
+        <div style="display:flex; align-items:center; gap:9px; flex:1 1 0; min-width:0; max-width:430px; height:42px; padding:0 16px; background:#F4F1EA; border:1px solid #E6E2D9; border-radius:9999px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666D7A" stroke-width="2.4" stroke-linecap="round" style="flex-shrink:0"><circle cx="11" cy="11" r="7"></circle><path d="M16.5 16.5L21 21"></path></svg>
+          <input type="search" aria-label="Tìm kiếm trên Chotto" placeholder="Tìm kiếm: thuế, nenkin, nhà ở…" style="flex:1; min-width:0; border:0; background:transparent; outline:none; font-size:13px; color:#1E2A44">
+        </div>
+        <button type="button" aria-label="Ngôn ngữ" style="width:42px; height:42px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid #E6E2D9; background:#FFFFFF; border-radius:9999px; color:#3A4354" style-hover="background:#F4F1EA">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="top" style="max-width:1240px; margin:0 auto; padding:16px 24px 0; display:flex; align-items:center; gap:8px; font-size:12.5px; color:#666D7A; flex-wrap:wrap">
+    <a href="Chotto%20-%20Trang%20chu.dc.html" style="color:#666D7A">Trang chủ</a>
+    <span style="color:#D8D3C8">/</span>
+    <a href="Chotto%20-%20Tat%20ca%20cong%20cu.dc.html" style="color:#666D7A">Công cụ</a>
+    <span style="color:#D8D3C8">/</span>
+    <span style="color:#1E2A44">Tính lương thực nhận</span>
+  </div>
+
+  <section style="padding:14px 24px 0">
+    <div style="max-width:1240px; margin:0 auto; display:flex; align-items:flex-start; gap:18px; flex-wrap:wrap">
+      <div style="flex:1 1 460px; min-width:0">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap">
+          <span style="padding:5px 12px; border-radius:9999px; background:#F6F2FE; color:#5B3FB0; font-size:12px; font-weight:600">Tiền &amp; Thuế</span>
+          <span style="padding:5px 12px; border-radius:9999px; background:#EDF7EE; color:#2F6B34; font-size:12px; font-weight:600">Cập nhật 04/2026</span>
+          <span style="font-size:12px; color:#666D7A">Không lưu dữ liệu của bạn</span>
+        </div>
+        <h1 style="font-family:'Nunito',sans-serif; font-size:38px; line-height:1.14; font-weight:800; letter-spacing:-0.02em; margin:0 0 12px">
+          Lương của bạn <span style="color:#0B7F8A">thực nhận</span> bao nhiêu?
+        </h1>
+        <p style="font-size:15.5px; line-height:1.65; color:#3A4354; margin:0; max-width:620px; text-wrap:pretty">
+          Nhập lương trước thuế và một vài thông tin cơ bản, Chotto sẽ ước tính tiền về tay mỗi tháng cùng các khoản bị trừ: bảo hiểm xã hội, thuế thu nhập và thuế thị dân.
+        </p>
+      </div>
+      <div style="flex:0 0 230px; display:flex; justify-content:flex-end">
+        <p style="font-family:'Dancing Script', cursive; font-size:23px; line-height:1.4; font-weight:600; color:#1E2A44; text-align:center; transform:rotate(-2.5deg); margin:0; padding:12px 14px; border-radius:14px; background:#FBF1BE; box-shadow:0 8px 20px rgba(30,42,68,0.12)">
+          Biết trước con số,<br>dễ lên kế hoạch hơn &#9786;
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:22px 24px 0">
+    <div style="max-width:1240px; margin:0 auto; display:flex; align-items:stretch; gap:16px; flex-wrap:wrap">
+
+      <div style="flex:1 1 420px; min-width:300px; background:#FFFFFF; border:1px solid #E6E2D9; border-radius:20px; padding:22px; box-shadow:0 2px 10px rgba(30,42,68,0.04)">
+        <h2 style="font-family:'Nunito',sans-serif; font-size:19px; font-weight:800; margin:0 0 16px">Thông tin của bạn</h2>
+
+        <label style="display:block; font-size:13px; font-weight:600; color:#3A4354; margin-bottom:8px">Lương trước thuế mỗi tháng</label>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px">
+          <div style="display:flex; align-items:baseline; gap:8px; flex:1; min-width:0; height:54px; padding:0 16px; background:#F4F1EA; border:1px solid #E6E2D9; border-radius:14px">
+            <input type="number" min="5" max="200" step="1" aria-label="Lương tháng theo man yên" value="{{ man }}" onInput="{{ onMan }}" style="flex:1; min-width:0; border:0; background:transparent; outline:none; font-family:'Nunito',sans-serif; font-size:26px; font-weight:800; color:#1E2A44; align-self:center">
+            <span style="font-size:14px; font-weight:600; color:#666D7A; flex-shrink:0">man / tháng</span>
+          </div>
+        </div>
+        <input type="range" min="10" max="100" step="1" aria-label="Kéo để chọn mức lương" value="{{ man }}" onInput="{{ onMan }}" style="width:100%; margin:0 0 22px">
+
+        <label style="display:block; font-size:13px; font-weight:600; color:#3A4354; margin-bottom:8px">Thưởng (bonus) trong năm</label>
+        <div style="display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap">
+          <sc-for list="{{ bonusOpts }}" as="b" hint-placeholder-count="4">
+            <button type="button" onClick="{{ b.onPick }}" style="height:40px; padding:0 16px; border-radius:11px; font-size:13.5px; font-weight:600; background:{{ b.bg }}; color:{{ b.fg }}; border:1px solid {{ b.bd }}">{{ b.label }}</button>
+          </sc-for>
+        </div>
+
+        <label style="display:block; font-size:13px; font-weight:600; color:#3A4354; margin-bottom:8px">Số người phụ thuộc</label>
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:22px">
+          <button type="button" onClick="{{ onDepMinus }}" aria-label="Giảm" style="width:44px; height:44px; border-radius:12px; border:1px solid #E6E2D9; background:#F4F1EA; font-size:20px; font-weight:700; color:#1E2A44">−</button>
+          <div style="min-width:64px; text-align:center; font-family:'Nunito',sans-serif; font-size:22px; font-weight:800">{{ deps }}</div>
+          <button type="button" onClick="{{ onDepPlus }}" aria-label="Tăng" style="width:44px; height:44px; border-radius:12px; border:1px solid #E6E2D9; background:#F4F1EA; font-size:20px; font-weight:700; color:#1E2A44">+</button>
+          <span style="font-size:12.5px; color:#666D7A; flex:1; min-width:0">Vợ/chồng, con hoặc người thân bạn đang nuôi</span>
+        </div>
+
+        <label style="display:block; font-size:13px; font-weight:600; color:#3A4354; margin-bottom:8px">Khu vực làm việc</label>
+        <div style="display:flex; gap:8px; flex-wrap:wrap">
+          <sc-for list="{{ regionOpts }}" as="r" hint-placeholder-count="4">
+            <button type="button" onClick="{{ r.onPick }}" style="height:40px; padding:0 16px; border-radius:11px; font-size:13.5px; font-weight:600; background:{{ r.bg }}; color:{{ r.fg }}; border:1px solid {{ r.bd }}">{{ r.label }}</button>
+          </sc-for>
+        </div>
+
+        <p style="font-size:12px; line-height:1.55; color:#666D7A; margin:20px 0 0; padding-top:16px; border-top:1px solid #F0EDE6">
+          Kết quả chỉ mang tính ước tính theo mức phổ biến năm 2026. Con số thực tế phụ thuộc vào công ty, loại bảo hiểm và các khoản khấu trừ riêng của bạn.
+        </p>
+      </div>
+
+      <div style="flex:1 1 420px; min-width:300px; display:flex; flex-direction:column; gap:14px">
+        <div style="background:#0B7F8A; border-radius:20px; padding:24px; color:#FFFFFF; box-shadow:0 10px 26px rgba(11,127,138,0.22)">
+          <div style="font-size:13.5px; font-weight:600; opacity:0.9; margin-bottom:6px">Thực nhận mỗi tháng (ước tính)</div>
+          <div style="font-family:'Nunito',sans-serif; font-size:46px; line-height:1.05; font-weight:800; letter-spacing:-0.02em">{{ netMonthly }}</div>
+          <div style="display:flex; gap:22px; flex-wrap:wrap; margin-top:18px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.22)">
+            <div>
+              <div style="font-size:12px; opacity:0.85; margin-bottom:3px">Thực nhận cả năm</div>
+              <div style="font-family:'Nunito',sans-serif; font-size:19px; font-weight:700">{{ netYear }}</div>
+            </div>
+            <div>
+              <div style="font-size:12px; opacity:0.85; margin-bottom:3px">Tổng thu nhập năm</div>
+              <div style="font-family:'Nunito',sans-serif; font-size:19px; font-weight:700">{{ grossYear }}</div>
+            </div>
+            <div>
+              <div style="font-size:12px; opacity:0.85; margin-bottom:3px">Tỷ lệ bị trừ</div>
+              <div style="font-family:'Nunito',sans-serif; font-size:19px; font-weight:700">{{ deductRate }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:1; background:#FFFFFF; border:1px solid #E6E2D9; border-radius:20px; padding:22px">
+          <h2 style="font-family:'Nunito',sans-serif; font-size:17px; font-weight:800; margin:0 0 4px">Các khoản bị trừ mỗi tháng</h2>
+          <p style="font-size:12.5px; color:#666D7A; margin:0 0 18px">Tính trên thu nhập cả năm rồi chia đều 12 tháng.</p>
+
+          <sc-for list="{{ rows }}" as="row" hint-placeholder-count="4">
+            <div style="margin-bottom:16px">
+              <div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:7px">
+                <span style="font-size:13.5px; font-weight:600; color:#1E2A44">{{ row.label }}</span>
+                <span style="font-family:'Nunito',sans-serif; font-size:15px; font-weight:700; color:#1E2A44">{{ row.amount }}</span>
+              </div>
+              <div style="height:8px; border-radius:9999px; background:#F4F1EA; overflow:hidden">
+                <div style="height:8px; border-radius:9999px; background:{{ row.color }}; width:{{ row.pct }}%"></div>
+              </div>
+              <div style="font-size:11.5px; color:#666D7A; margin-top:5px">{{ row.note }}</div>
+            </div>
+          </sc-for>
+
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding-top:14px; border-top:1px solid #F0EDE6">
+            <span style="font-size:13.5px; font-weight:600; color:#3A4354">Tổng bị trừ</span>
+            <span style="font-family:'Nunito',sans-serif; font-size:18px; font-weight:800; color:#A6302A">{{ totalDeduct }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:22px 24px 0">
+    <div style="max-width:1240px; margin:0 auto; display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap">
+
+      <div style="flex:1 1 560px; min-width:300px; background:#FFFFFF; border:1px solid #E6E2D9; border-radius:20px; padding:24px">
+        <h2 style="font-family:'Nunito',sans-serif; font-size:21px; font-weight:800; margin:0 0 14px">Công cụ này tính như thế nào?</h2>
+        <p style="font-size:14.5px; line-height:1.75; color:#3A4354; margin:0 0 18px; text-wrap:pretty">
+          Lương ghi trong hợp đồng là số trước thuế. Trước khi tiền về tay bạn, công ty sẽ trừ lần lượt bảo hiểm xã hội, thuế thu nhập quốc gia và thuế thị dân của địa phương bạn sống.
+        </p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px; margin-bottom:22px">
+          <div style="padding:16px; background:#E9F8F9; border:1px solid #B7EBEF; border-radius:15px">
+            <div style="font-family:'Nunito',sans-serif; font-size:14.5px; font-weight:700; margin-bottom:6px">1. Bảo hiểm xã hội</div>
+            <p style="font-size:12.8px; line-height:1.6; color:#3A4354; margin:0">Bảo hiểm y tế, nenkin và bảo hiểm lao động, khoảng 14–15% lương và công ty đóng một nửa.</p>
+          </div>
+          <div style="padding:16px; background:#F6F2FE; border:1px solid #DFD5FB; border-radius:15px">
+            <div style="font-family:'Nunito',sans-serif; font-size:14.5px; font-weight:700; margin-bottom:6px">2. Thuế thu nhập</div>
+            <p style="font-size:12.8px; line-height:1.6; color:#3A4354; margin:0">Tính theo bậc lũy tiến 5–45% sau khi trừ các khoản khấu trừ và người phụ thuộc.</p>
+          </div>
+          <div style="padding:16px; background:#FEF6EB; border:1px solid #FDDDBD; border-radius:15px">
+            <div style="font-family:'Nunito',sans-serif; font-size:14.5px; font-weight:700; margin-bottom:6px">3. Thuế thị dân</div>
+            <p style="font-size:12.8px; line-height:1.6; color:#3A4354; margin:0">Khoảng 10% thu nhập chịu thuế của năm trước, nộp cho tỉnh và thành phố bạn sống.</p>
+          </div>
+        </div>
+
+        <h3 style="font-family:'Nunito',sans-serif; font-size:17px; font-weight:800; margin:0 0 12px">Câu hỏi thường gặp</h3>
+        <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="3">
+          <div style="border-top:1px solid #F0EDE6">
+            <button type="button" onClick="{{ f.onToggle }}" style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:14px; padding:15px 2px; background:transparent; border:0; text-align:left; font-size:14.5px; font-weight:600; color:#1E2A44">
+              {{ f.q }}
+              <span style="flex-shrink:0; font-family:'Nunito',sans-serif; font-size:20px; font-weight:700; color:#0B7F8A">{{ f.sign }}</span>
+            </button>
+            <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+              <p style="font-size:14px; line-height:1.7; color:#3A4354; margin:0 0 16px; padding-right:34px; text-wrap:pretty">{{ f.a }}</p>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+
+      <aside style="flex:1 1 260px; min-width:240px; max-width:340px; display:flex; flex-direction:column; gap:14px">
+        <div style="background:#FDFCFA; border:1px solid #EFEBE2; border-radius:18px; padding:18px">
+          <h2 style="font-family:'Nunito',sans-serif; font-size:16px; font-weight:800; margin:0 0 12px">Công cụ liên quan</h2>
+          <a href="Chotto%20-%20Tat%20ca%20cong%20cu.dc.html" style="display:flex; align-items:center; gap:11px; padding:11px 0; border-top:1px solid #F0EDE6" style-hover="opacity:0.75">
+            <span style="width:36px; height:36px; border-radius:11px; background:#EDF7EE; display:flex; align-items:center; justify-content:center; flex-shrink:0"><img src="public/icons/icon-work.svg" alt="" width="20" height="20"></span>
+            <span style="flex:1; min-width:0; font-size:13.5px; font-weight:600; color:#1E2A44">Tính nenkin</span>
+          </a>
+          <a href="Chotto%20-%20Tat%20ca%20cong%20cu.dc.html" style="display:flex; align-items:center; gap:11px; padding:11px 0; border-top:1px solid #F0EDE6" style-hover="opacity:0.75">
+            <span style="width:36px; height:36px; border-radius:11px; background:#FEF6EB; display:flex; align-items:center; justify-content:center; flex-shrink:0"><img src="public/icons/icon-life.svg" alt="" width="20" height="20"></span>
+            <span style="flex:1; min-width:0; font-size:13.5px; font-weight:600; color:#1E2A44">Furusato Nozei</span>
+          </a>
+          <a href="Chotto%20-%20Tat%20ca%20cong%20cu.dc.html" style="display:flex; align-items:center; gap:11px; padding:11px 0; border-top:1px solid #F0EDE6" style-hover="opacity:0.75">
+            <span style="width:36px; height:36px; border-radius:11px; background:#ECEFF5; display:flex; align-items:center; justify-content:center; flex-shrink:0"><img src="public/icons/icon-doc.svg" alt="" width="20" height="20"></span>
+            <span style="flex:1; min-width:0; font-size:13.5px; font-weight:600; color:#1E2A44">Ước tính tiền nhà</span>
+          </a>
+          <a href="Chotto%20-%20Tat%20ca%20cong%20cu.dc.html" style="display:inline-flex; align-items:center; gap:6px; margin-top:12px; font-size:13px; font-weight:600; color:#0A6E78">
+            Xem tất cả công cụ
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+          </a>
+        </div>
+
+        <div style="background:#FFFFFF; border:1px solid #E6E2D9; border-radius:18px; padding:18px">
+          <h2 style="font-family:'Nunito',sans-serif; font-size:16px; font-weight:800; margin:0 0 12px">Đọc thêm</h2>
+          <a href="Chotto%20-%20Bai%20viet%20chi%20tiet.dc.html" style="display:flex; gap:11px; padding:11px 0; border-top:1px solid #F0EDE6" style-hover="opacity:0.75">
+            <img src="public/images/featured/salary-30man.jpg" alt="" style="width:62px; height:48px; object-fit:cover; border-radius:10px; flex-shrink:0">
+            <span style="flex:1; min-width:0; font-size:13.2px; line-height:1.4; font-weight:600; color:#1E2A44">Lương 30 man thực nhận bao nhiêu?</span>
+          </a>
+          <a href="Chotto%20-%20Bai%20viet%20chi%20tiet.dc.html" style="display:flex; gap:11px; padding:11px 0; border-top:1px solid #F0EDE6" style-hover="opacity:0.75">
+            <img src="public/images/featured/nenkin-tool.jpg" alt="" style="width:62px; height:48px; object-fit:cover; border-radius:10px; flex-shrink:0">
+            <span style="flex:1; min-width:0; font-size:13.2px; line-height:1.4; font-weight:600; color:#1E2A44">Nenkin có lấy lại được khi về Việt Nam?</span>
+          </a>
+          <a href="Chotto%20-%20Bai%20viet%20chi%20tiet.dc.html" style="display:flex; gap:11px; padding:11px 0; border-top:1px solid #F0EDE6" style-hover="opacity:0.75">
+            <img src="public/images/featured/zairyu-card.jpg" alt="" style="width:62px; height:48px; object-fit:cover; border-radius:10px; flex-shrink:0">
+            <span style="flex:1; min-width:0; font-size:13.2px; line-height:1.4; font-weight:600; color:#1E2A44">Hiểu bảng lương Nhật trong 5 phút</span>
+          </a>
+        </div>
+
+        <div style="background:linear-gradient(135deg, #EAF6FB 0%, #EDF7EE 100%); border:1px solid #CFE6EF; border-radius:18px; padding:18px">
+          <p style="font-family:'Dancing Script', cursive; font-size:21px; line-height:1.4; font-weight:600; color:#1E2A44; margin:0 0 14px">Con số chưa đúng<br>với bảng lương của bạn?</p>
+          <a href="Chotto%20-%20Ve%20Chotto.dc.html#lien-he" style="display:inline-flex; align-items:center; gap:8px; height:42px; padding:0 18px; background:#0B7F8A; color:#FFFFFF; border-radius:9999px; font-size:13.5px; font-weight:600" style-hover="background:#0A6E78">
+            Góp ý cho Chotto
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+          </a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <footer style="margin-top:38px; border-top:1px solid #E6E2D9; background:#FBF9F5">
+    <div style="max-width:1240px; margin:0 auto; padding:26px 24px 20px; display:flex; align-items:center; flex-wrap:wrap; gap:22px">
+      <a href="Chotto%20-%20Trang%20chu.dc.html" style="display:flex; flex-direction:column; gap:3px">
+        <svg viewBox="0 0 1708 360" role="img" aria-label="Chotto" style="display:block; width:124px; height:auto">
+          <path d="M 271.92 88.08 A 130 130 0 1 0 271.92 271.92" fill="none" stroke="#66B96B" stroke-width="100" stroke-linecap="round"></path>
+          <g fill="#1E2A44">
+            <rect x="342" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="532" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="442" y="130" width="90" height="100"></rect>
+          </g>
+          <circle cx="832" cy="180" r="130" fill="none" stroke="#FBA93E" stroke-width="100"></circle>
+          <path transform="translate(1002 0)" d="M 175 0 V 71.8 A 27 27 0 1 1 175 108.2 V 310 A 50 50 0 0 1 75 310 V 100 H 50 A 50 50 0 0 1 50 0 Z" fill="#F15A53"></path>
+          <path transform="translate(1002 0)" d="M 181 0 V 60.1 A 33 33 0 1 1 181 119.9 V 310 A 50 50 0 0 0 281 310 V 100 H 306 A 50 50 0 0 0 306 0 Z" fill="#AB8DF5"></path>
+          <circle cx="1528" cy="180" r="130" fill="none" stroke="#2FC5D0" stroke-width="100"></circle>
+        </svg>
+        <span style="font-size:10.5px; color:#666D7A">Một chút hữu ích, mỗi ngày.</span>
+      </a>
+      <nav style="display:flex; align-items:center; gap:14px; flex-wrap:wrap">
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html" style="font-size:13px; color:#3A4354">Về Chotto</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html#lien-he" style="font-size:13px; color:#3A4354">Liên hệ</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="Chotto%20-%20Tat%20ca%20cong%20cu.dc.html" style="font-size:13px; color:#3A4354">Công cụ</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="Chotto%20-%20Tat%20ca%20chu%20de.dc.html" style="font-size:13px; color:#3A4354">Chủ đề</a>
+      </nav>
+      <div style="display:flex; align-items:center; gap:4px; margin-left:auto; padding:3px; background:#F4F1EA; border:1px solid #E6E2D9; border-radius:9999px">
+        <button type="button" style="height:26px; padding:0 12px; border:0; border-radius:9999px; background:#0B7F8A; color:#FFFFFF; font-size:12px; font-weight:600">VI</button>
+        <button type="button" style="height:26px; padding:0 12px; border:0; border-radius:9999px; background:transparent; color:#3A4354; font-size:12px; font-weight:600" style-hover="background:#FFFFFF">JA</button>
+        <button type="button" style="height:26px; padding:0 12px; border:0; border-radius:9999px; background:transparent; color:#3A4354; font-size:12px; font-weight:600" style-hover="background:#FFFFFF">EN</button>
+      </div>
+    </div>
+    <div style="max-width:1240px; margin:0 auto; padding:0 24px 22px; font-size:11.5px; color:#666D7A">© 2026 ChottoDay. All rights reserved.</div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240},&quot;defaultSalaryMan&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:30,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:10,&quot;max&quot;:100,&quot;unit&quot;:&quot;man&quot;,&quot;section&quot;:&quot;Máy tính&quot;}}">
+const YEN = new Intl.NumberFormat("vi-VN");
+const yen = (n) => YEN.format(Math.round(n)) + " ¥";
+const BONUS = [
+  { label: "Không có", months: 0 },
+  { label: "1 tháng", months: 1 },
+  { label: "2 tháng", months: 2 },
+  { label: "4 tháng", months: 4 }
+];
+const REGIONS = [
+  { label: "Tokyo", health: 0.0499 },
+  { label: "Osaka", health: 0.0516 },
+  { label: "Aichi", health: 0.0501 },
+  { label: "Khác", health: 0.0495 }
+];
+const FAQS = [
+  { q: "Vì sao số của tôi khác con số ở đây?", a: "Mỗi công ty áp dụng phụ cấp, loại bảo hiểm và các khoản khấu trừ khác nhau. Công cụ dùng mức phổ biến nhất nên kết quả thường lệch 3–5% so với bảng lương thật." },
+  { q: "Người phụ thuộc ảnh hưởng thế nào?", a: "Mỗi người phụ thuộc được khấu trừ thêm khỏi thu nhập chịu thuế, nên thuế thu nhập và thuế thị dân đều giảm. Người thân ở Việt Nam vẫn có thể khai nếu bạn chứng minh được việc gửi tiền." },
+  { q: "Năm đầu sang Nhật có phải nộp thuế thị dân?", a: "Thường là không. Thuế thị dân tính trên thu nhập của năm trước, nên năm đầu tiên bạn thường chưa bị trừ khoản này và tiền thực nhận sẽ cao hơn kết quả ở đây." },
+  { q: "Chotto có lưu thông tin tôi nhập không?", a: "Không. Mọi phép tính chạy ngay trên máy của bạn, Chotto không gửi hay lưu bất kỳ con số nào." }
+];
+
+function empDeduction(g) {
+  if (g <= 1625000) return 550000;
+  if (g <= 1800000) return g * 0.4 - 100000;
+  if (g <= 3600000) return g * 0.3 + 80000;
+  if (g <= 6600000) return g * 0.2 + 440000;
+  if (g <= 8500000) return g * 0.1 + 1100000;
+  return 1950000;
+}
+function incomeTax(t) {
+  if (t <= 0) return 0;
+  let tax;
+  if (t <= 1950000) tax = t * 0.05;
+  else if (t <= 3300000) tax = t * 0.1 - 97500;
+  else if (t <= 6950000) tax = t * 0.2 - 427500;
+  else if (t <= 9000000) tax = t * 0.23 - 636000;
+  else if (t <= 18000000) tax = t * 0.33 - 1536000;
+  else tax = t * 0.4 - 2796000;
+  return tax * 1.021;
+}
+
+class Component extends DCLogic {
+  state = { man: null, bonus: 2, region: "Tokyo", open: 0, deps: 0 };
+
+  calc() {
+    const raw = this.state.man === null ? (this.props.defaultSalaryMan ?? 30) : this.state.man;
+    const man = Math.min(200, Math.max(5, Number(raw) || 0));
+    const monthly = man * 10000;
+    const gross = monthly * (12 + this.state.bonus);
+    const region = REGIONS.find(r => r.label === this.state.region) || REGIONS[0];
+    const social = gross * (region.health + 0.0915 + 0.006);
+    const deps = this.state.deps ?? 0;
+    const base = gross - social - empDeduction(gross);
+    const taxableNat = Math.max(0, base - 480000 - deps * 380000);
+    const taxableLoc = Math.max(0, base - 430000 - deps * 330000);
+    const tax = incomeTax(taxableNat);
+    const resident = taxableLoc * 0.1 + 5000;
+    const net = gross - social - tax - resident;
+    return { gross, social, tax, resident, net, deps };
+  }
+
+  renderVals() {
+    const c = this.calc();
+    const m = (v) => v / 12;
+    const totalDeduct = c.social + c.tax + c.resident;
+    const rows = [
+      { label: "Bảo hiểm xã hội", amount: yen(m(c.social)), pct: Math.min(100, (c.social / c.gross) * 100 * 3), color: "#2FC5D0", note: "Y tế + nenkin + bảo hiểm lao động" },
+      { label: "Thuế thu nhập", amount: yen(m(c.tax)), pct: Math.min(100, (c.tax / c.gross) * 100 * 3), color: "#AB8DF5", note: "Bậc lũy tiến, gồm thuế phục hồi 2,1%" },
+      { label: "Thuế thị dân", amount: yen(m(c.resident)), pct: Math.min(100, (c.resident / c.gross) * 100 * 3), color: "#FBA93E", note: "Khoảng 10% thu nhập chịu thuế" }
+    ];
+    return {
+      man: this.state.man === null ? (this.props.defaultSalaryMan ?? 30) : this.state.man,
+      deps: c.deps,
+      netMonthly: yen(m(c.net)),
+      netYear: yen(c.net),
+      grossYear: yen(c.gross),
+      deductRate: (totalDeduct / c.gross * 100).toFixed(1) + "%",
+      totalDeduct: yen(m(totalDeduct)) + " / tháng",
+      rows,
+      onMan: (e) => this.setState({ man: e.target.value }),
+      onDepMinus: () => this.setState({ deps: Math.max(0, (this.state.deps ?? 0) - 1) }),
+      onDepPlus: () => this.setState({ deps: Math.min(6, (this.state.deps ?? 0) + 1) }),
+      bonusOpts: BONUS.map(b => {
+        const on = this.state.bonus === b.months;
+        return { label: b.label, bg: on ? "#0B7F8A" : "#FFFFFF", fg: on ? "#FFFFFF" : "#3A4354", bd: on ? "#0B7F8A" : "#E6E2D9", onPick: () => this.setState({ bonus: b.months }) };
+      }),
+      regionOpts: REGIONS.map(r => {
+        const on = this.state.region === r.label;
+        return { label: r.label, bg: on ? "#1E2A44" : "#FFFFFF", fg: on ? "#FFFFFF" : "#3A4354", bd: on ? "#1E2A44" : "#E6E2D9", onPick: () => this.setState({ region: r.label }) };
+      }),
+      faqs: FAQS.map((f, i) => ({
+        q: f.q, a: f.a,
+        open: this.state.open === i,
+        sign: this.state.open === i ? "−" : "+",
+        onToggle: () => this.setState({ open: this.state.open === i ? -1 : i })
+      }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>

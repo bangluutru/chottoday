@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #FBF9F5; font-family: 'Be Vietnam Pro', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #0B7F8A; text-decoration: none; }
+  a:hover { color: #0A6E78; }
+  input { font-family: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+</style>
+</helmet>
+
+<div style="background:#FBF9F5; color:#1E2A44; min-height:100vh">
+
+  <header style="position:sticky; top:0; z-index:50; background:rgba(251,249,245,0.92); backdrop-filter:blur(12px); border-bottom:1px solid #E6E2D9">
+    <div style="max-width:1240px; margin:0 auto; padding:0 24px; height:72px; display:flex; align-items:center; gap:18px; flex-wrap:nowrap">
+      <a href="Chotto%20-%20Trang%20chu.dc.html" style="display:flex; flex-direction:column; gap:3px; flex-shrink:0">
+        <svg viewBox="0 0 1708 360" role="img" aria-label="Chotto" style="display:block; width:132px; height:auto; overflow:visible">
+          <path d="M 271.92 88.08 A 130 130 0 1 0 271.92 271.92" fill="none" stroke="#66B96B" stroke-width="100" stroke-linecap="round"></path>
+          <g fill="#1E2A44">
+            <rect x="342" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="532" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="442" y="130" width="90" height="100"></rect>
+          </g>
+          <circle cx="832" cy="180" r="130" fill="none" stroke="#FBA93E" stroke-width="100"></circle>
+          <path transform="translate(1002 0)" d="M 175 0 V 71.8 A 27 27 0 1 1 175 108.2 V 310 A 50 50 0 0 1 75 310 V 100 H 50 A 50 50 0 0 1 50 0 Z" fill="#F15A53"></path>
+          <path transform="translate(1002 0)" d="M 181 0 V 60.1 A 33 33 0 1 1 181 119.9 V 310 A 50 50 0 0 0 281 310 V 100 H 306 A 50 50 0 0 0 306 0 Z" fill="#AB8DF5"></path>
+          <circle cx="1528" cy="180" r="130" fill="none" stroke="#2FC5D0" stroke-width="100"></circle>
+        </svg>
+        <span style="font-size:10.5px; color:#666D7A; letter-spacing:0.01em">Một chút hữu ích, mỗi ngày.</span>
+      </a>
+
+      <nav style="display:flex; align-items:center; gap:14px; margin-left:4px; flex:0 0 auto; white-space:nowrap">
+        <a href="Chotto%20-%20Trang%20chu.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Trang chủ</a>
+        <a href="Chotto%20-%20Danh%20sach%20bai%20viet.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Bài viết</a>
+        <a href="Chotto%20-%20Tat%20ca%20cong%20cu.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Công cụ</a>
+        <a href="#top" style="font-size:14px; font-weight:600; color:#1E2A44; padding:6px 0; border-bottom:2.5px solid #F15A53">Chủ đề</a>
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Về Chotto</a>
+      </nav>
+
+      <div style="display:flex; align-items:center; gap:10px; margin-left:auto; min-width:0; flex:1 1 auto; justify-content:flex-end">
+        <div style="display:flex; align-items:center; gap:9px; flex:1 1 0; min-width:0; max-width:430px; height:42px; padding:0 16px; background:#F4F1EA; border:1px solid #E6E2D9; border-radius:9999px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666D7A" stroke-width="2.4" stroke-linecap="round" style="flex-shrink:0"><circle cx="11" cy="11" r="7"></circle><path d="M16.5 16.5L21 21"></path></svg>
+          <input type="search" aria-label="Tìm kiếm trên Chotto" placeholder="Tìm kiếm: thuế, nenkin, nhà ở…" style="flex:1; min-width:0; border:0; background:transparent; outline:none; font-size:13px; color:#1E2A44">
+        </div>
+        <button type="button" aria-label="Ngôn ngữ" style="width:42px; height:42px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid #E6E2D9; background:#FFFFFF; border-radius:9999px; color:#3A4354" style-hover="background:#F4F1EA">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="top" style="max-width:1240px; margin:0 auto; padding:16px 24px 0; display:flex; align-items:center; gap:8px; font-size:12.5px; color:#666D7A; flex-wrap:wrap">
+    <a href="Chotto%20-%20Trang%20chu.dc.html" style="color:#666D7A">Trang chủ</a>
+    <span style="color:#D8D3C8">/</span>
+    <span style="color:#1E2A44">Chủ đề</span>
+  </div>
+
+  <section style="padding:14px 24px 0">
+    <div style="max-width:1240px; margin:0 auto; display:flex; align-items:flex-end; gap:24px; flex-wrap:wrap">
+      <div style="flex:1 1 440px; min-width:0">
+        <h1 style="font-family:'Nunito',sans-serif; font-size:36px; line-height:1.14; font-weight:800; letter-spacing:-0.02em; margin:0 0 10px">
+          Khám phá theo <span style="color:#0B7F8A">chủ đề</span>
+        </h1>
+        <p style="font-size:15px; line-height:1.6; color:#3A4354; margin:0; max-width:600px; text-wrap:pretty">
+          Bảy nhóm việc mà người Việt ở Nhật hay phải xử lý. Mỗi chủ đề gom cả bài hướng dẫn và công cụ tính toán liên quan.
+        </p>
+      </div>
+      <p style="flex:0 0 auto; font-family:'Dancing Script', cursive; font-size:22px; line-height:1.4; font-weight:600; color:#1E2A44; margin:0; padding:10px 16px; border-radius:14px; background:#FBF1BE; box-shadow:0 8px 20px rgba(30,42,68,0.12); transform:rotate(2deg)">
+        Bắt đầu từ chủ đề<br>bạn đang cần nhất &#9786;
+      </p>
+    </div>
+  </section>
+
+  <section style="padding:22px 24px 0">
+    <div style="max-width:1240px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(330px, 1fr)); gap:16px">
+
+      <a href="Chotto%20-%20Trang%20chu%20de.dc.html" style="display:flex; flex-direction:column; background:#FFFFFF; border:1px solid #CBE8CE; border-radius:18px; overflow:hidden; box-shadow:0 2px 8px rgba(30,42,68,0.03)" style-hover="border-color:#66B96B; transform:translateY(-2px)">
+        <div style="display:flex; align-items:center; gap:14px; padding:18px 20px; background:#EDF7EE">
+          <span style="width:48px; height:48px; border-radius:14px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; flex-shrink:0"><img src="public/icons/icon-study.svg" alt="" width="28" height="28"></span>
+          <span style="flex:1; min-width:0">
+            <span style="display:block; font-family:'Nunito',sans-serif; font-size:19px; font-weight:800; color:#1E2A44">Mới sang Nhật</span>
+            <span style="display:block; font-size:12px; color:#2F6B34; font-weight:600">18 bài viết · 2 công cụ</span>
+          </span>
+        </div>
+        <div style="padding:16px 20px 18px; display:flex; flex-direction:column; gap:12px; flex:1">
+          <p style="font-size:13.5px; line-height:1.6; color:#3A4354; margin:0; text-wrap:pretty">Việc cần làm trong 14 ngày đầu: đăng ký địa chỉ, bảo hiểm, tài khoản ngân hàng, điện thoại.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:7px">
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Đăng ký địa chỉ</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">My Number</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Mở tài khoản</span>
+          </div>
+          <span style="display:inline-flex; align-items:center; gap:6px; margin-top:auto; font-size:13px; font-weight:600; color:#0A6E78">
+            Xem chủ đề
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="Chotto%20-%20Trang%20chu%20de.dc.html" style="display:flex; flex-direction:column; background:#FFFFFF; border:1px solid #FBCDCB; border-radius:18px; overflow:hidden; box-shadow:0 2px 8px rgba(30,42,68,0.03)" style-hover="border-color:#F15A53; transform:translateY(-2px)">
+        <div style="display:flex; align-items:center; gap:14px; padding:18px 20px; background:#FDEEED">
+          <span style="width:48px; height:48px; border-radius:14px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; flex-shrink:0"><img src="public/icons/icon-doc.svg" alt="" width="28" height="28"></span>
+          <span style="flex:1; min-width:0">
+            <span style="display:block; font-family:'Nunito',sans-serif; font-size:19px; font-weight:800; color:#1E2A44">Thủ tục &amp; Giấy tờ</span>
+            <span style="display:block; font-size:12px; color:#A6302A; font-weight:600">31 bài viết · 2 công cụ</span>
+          </span>
+        </div>
+        <div style="padding:16px 20px 18px; display:flex; flex-direction:column; gap:12px; flex:1">
+          <p style="font-size:13.5px; line-height:1.6; color:#3A4354; margin:0; text-wrap:pretty">Visa, thẻ cư trú, đổi bằng lái, chuyển nhà — giấy tờ nào cần, xin ở đâu, mất bao lâu.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:7px">
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Gia hạn visa</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Đổi bằng lái</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Chuyển địa chỉ</span>
+          </div>
+          <span style="display:inline-flex; align-items:center; gap:6px; margin-top:auto; font-size:13px; font-weight:600; color:#0A6E78">
+            Xem chủ đề
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="Chotto%20-%20Trang%20chu%20de.dc.html" style="display:flex; flex-direction:column; background:#FFFFFF; border:1px solid #DFD5FB; border-radius:18px; overflow:hidden; box-shadow:0 2px 8px rgba(30,42,68,0.03)" style-hover="border-color:#AB8DF5; transform:translateY(-2px)">
+        <div style="display:flex; align-items:center; gap:14px; padding:18px 20px; background:#F6F2FE">
+          <span style="width:48px; height:48px; border-radius:14px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; flex-shrink:0">
+            <svg width="28" height="28" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="16" stroke="#1E2A44" stroke-width="3.5"></circle><path d="M18 17l6 8 6-8M24 25v9M19 27h10M19 31h10" stroke="#AB8DF5" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </span>
+          <span style="flex:1; min-width:0">
+            <span style="display:block; font-family:'Nunito',sans-serif; font-size:19px; font-weight:800; color:#1E2A44">Tiền &amp; Thuế</span>
+            <span style="display:block; font-size:12px; color:#5B3FB0; font-weight:600">42 bài viết · 4 công cụ</span>
+          </span>
+        </div>
+        <div style="padding:16px 20px 18px; display:flex; flex-direction:column; gap:12px; flex:1">
+          <p style="font-size:13.5px; line-height:1.6; color:#3A4354; margin:0; text-wrap:pretty">Lương, thuế thu nhập, thuế thị dân, nenkin, furusato nozei và các khoản trợ cấp.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:7px">
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Lương thực nhận</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Nenkin</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Khai thuế</span>
+          </div>
+          <span style="display:inline-flex; align-items:center; gap:6px; margin-top:auto; font-size:13px; font-weight:600; color:#0A6E78">
+            Xem chủ đề
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="Chotto%20-%20Trang%20chu%20de.dc.html" style="display:flex; flex-direction:column; background:#FFFFFF; border:1px solid #CFD7E4; border-radius:18px; overflow:hidden; box-shadow:0 2px 8px rgba(30,42,68,0.03)" style-hover="border-color:#1E2A44; transform:translateY(-2px)">
+        <div style="display:flex; align-items:center; gap:14px; padding:18px 20px; background:#ECEFF5">
+          <span style="width:48px; height:48px; border-radius:14px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; flex-shrink:0"><img src="public/icons/icon-work.svg" alt="" width="28" height="28"></span>
+          <span style="flex:1; min-width:0">
+            <span style="display:block; font-family:'Nunito',sans-serif; font-size:19px; font-weight:800; color:#1E2A44">Công việc</span>
+            <span style="display:block; font-size:12px; color:#1E2A44; font-weight:600">24 bài viết · 2 công cụ</span>
+          </span>
+        </div>
+        <div style="padding:16px 20px 18px; display:flex; flex-direction:column; gap:12px; flex:1">
+          <p style="font-size:13.5px; line-height:1.6; color:#3A4354; margin:0; text-wrap:pretty">Tìm việc, chuyển việc, hợp đồng, nghỉ phép và quyền lợi khi thôi việc.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:7px">
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Chuyển việc</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Hợp đồng</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Trợ cấp thất nghiệp</span>
+          </div>
+          <span style="display:inline-flex; align-items:center; gap:6px; margin-top:auto; font-size:13px; font-weight:600; color:#0A6E78">
+            Xem chủ đề
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="Chotto%20-%20Trang%20chu%20de.dc.html" style="display:flex; flex-direction:column; background:#FFFFFF; border:1px solid #FDDDBD; border-radius:18px; overflow:hidden; box-shadow:0 2px 8px rgba(30,42,68,0.03)" style-hover="border-color:#FBA93E; transform:translateY(-2px)">
+        <div style="display:flex; align-items:center; gap:14px; padding:18px 20px; background:#FEF6EB">
+          <span style="width:48px; height:48px; border-radius:14px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; flex-shrink:0">
+            <svg width="28" height="28" viewBox="0 0 48 48" fill="none"><circle cx="17" cy="15" r="6" stroke="#1E2A44" stroke-width="3.5"></circle><circle cx="32" cy="18" r="5" stroke="#1E2A44" stroke-width="3.5"></circle><path d="M8 40v-4a9 9 0 019-9 9 9 0 019 9v4" stroke="#FBA93E" stroke-width="3.5" stroke-linecap="round"></path><path d="M28 40v-3a8 8 0 018-8 8 8 0 018 8v3" stroke="#1E2A44" stroke-width="3.5" stroke-linecap="round"></path></svg>
+          </span>
+          <span style="flex:1; min-width:0">
+            <span style="display:block; font-family:'Nunito',sans-serif; font-size:19px; font-weight:800; color:#1E2A44">Gia đình &amp; Giáo dục</span>
+            <span style="display:block; font-size:12px; color:#8F5310; font-weight:600">19 bài viết · 1 công cụ</span>
+          </span>
+        </div>
+        <div style="padding:16px 20px 18px; display:flex; flex-direction:column; gap:12px; flex:1">
+          <p style="font-size:13.5px; line-height:1.6; color:#3A4354; margin:0; text-wrap:pretty">Sinh con, nhà trẻ, trường học, trợ cấp nuôi con và cách làm việc với nhà trường.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:7px">
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Nhà trẻ</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Tiểu học</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Trợ cấp sinh con</span>
+          </div>
+          <span style="display:inline-flex; align-items:center; gap:6px; margin-top:auto; font-size:13px; font-weight:600; color:#0A6E78">
+            Xem chủ đề
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="Chotto%20-%20Trang%20chu%20de.dc.html" style="display:flex; flex-direction:column; background:#FFFFFF; border:1px solid #B7EBEF; border-radius:18px; overflow:hidden; box-shadow:0 2px 8px rgba(30,42,68,0.03)" style-hover="border-color:#2FC5D0; transform:translateY(-2px)">
+        <div style="display:flex; align-items:center; gap:14px; padding:18px 20px; background:#E9F8F9">
+          <span style="width:48px; height:48px; border-radius:14px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; flex-shrink:0"><img src="public/icons/icon-health.svg" alt="" width="28" height="28"></span>
+          <span style="flex:1; min-width:0">
+            <span style="display:block; font-family:'Nunito',sans-serif; font-size:19px; font-weight:800; color:#1E2A44">Sức khỏe</span>
+            <span style="display:block; font-size:12px; color:#0A6E78; font-weight:600">15 bài viết · 1 công cụ</span>
+          </span>
+        </div>
+        <div style="padding:16px 20px 18px; display:flex; flex-direction:column; gap:12px; flex:1">
+          <p style="font-size:13.5px; line-height:1.6; color:#3A4354; margin:0; text-wrap:pretty">Đi khám, bảo hiểm y tế, khám sức khỏe định kỳ và mẫu câu tiếng Nhật cần thiết.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:7px">
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Đi khám</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Bảo hiểm y tế</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Khám định kỳ</span>
+          </div>
+          <span style="display:inline-flex; align-items:center; gap:6px; margin-top:auto; font-size:13px; font-weight:600; color:#0A6E78">
+            Xem chủ đề
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="Chotto%20-%20Trang%20chu%20de.dc.html" style="display:flex; flex-direction:column; background:#FFFFFF; border:1px solid #FBCDCB; border-radius:18px; overflow:hidden; box-shadow:0 2px 8px rgba(30,42,68,0.03)" style-hover="border-color:#F15A53; transform:translateY(-2px)">
+        <div style="display:flex; align-items:center; gap:14px; padding:18px 20px; background:#FDEEED">
+          <span style="width:48px; height:48px; border-radius:14px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; flex-shrink:0"><img src="public/icons/icon-life.svg" alt="" width="28" height="28"></span>
+          <span style="flex:1; min-width:0">
+            <span style="display:block; font-family:'Nunito',sans-serif; font-size:19px; font-weight:800; color:#1E2A44">Cuộc sống</span>
+            <span style="display:block; font-size:12px; color:#A6302A; font-weight:600">28 bài viết · 3 công cụ</span>
+          </span>
+        </div>
+        <div style="padding:16px 20px 18px; display:flex; flex-direction:column; gap:12px; flex:1">
+          <p style="font-size:13.5px; line-height:1.6; color:#3A4354; margin:0; text-wrap:pretty">Thuê nhà, đi lại, mua sắm, phân loại rác và những quy tắc sinh hoạt nên biết.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:7px">
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Thuê nhà</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Đi tàu</span>
+            <span style="padding:4px 11px; border-radius:9999px; background:#F4F1EA; font-size:11.5px; color:#3A4354">Phân loại rác</span>
+          </div>
+          <span style="display:inline-flex; align-items:center; gap:6px; margin-top:auto; font-size:13px; font-weight:600; color:#0A6E78">
+            Xem chủ đề
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+          </span>
+        </div>
+      </a>
+
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:14px; padding:22px; border:1px dashed #D8D3C8; border-radius:18px; background:#FDFCFA">
+        <p style="font-family:'Dancing Script', cursive; font-size:23px; line-height:1.4; font-weight:600; color:#1E2A44; margin:0">Thiếu một chủ đề<br>bạn đang cần?</p>
+        <p style="font-size:13.5px; line-height:1.6; color:#3A4354; margin:0">Gửi cho Chotto biết vấn đề bạn đang gặp — chủ đề mới thường bắt đầu từ một câu hỏi của bạn đọc.</p>
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html#lien-he" style="display:inline-flex; align-items:center; gap:8px; align-self:flex-start; height:44px; padding:0 20px; background:#0B7F8A; color:#FFFFFF; border-radius:9999px; font-size:14px; font-weight:600" style-hover="background:#0A6E78">
+          Gửi câu hỏi
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="margin-top:38px; border-top:1px solid #E6E2D9; background:#FBF9F5">
+    <div style="max-width:1240px; margin:0 auto; padding:26px 24px 20px; display:flex; align-items:center; flex-wrap:wrap; gap:22px">
+      <a href="Chotto%20-%20Trang%20chu.dc.html" style="display:flex; flex-direction:column; gap:3px">
+        <svg viewBox="0 0 1708 360" role="img" aria-label="Chotto" style="display:block; width:124px; height:auto">
+          <path d="M 271.92 88.08 A 130 130 0 1 0 271.92 271.92" fill="none" stroke="#66B96B" stroke-width="100" stroke-linecap="round"></path>
+          <g fill="#1E2A44">
+            <rect x="342" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="532" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="442" y="130" width="90" height="100"></rect>
+          </g>
+          <circle cx="832" cy="180" r="130" fill="none" stroke="#FBA93E" stroke-width="100"></circle>
+          <path transform="translate(1002 0)" d="M 175 0 V 71.8 A 27 27 0 1 1 175 108.2 V 310 A 50 50 0 0 1 75 310 V 100 H 50 A 50 50 0 0 1 50 0 Z" fill="#F15A53"></path>
+          <path transform="translate(1002 0)" d="M 181 0 V 60.1 A 33 33 0 1 1 181 119.9 V 310 A 50 50 0 0 0 281 310 V 100 H 306 A 50 50 0 0 0 306 0 Z" fill="#AB8DF5"></path>
+          <circle cx="1528" cy="180" r="130" fill="none" stroke="#2FC5D0" stroke-width="100"></circle>
+        </svg>
+        <span style="font-size:10.5px; color:#666D7A">Một chút hữu ích, mỗi ngày.</span>
+      </a>
+      <nav style="display:flex; align-items:center; gap:14px; flex-wrap:wrap">
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html" style="font-size:13px; color:#3A4354">Về Chotto</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html#lien-he" style="font-size:13px; color:#3A4354">Liên hệ</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="Chotto%20-%20Chinh%20sach.dc.html" style="font-size:13px; color:#3A4354">Chính sách</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="Chotto%20-%20Chinh%20sach.dc.html#dieu-khoan" style="font-size:13px; color:#3A4354">Điều khoản</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="Chotto%20-%20Danh%20sach%20bai%20viet.dc.html" style="font-size:13px; color:#3A4354">Bài viết</a>
+      </nav>
+    </div>
+    <div style="max-width:1240px; margin:0 auto; padding:0 24px 22px; font-size:11.5px; color:#666D7A">© 2026 ChottoDay. All rights reserved.</div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240}}"></script>
+</body>
+</html>

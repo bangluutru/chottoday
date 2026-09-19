@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #FBF9F5; font-family: 'Be Vietnam Pro', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #0B7F8A; text-decoration: none; }
+  a:hover { color: #0A6E78; }
+  input { font-family: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+</style>
+</helmet>
+
+<div style="background:#FBF9F5; color:#1E2A44; min-height:100vh">
+
+  <header style="position:sticky; top:0; z-index:50; background:rgba(251,249,245,0.92); backdrop-filter:blur(12px); border-bottom:1px solid #E6E2D9">
+    <div style="max-width:1240px; margin:0 auto; padding:0 24px; height:72px; display:flex; align-items:center; gap:18px; flex-wrap:nowrap">
+      <a href="Chotto%20-%20Trang%20chu.dc.html" style="display:flex; flex-direction:column; gap:3px; flex-shrink:0">
+        <svg viewBox="0 0 1708 360" role="img" aria-label="Chotto" style="display:block; width:132px; height:auto; overflow:visible">
+          <path d="M 271.92 88.08 A 130 130 0 1 0 271.92 271.92" fill="none" stroke="#66B96B" stroke-width="100" stroke-linecap="round"></path>
+          <g fill="#1E2A44">
+            <rect x="342" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="532" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="442" y="130" width="90" height="100"></rect>
+          </g>
+          <circle cx="832" cy="180" r="130" fill="none" stroke="#FBA93E" stroke-width="100"></circle>
+          <path transform="translate(1002 0)" d="M 175 0 V 71.8 A 27 27 0 1 1 175 108.2 V 310 A 50 50 0 0 1 75 310 V 100 H 50 A 50 50 0 0 1 50 0 Z" fill="#F15A53"></path>
+          <path transform="translate(1002 0)" d="M 181 0 V 60.1 A 33 33 0 1 1 181 119.9 V 310 A 50 50 0 0 0 281 310 V 100 H 306 A 50 50 0 0 0 306 0 Z" fill="#AB8DF5"></path>
+          <circle cx="1528" cy="180" r="130" fill="none" stroke="#2FC5D0" stroke-width="100"></circle>
+        </svg>
+        <span style="font-size:10.5px; color:#666D7A; letter-spacing:0.01em">Một chút hữu ích, mỗi ngày.</span>
+      </a>
+
+      <nav style="display:flex; align-items:center; gap:14px; margin-left:4px; flex:0 0 auto; white-space:nowrap">
+        <a href="Chotto%20-%20Trang%20chu.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Trang chủ</a>
+        <a href="Chotto%20-%20Danh%20sach%20bai%20viet.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Bài viết</a>
+        <a href="Chotto%20-%20Tat%20ca%20cong%20cu.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Công cụ</a>
+        <a href="Chotto%20-%20Tat%20ca%20chu%20de.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Chủ đề</a>
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html" style="font-size:14px; font-weight:500; color:#3A4354" style-hover="color:#1E2A44">Về Chotto</a>
+      </nav>
+
+      <div style="display:flex; align-items:center; gap:10px; margin-left:auto; min-width:0; flex:1 1 auto; justify-content:flex-end">
+        <div style="display:flex; align-items:center; gap:9px; flex:1 1 0; min-width:0; max-width:430px; height:42px; padding:0 16px; background:#F4F1EA; border:1px solid #E6E2D9; border-radius:9999px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666D7A" stroke-width="2.4" stroke-linecap="round" style="flex-shrink:0"><circle cx="11" cy="11" r="7"></circle><path d="M16.5 16.5L21 21"></path></svg>
+          <input type="search" aria-label="Tìm kiếm trên Chotto" placeholder="Tìm kiếm: thuế, nenkin, nhà ở…" style="flex:1; min-width:0; border:0; background:transparent; outline:none; font-size:13px; color:#1E2A44">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="top" style="max-width:1240px; margin:0 auto; padding:16px 24px 0; display:flex; align-items:center; gap:8px; font-size:12.5px; color:#666D7A; flex-wrap:wrap">
+    <a href="Chotto%20-%20Trang%20chu.dc.html" style="color:#666D7A">Trang chủ</a>
+    <span style="color:#D8D3C8">/</span>
+    <span style="color:#1E2A44">Chính sách &amp; Điều khoản</span>
+  </div>
+
+  <section style="padding:14px 24px 0">
+    <div style="max-width:1240px; margin:0 auto; display:flex; align-items:flex-end; gap:24px; flex-wrap:wrap">
+      <div style="flex:1 1 440px; min-width:0">
+        <h1 style="font-family:'Nunito',sans-serif; font-size:36px; line-height:1.14; font-weight:800; letter-spacing:-0.02em; margin:0 0 10px">
+          Chính sách &amp; <span style="color:#0B7F8A">Điều khoản</span>
+        </h1>
+        <p style="font-size:15px; line-height:1.6; color:#3A4354; margin:0; max-width:620px; text-wrap:pretty">
+          Viết ngắn và rõ như mọi nội dung khác trên Chotto: chúng tôi thu thập gì, dùng vào việc gì, và bạn có thể trông đợi điều gì khi dùng trang này.
+        </p>
+      </div>
+      <div style="flex:0 0 auto; display:flex; flex-direction:column; gap:4px; padding:12px 16px; background:#FFFFFF; border:1px solid #E6E2D9; border-radius:14px">
+        <span style="font-size:12px; color:#666D7A">Cập nhật lần cuối</span>
+        <span style="font-family:'Nunito',sans-serif; font-size:16px; font-weight:700">19/09/2026</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:24px 24px 0">
+    <div style="max-width:1240px; margin:0 auto; display:flex; align-items:flex-start; gap:18px; flex-wrap:wrap">
+
+      <aside style="flex:1 1 240px; min-width:230px; max-width:300px; position:sticky; top:92px; background:#FDFCFA; border:1px solid #EFEBE2; border-radius:18px; padding:18px">
+        <h2 style="font-family:'Nunito',sans-serif; font-size:15px; font-weight:800; margin:0 0 12px">Nội dung</h2>
+        <a href="#bao-mat" style="display:block; padding:9px 0; border-top:1px solid #F0EDE6; font-size:13.5px; font-weight:600; color:#1E2A44" style-hover="color:#0A6E78">1. Chính sách bảo mật</a>
+        <a href="#du-lieu" style="display:block; padding:9px 0 9px 14px; border-top:1px solid #F0EDE6; font-size:13px; color:#3A4354" style-hover="color:#0A6E78">1.1 Dữ liệu Chotto thu thập</a>
+        <a href="#cong-cu" style="display:block; padding:9px 0 9px 14px; border-top:1px solid #F0EDE6; font-size:13px; color:#3A4354" style-hover="color:#0A6E78">1.2 Dữ liệu bạn nhập vào công cụ</a>
+        <a href="#cookie" style="display:block; padding:9px 0 9px 14px; border-top:1px solid #F0EDE6; font-size:13px; color:#3A4354" style-hover="color:#0A6E78">1.3 Cookie &amp; đo lường</a>
+        <a href="#quyen" style="display:block; padding:9px 0 9px 14px; border-top:1px solid #F0EDE6; font-size:13px; color:#3A4354" style-hover="color:#0A6E78">1.4 Quyền của bạn</a>
+        <a href="#dieu-khoan" style="display:block; padding:9px 0; border-top:1px solid #F0EDE6; font-size:13.5px; font-weight:600; color:#1E2A44" style-hover="color:#0A6E78">2. Điều khoản sử dụng</a>
+        <a href="#tham-khao" style="display:block; padding:9px 0 9px 14px; border-top:1px solid #F0EDE6; font-size:13px; color:#3A4354" style-hover="color:#0A6E78">2.1 Nội dung mang tính tham khảo</a>
+        <a href="#ban-quyen" style="display:block; padding:9px 0 9px 14px; border-top:1px solid #F0EDE6; font-size:13px; color:#3A4354" style-hover="color:#0A6E78">2.2 Bản quyền &amp; trích dẫn</a>
+        <a href="#thay-doi" style="display:block; padding:9px 0 9px 14px; border-top:1px solid #F0EDE6; font-size:13px; color:#3A4354" style-hover="color:#0A6E78">2.3 Thay đổi &amp; liên hệ</a>
+        <p style="font-size:12px; line-height:1.6; color:#666D7A; margin:14px 0 0; padding-top:12px; border-top:1px solid #F0EDE6">
+          Bản tiếng Việt là bản chính thức. Nếu có thắc mắc, gửi thư tới <span style="color:#0A6E78; font-weight:600">hello@chottoday.com</span>.
+        </p>
+      </aside>
+
+      <div style="flex:1 1 620px; min-width:300px; display:flex; flex-direction:column; gap:16px">
+
+        <div id="bao-mat" style="background:#FFFFFF; border:1px solid #E6E2D9; border-radius:20px; padding:26px 28px 24px">
+          <span style="display:inline-block; padding:4px 12px; border-radius:9999px; background:#E9F8F9; color:#0A6E78; font-size:11.5px; font-weight:700; margin-bottom:14px">Phần 1</span>
+          <h2 style="font-family:'Nunito',sans-serif; font-size:26px; font-weight:800; letter-spacing:-0.02em; margin:0 0 12px">Chính sách bảo mật</h2>
+          <p style="font-size:15px; line-height:1.8; color:#3A4354; margin:0 0 22px; text-wrap:pretty">
+            Chotto là trang thông tin miễn phí, không yêu cầu tạo tài khoản. Nguyên tắc của chúng tôi rất đơn giản: thu thập càng ít càng tốt, và không bán dữ liệu cho ai.
+          </p>
+
+          <h3 id="du-lieu" style="font-family:'Nunito',sans-serif; font-size:18px; font-weight:800; margin:0 0 10px">1.1 Dữ liệu Chotto thu thập</h3>
+          <p style="font-size:14.5px; line-height:1.8; color:#3A4354; margin:0 0 12px; text-wrap:pretty">
+            Khi bạn đọc trang, hệ thống ghi nhận thông tin kỹ thuật cơ bản: loại thiết bị, trình duyệt, trang được xem và thời điểm truy cập. Những dữ liệu này ở dạng tổng hợp, dùng để biết nội dung nào hữu ích và trang nào tải chậm.
+          </p>
+          <p style="font-size:14.5px; line-height:1.8; color:#3A4354; margin:0 0 22px; text-wrap:pretty">
+            Khi bạn chủ động gửi lời nhắn qua trang <a href="Chotto%20-%20Ve%20Chotto.dc.html#lien-he">Liên hệ</a>, chúng tôi lưu tên, email (nếu bạn điền) và nội dung tin nhắn — chỉ để trả lời bạn và sửa nội dung sai.
+          </p>
+
+          <h3 id="cong-cu" style="font-family:'Nunito',sans-serif; font-size:18px; font-weight:800; margin:0 0 10px">1.2 Dữ liệu bạn nhập vào công cụ</h3>
+          <div style="padding:16px 18px; background:#EDF7EE; border:1px solid #CBE8CE; border-radius:15px; margin-bottom:22px">
+            <p style="font-size:14.5px; line-height:1.75; color:#1E2A44; margin:0; text-wrap:pretty">
+              Toàn bộ công cụ tính toán (lương, thuế, nenkin, tiền nhà…) chạy ngay trên máy của bạn. Các con số bạn nhập <strong>không được gửi lên máy chủ</strong>, không được lưu và sẽ mất khi bạn đóng tab.
+            </p>
+          </div>
+
+          <h3 id="cookie" style="font-family:'Nunito',sans-serif; font-size:18px; font-weight:800; margin:0 0 10px">1.3 Cookie &amp; đo lường</h3>
+          <p style="font-size:14.5px; line-height:1.8; color:#3A4354; margin:0 0 12px; text-wrap:pretty">
+            Chotto dùng hai loại lưu trữ trên thiết bị của bạn:
+          </p>
+          <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:22px">
+            <div style="display:flex; gap:12px; padding:14px 16px; background:#FBF9F5; border:1px solid #EFEBE2; border-radius:14px">
+              <span style="width:8px; height:8px; margin-top:7px; border-radius:9999px; background:#66B96B; flex-shrink:0"></span>
+              <span style="flex:1; min-width:0; font-size:14px; line-height:1.7; color:#3A4354"><strong style="color:#1E2A44">Cần thiết:</strong> ghi nhớ ngôn ngữ bạn chọn (VI/JA/EN) và trạng thái hiển thị. Không thể tắt vì trang cần để hoạt động đúng.</span>
+            </div>
+            <div style="display:flex; gap:12px; padding:14px 16px; background:#FBF9F5; border:1px solid #EFEBE2; border-radius:14px">
+              <span style="width:8px; height:8px; margin-top:7px; border-radius:9999px; background:#FBA93E; flex-shrink:0"></span>
+              <span style="flex:1; min-width:0; font-size:14px; line-height:1.7; color:#3A4354"><strong style="color:#1E2A44">Đo lường ẩn danh:</strong> đếm lượt xem theo trang, không gắn với danh tính và không dùng cho quảng cáo. Bạn có thể từ chối trong bảng chọn cookie ở lần truy cập đầu.</span>
+            </div>
+          </div>
+
+          <h3 id="quyen" style="font-family:'Nunito',sans-serif; font-size:18px; font-weight:800; margin:0 0 10px">1.4 Quyền của bạn</h3>
+          <p style="font-size:14.5px; line-height:1.8; color:#3A4354; margin:0; text-wrap:pretty">
+            Bạn có thể yêu cầu xem, sửa hoặc xoá dữ liệu mình đã gửi cho Chotto bất cứ lúc nào. Chỉ cần gửi thư tới <strong style="color:#1E2A44">hello@chottoday.com</strong> — chúng tôi xử lý trong vòng 14 ngày. Chotto không chuyển dữ liệu cho bên thứ ba để tiếp thị, và không dùng dữ liệu của bạn để huấn luyện bất kỳ hệ thống nào.
+          </p>
+        </div>
+
+        <div id="dieu-khoan" style="background:#FFFFFF; border:1px solid #E6E2D9; border-radius:20px; padding:26px 28px 24px">
+          <span style="display:inline-block; padding:4px 12px; border-radius:9999px; background:#F6F2FE; color:#5B3FB0; font-size:11.5px; font-weight:700; margin-bottom:14px">Phần 2</span>
+          <h2 style="font-family:'Nunito',sans-serif; font-size:26px; font-weight:800; letter-spacing:-0.02em; margin:0 0 12px">Điều khoản sử dụng</h2>
+          <p style="font-size:15px; line-height:1.8; color:#3A4354; margin:0 0 22px; text-wrap:pretty">
+            Khi đọc và dùng công cụ trên Chotto, bạn đồng ý với những điều dưới đây. Nếu có phần nào bạn thấy chưa hợp lý, hãy nói với chúng tôi.
+          </p>
+
+          <h3 id="tham-khao" style="font-family:'Nunito',sans-serif; font-size:18px; font-weight:800; margin:0 0 10px">2.1 Nội dung mang tính tham khảo</h3>
+          <p style="font-size:14.5px; line-height:1.8; color:#3A4354; margin:0 0 12px; text-wrap:pretty">
+            Chotto tổng hợp thông tin từ trang chính thức của cơ quan Nhật Bản và kinh nghiệm thực tế của cộng đồng. Quy định ở Nhật thay đổi theo năm và theo từng địa phương, nên kết quả từ công cụ chỉ là <strong style="color:#1E2A44">ước tính</strong>.
+          </p>
+          <div style="padding:16px 18px; background:#FEF6EB; border:1px solid #FDDDBD; border-radius:15px; margin-bottom:22px">
+            <p style="font-size:14.5px; line-height:1.75; color:#1E2A44; margin:0; text-wrap:pretty">
+              Với các quyết định quan trọng — hồ sơ visa, khai thuế, tranh chấp lao động, y tế — hãy xác nhận lại với cơ quan hành chính, luật sư, kế toán thuế hoặc bác sĩ. Chotto không chịu trách nhiệm cho thiệt hại phát sinh từ việc dùng thông tin trên trang mà không kiểm tra lại.
+            </p>
+          </div>
+
+          <h3 id="ban-quyen" style="font-family:'Nunito',sans-serif; font-size:18px; font-weight:800; margin:0 0 10px">2.2 Bản quyền &amp; trích dẫn</h3>
+          <p style="font-size:14.5px; line-height:1.8; color:#3A4354; margin:0 0 12px; text-wrap:pretty">
+            Bài viết, hình minh hoạ và công cụ trên Chotto thuộc về ChottoDay. Bạn được chia sẻ tự do cho mục đích cá nhân và cộng đồng, kèm ghi nguồn và đường dẫn tới bài gốc.
+          </p>
+          <p style="font-size:14.5px; line-height:1.8; color:#3A4354; margin:0 0 22px; text-wrap:pretty">
+            Không sao chép toàn bộ nội dung để đăng lại trên trang khác, không dùng cho mục đích thương mại và không thu thập tự động (scraping) khi chưa có sự đồng ý bằng văn bản.
+          </p>
+
+          <h3 id="thay-doi" style="font-family:'Nunito',sans-serif; font-size:18px; font-weight:800; margin:0 0 10px">2.3 Thay đổi &amp; liên hệ</h3>
+          <p style="font-size:14.5px; line-height:1.8; color:#3A4354; margin:0 0 20px; text-wrap:pretty">
+            Chotto có thể cập nhật chính sách và điều khoản khi dịch vụ thay đổi. Ngày cập nhật luôn được ghi ở đầu trang; những thay đổi lớn sẽ được thông báo trên Fanpage. Nếu bạn cần bản lưu của phiên bản trước, cứ viết thư cho chúng tôi.
+          </p>
+          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:18px; background:linear-gradient(135deg, #EAF6FB 0%, #EDF7EE 100%); border:1px solid #CFE6EF; border-radius:16px">
+            <p style="flex:1 1 260px; min-width:0; font-family:'Dancing Script', cursive; font-size:21px; line-height:1.4; font-weight:600; color:#1E2A44; margin:0">Có điều gì chưa rõ<br>trong trang này?</p>
+            <a href="Chotto%20-%20Ve%20Chotto.dc.html#lien-he" style="display:inline-flex; align-items:center; gap:8px; height:46px; padding:0 22px; background:#0B7F8A; color:#FFFFFF; border-radius:9999px; font-size:14.5px; font-weight:600" style-hover="background:#0A6E78">
+              Hỏi Chotto
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="margin-top:38px; border-top:1px solid #E6E2D9; background:#FBF9F5">
+    <div style="max-width:1240px; margin:0 auto; padding:26px 24px 20px; display:flex; align-items:center; flex-wrap:wrap; gap:22px">
+      <a href="Chotto%20-%20Trang%20chu.dc.html" style="display:flex; flex-direction:column; gap:3px">
+        <svg viewBox="0 0 1708 360" role="img" aria-label="Chotto" style="display:block; width:124px; height:auto">
+          <path d="M 271.92 88.08 A 130 130 0 1 0 271.92 271.92" fill="none" stroke="#66B96B" stroke-width="100" stroke-linecap="round"></path>
+          <g fill="#1E2A44">
+            <rect x="342" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="532" y="0" width="100" height="360" rx="50"></rect>
+            <rect x="442" y="130" width="90" height="100"></rect>
+          </g>
+          <circle cx="832" cy="180" r="130" fill="none" stroke="#FBA93E" stroke-width="100"></circle>
+          <path transform="translate(1002 0)" d="M 175 0 V 71.8 A 27 27 0 1 1 175 108.2 V 310 A 50 50 0 0 1 75 310 V 100 H 50 A 50 50 0 0 1 50 0 Z" fill="#F15A53"></path>
+          <path transform="translate(1002 0)" d="M 181 0 V 60.1 A 33 33 0 1 1 181 119.9 V 310 A 50 50 0 0 0 281 310 V 100 H 306 A 50 50 0 0 0 306 0 Z" fill="#AB8DF5"></path>
+          <circle cx="1528" cy="180" r="130" fill="none" stroke="#2FC5D0" stroke-width="100"></circle>
+        </svg>
+        <span style="font-size:10.5px; color:#666D7A">Một chút hữu ích, mỗi ngày.</span>
+      </a>
+      <nav style="display:flex; align-items:center; gap:14px; flex-wrap:wrap">
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html" style="font-size:13px; color:#3A4354">Về Chotto</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="Chotto%20-%20Ve%20Chotto.dc.html#lien-he" style="font-size:13px; color:#3A4354">Liên hệ</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="#bao-mat" style="font-size:13px; color:#3A4354">Chính sách</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="#dieu-khoan" style="font-size:13px; color:#3A4354">Điều khoản</a>
+        <span style="color:#D8D3C8">|</span>
+        <a href="Chotto%20-%20Danh%20sach%20bai%20viet.dc.html" style="font-size:13px; color:#3A4354">Bài viết</a>
+      </nav>
+    </div>
+    <div style="max-width:1240px; margin:0 auto; padding:0 24px 22px; font-size:11.5px; color:#666D7A">© 2026 ChottoDay. All rights reserved.</div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240}}"></script>
+</body>
+</html>
