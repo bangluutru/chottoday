@@ -26,21 +26,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Không có secret thì bỏ qua êm, đừng fail. Cron chạy mỗi ngày, nên một
+      # job đỏ vì thiếu cấu hình sẽ gửi mail báo lỗi hằng ngày cho đến khi ai
+      # đó chịu tắt nó đi — và lúc đó người ta cũng tắt luôn cảnh báo thật.
+      - name: Kiểm tra ANTHROPIC_API_KEY
+        id: guard
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "has_key=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Newsroom bỏ qua::Chưa cấu hình secret ANTHROPIC_API_KEY. Thêm ở Settings → Secrets and variables → Actions rồi workflow sẽ tự chạy."
+          else
+            echo "has_key=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout
+        if: steps.guard.outputs.has_key == 'true'
         uses: actions/checkout@v4
 
       - name: Setup Node.js
+        if: steps.guard.outputs.has_key == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
       - name: Setup Python
+        if: steps.guard.outputs.has_key == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
       - name: Cài dependencies
+        if: steps.guard.outputs.has_key == 'true'
         run: |
           npm ci
           pip install pillow fonttools brotli
@@ -48,15 +67,18 @@ jobs:
       # Font tiếng Nhật cho ảnh card. Font thương hiệu đến từ npm, nhưng
       # kanji thì không — thiếu nó render_card.py sẽ dừng chứ không vẽ tofu.
       - name: Cài font tiếng Nhật
+        if: steps.guard.outputs.has_key == 'true'
         run: sudo apt-get update && sudo apt-get install -y fonts-ipafont-gothic
 
       - name: Soạn nháp
+        if: steps.guard.outputs.has_key == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           NEWSROOM_LIMIT: ${{ github.event.inputs.limit || '5' }}
         run: node scripts/newsroom/run.mjs
 
       - name: Mở PR nếu có nháp mới
+        if: steps.guard.outputs.has_key == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
           branch: newsroom/drafts-${{ github.run_number }}
