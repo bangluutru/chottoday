@@ -280,8 +280,8 @@ assert(
 console.log('\n9. Model configuration');
 assert(typeof DRAFT_MODEL === 'string' && DRAFT_MODEL.length > 0, 'A model id is always resolved');
 assert(
-  DRAFT_MODEL === (process.env.NEWSROOM_MODEL || 'luna'),
-  'The model comes from NEWSROOM_MODEL, falling back to the default'
+  DRAFT_MODEL === (process.env.NEWSROOM_MODEL || 'gpt-5.6-luna'),
+  'The model comes from NEWSROOM_MODEL, falling back to gpt-5.6-luna'
 );
 
 // The OpenAI SDK refuses to construct without a key, which is the behaviour we

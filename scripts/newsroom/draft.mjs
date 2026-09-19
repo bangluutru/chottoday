@@ -27,7 +27,7 @@ import OpenAI from 'openai';
  * đổi tên hoặc phiên bản mà không báo trước. Để trong env thì đổi model là sửa
  * một biến, không phải sửa code rồi mở PR.
  */
-export const DRAFT_MODEL = process.env.NEWSROOM_MODEL || 'luna';
+export const DRAFT_MODEL = process.env.NEWSROOM_MODEL || 'gpt-5.6-luna';
 const MAX_TOKENS = 16000;
 
 /**
@@ -239,6 +239,36 @@ export function buildCaption(record, siteUrl = 'https://chottoday.com') {
 }
 
 /**
+ * Gửi request, tự xử lý khác biệt tên tham số giới hạn độ dài.
+ *
+ * Dòng model mới của OpenAI đã đổi `max_tokens` thành `max_completion_tokens`
+ * và trả 400 khi nhận tên cũ; các model và gateway cũ thì ngược lại. Tài liệu
+ * của gpt-5.6-luna nằm sau tường lửa của môi trường dựng này nên không tra
+ * được model đó nhận tên nào — thay vì đoán, gửi tên mới trước rồi lùi về tên
+ * cũ đúng khi server than phiền về chính tham số đó.
+ *
+ * Chỉ bắt đúng lỗi này. Mọi lỗi khác ném nguyên vẹn.
+ */
+async function createCompletion(openai, params) {
+  try {
+    return await openai.chat.completions.create({
+      ...params,
+      max_completion_tokens: MAX_TOKENS,
+    });
+  } catch (error) {
+    const message = String(error?.message || '');
+    const isParamName =
+      error?.status === 400 &&
+      /max_completion_tokens|max_tokens|unsupported_parameter|unrecognized/i.test(message);
+
+    if (!isParamName) throw error;
+
+    console.warn('  ⚠ Model không nhận max_completion_tokens, thử lại với max_tokens');
+    return openai.chat.completions.create({ ...params, max_tokens: MAX_TOKENS });
+  }
+}
+
+/**
  * Gọi model soạn một bản nháp.
  *
  * Dùng Chat Completions chứ không phải endpoint mới hơn: đây là giao diện mà
@@ -248,9 +278,8 @@ export function buildCaption(record, siteUrl = 'https://chottoday.com') {
 export async function draftArticle(item, source, sourceBody, { client, today } = {}) {
   const openai = client || createClient();
 
-  const response = await openai.chat.completions.create({
+  const response = await createCompletion(openai, {
     model: DRAFT_MODEL,
-    max_tokens: MAX_TOKENS,
     messages: [
       { role: 'system', content: buildSystemPrompt() },
       {
