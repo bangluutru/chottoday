@@ -13,7 +13,7 @@
 
 import { inferTopic, rankItems, recencyFactor, scoreItem } from './newsroom/rank.mjs';
 import { SOURCES, SOURCE_KIND, getOfficialSources, getSourceById } from './newsroom/sources.js';
-import { normalizeDate, parseFeed, parseNoticeList, stripHtml } from './newsroom/fetch.mjs';
+import { USER_AGENT, normalizeDate, parseFeed, parseNoticeList, stripHtml } from './newsroom/fetch.mjs';
 import { DRAFT_MODEL, DRAFT_SCHEMA, buildCaption, createClient, slugify, toArticleRecord } from './newsroom/draft.mjs';
 
 let passCount = 0;
@@ -339,6 +339,95 @@ assert(
 assert(
   DRAFT_SCHEMA.required.includes('needsVerification'),
   'The model cannot omit what it is unsure about'
+);
+
+// 11. Request headers ------------------------------------------------------
+console.log('\n11. Request headers');
+// A Vietnamese character in the User-Agent made fetch() throw before sending
+// anything, so all six sources died at once with a message that never
+// mentioned encoding. Headers are ByteString; pin that.
+const wideChars = [...USER_AGENT].filter((ch) => ch.charCodeAt(0) > 255);
+if (wideChars.length) console.error('   ', wideChars.join(' '));
+assert(wideChars.length === 0, 'The User-Agent is pure ASCII, as HTTP headers require');
+
+let headersBuilt = true;
+try {
+  new Headers({ 'user-agent': USER_AGENT, accept: '*/*' });
+} catch {
+  headersBuilt = false;
+}
+assert(headersBuilt, 'The request headers actually construct without throwing');
+
+// 12. Japan relevance — regressions from the first real run ---------------
+console.log('\n12. Japan relevance');
+// The first real run put "Trump extends push for $100,000 H-1B visas" at the
+// top of the morning list. It matched 'visa' and 'foreign', so it cleared the
+// filter — but H-1B is a US visa and means nothing to a Vietnamese resident in
+// Japan. The filter caught the words and missed the point.
+const freshISO = daysAgo(0);
+const worldFeed = [
+  {
+    item: {
+      title: 'Trump extends push for $100,000 H-1B visas by another year',
+      summary: 'foreign workers visa policy',
+      publishedAt: freshISO,
+    },
+    source: nhk,
+  },
+  {
+    item: {
+      title: 'US tightens green card rules for foreign residents',
+      summary: 'immigration reform',
+      publishedAt: freshISO,
+    },
+    source: nhk,
+  },
+  {
+    item: {
+      title: 'Japan eases visa rules for foreign residents',
+      summary: '在留 手続 変更',
+      publishedAt: freshISO,
+    },
+    source: nhk,
+  },
+  {
+    item: {
+      title: '「特定技能」にかかる社会保険関係の書類交付',
+      summary: '外国人 手続 開始',
+      publishedAt: freshISO,
+    },
+    source: isa,
+  },
+];
+const worldRanked = rankItems(worldFeed, { now: NOW, limit: 10 });
+const worldTitles = worldRanked.map((r) => r.title);
+
+assert(
+  !worldTitles.some((t) => /H-1B/i.test(t)),
+  'US H-1B news is dropped, not merely ranked low'
+);
+assert(
+  !worldTitles.some((t) => /green card/i.test(t)),
+  "Another country's immigration news is dropped too"
+);
+assert(
+  worldTitles.some((t) => /Japan eases/.test(t)),
+  'Japan-related news from a media source survives'
+);
+assert(
+  worldTitles.some((t) => /特定技能/.test(t)),
+  'A Japanese ministry notice survives without needing a Japan keyword'
+);
+
+// An official Japanese source is Japan-scoped by definition, so it must not be
+// asked to prove it — that would drop notices written in pure bureaucratese.
+const terseOfficial = rankItems(
+  [{ item: { title: '手続の変更について（外国人の方へ）', summary: '申請 開始', publishedAt: freshISO }, source: isa }],
+  { now: NOW, limit: 5 }
+);
+assert(
+  terseOfficial.length === 1,
+  'A terse ministry notice with no explicit "Japan" word is still kept'
 );
 
 console.log('\n========================================================');

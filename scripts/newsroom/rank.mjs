@@ -50,6 +50,28 @@ const ACTIONABLE_MARKERS = [
   'deadline', 'change', 'require', 'start', 'apply',
 ];
 
+/**
+ * Dấu hiệu tin THỰC SỰ nói về Nhật.
+ *
+ * Cần vì nguồn báo chí đưa tin toàn cầu. Lần chạy thật đầu tiên đẩy lên đầu
+ * bảng tin "Trump extends push for $100,000 H-1B visas" — nó khớp 'visa' và
+ * 'foreign' nên qua được bộ lọc, nhưng H-1B là visa Mỹ, hoàn toàn vô nghĩa với
+ * người Việt ở Nhật. Bộ lọc bắt đúng chữ mà trượt đúng ý.
+ */
+const JAPAN_MARKERS = [
+  '日本', '在留', '入管', '出入国', '厚生労働', '法務省', '国税庁', '年金機構',
+  '市役所', '区役所', '都道府県', '東京', '大阪', '愛知', '在日',
+  'japan', 'japanese', 'tokyo', 'osaka', 'nhật', 'nhat ban',
+];
+
+/**
+ * Hệ thống nhập cư của nước khác. Cùng từ vựng với Nhật nhưng khác hẳn việc.
+ */
+const OTHER_COUNTRY_MARKERS = [
+  'h-1b', 'h1b', 'green card', 'uscis', 'schengen', 'eu blue card',
+  'k-eta', 'visa mỹ', 'visa my', 'visa úc', 'visa canada',
+];
+
 /** Tin trong nước không liên quan — loại thẳng để đỡ nhiễu. */
 const NOISE_MARKERS = [
   '芸能', 'スポーツ', '野球', 'サッカー', '相撲', '天気', '株価', '為替',
@@ -163,10 +185,21 @@ export function rankItems(items, { now = new Date(), limit = 10, minScore = 1.0 
   const scored = [];
 
   for (const { item, source } of items) {
+    const text = `${item.title || ''} ${item.summary || ''}`;
     const result = scoreItem(item, source, now);
+
     if (result.signals.noiseHits > 0) continue;
     if (result.signals.recency === 0) continue;
     if (result.signals.foreignerHits === 0 && !source?.topicHints?.length) continue;
+
+    // Thủ tục nhập cư của nước khác dùng đúng từ vựng như của Nhật nhưng là
+    // việc hoàn toàn khác. Loại thẳng, bất kể nguồn nào.
+    if (countMatches(text, OTHER_COUNTRY_MARKERS) > 0) continue;
+
+    // Nguồn báo chí đưa tin toàn cầu nên phải tự chứng minh tin này nói về
+    // Nhật. Nguồn cơ quan nhà nước Nhật thì hiển nhiên, không bắt chứng minh.
+    if (source?.kind === 'media' && countMatches(text, JAPAN_MARKERS) === 0) continue;
+
     if (result.score < minScore) continue;
 
     scored.push({ ...item, sourceId: source?.id ?? null, ...result });
@@ -176,4 +209,4 @@ export function rankItems(items, { now = new Date(), limit = 10, minScore = 1.0 
   return scored.slice(0, limit);
 }
 
-export const __testing = { TOPIC_KEYWORDS, FOREIGNER_MARKERS, MAX_AGE_DAYS };
+export const __testing = { TOPIC_KEYWORDS, FOREIGNER_MARKERS, JAPAN_MARKERS, OTHER_COUNTRY_MARKERS, MAX_AGE_DAYS };
