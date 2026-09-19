@@ -13,7 +13,7 @@
 
 import { inferTopic, rankItems, recencyFactor, scoreItem } from './newsroom/rank.mjs';
 import { SOURCES, SOURCE_KIND, getOfficialSources, getSourceById } from './newsroom/sources.js';
-import { normalizeDate, parseFeed, parseNoticeList, stripHtml } from './newsroom/fetch.mjs';
+import { USER_AGENT, normalizeDate, parseFeed, parseNoticeList, stripHtml } from './newsroom/fetch.mjs';
 import { DRAFT_MODEL, DRAFT_SCHEMA, buildCaption, createClient, slugify, toArticleRecord } from './newsroom/draft.mjs';
 
 let passCount = 0;
@@ -340,6 +340,23 @@ assert(
   DRAFT_SCHEMA.required.includes('needsVerification'),
   'The model cannot omit what it is unsure about'
 );
+
+// 11. Request headers ------------------------------------------------------
+console.log('\n11. Request headers');
+// A Vietnamese character in the User-Agent made fetch() throw before sending
+// anything, so all six sources died at once with a message that never
+// mentioned encoding. Headers are ByteString; pin that.
+const wideChars = [...USER_AGENT].filter((ch) => ch.charCodeAt(0) > 255);
+if (wideChars.length) console.error('   ', wideChars.join(' '));
+assert(wideChars.length === 0, 'The User-Agent is pure ASCII, as HTTP headers require');
+
+let headersBuilt = true;
+try {
+  new Headers({ 'user-agent': USER_AGENT, accept: '*/*' });
+} catch {
+  headersBuilt = false;
+}
+assert(headersBuilt, 'The request headers actually construct without throwing');
 
 console.log('\n========================================================');
 console.log(`TOTAL NEWSROOM TESTS: ${passCount + failCount}`);

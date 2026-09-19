@@ -14,8 +14,16 @@
 
 import { SOURCES } from './sources.js';
 
+/**
+ * CHỈ ASCII. Header HTTP là ByteString (Latin-1), nên một chữ cái tiếng Việt
+ * có dấu làm fetch() ném lỗi TRƯỚC khi gửi request — và vì mọi nguồn dùng
+ * chung header này, cả sáu cùng chết với một thông báo không hề nhắc tới
+ * encoding. Đừng "Việt hoá" dòng này cho thân thiện.
+ */
 const USER_AGENT =
-  'ChottoNewsBot/0.1 (+https://chottoday.com; soạn tin cho cộng đồng người Việt tại Nhật)';
+  'ChottoNewsBot/0.1 (+https://chottoday.com; news digest for Vietnamese residents in Japan)';
+
+export { USER_AGENT };
 
 const FETCH_TIMEOUT_MS = 20_000;
 const MAX_ITEMS_PER_SOURCE = 40;
