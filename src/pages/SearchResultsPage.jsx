@@ -37,8 +37,8 @@ const TOOL_ICON_BY_ID = Object.fromEntries(
 );
 const KIND_CHIP = { article: 'health', tool: 'tool', topic: 'study' };
 
-/** URL sync is debounced so typing does not push a history entry per keystroke. */
-const URL_SYNC_DELAY = 400;
+/** URL sync is debounced so typing does not rewrite the URL per keystroke. */
+const URL_SYNC_DELAY = 200;
 
 /** Topic matches are a plain local filter — categories are not in the index. */
 function matchCategories(query) {
