@@ -14,7 +14,7 @@
 import { inferTopic, rankItems, recencyFactor, scoreItem } from './newsroom/rank.mjs';
 import { SOURCES, SOURCE_KIND, getOfficialSources, getSourceById } from './newsroom/sources.js';
 import { normalizeDate, parseFeed, parseNoticeList, stripHtml } from './newsroom/fetch.mjs';
-import { buildCaption, slugify, toArticleRecord } from './newsroom/draft.mjs';
+import { DRAFT_MODEL, DRAFT_SCHEMA, buildCaption, createClient, slugify, toArticleRecord } from './newsroom/draft.mjs';
 
 let passCount = 0;
 let failCount = 0;
@@ -274,6 +274,71 @@ const cleanRecord = toArticleRecord(
 assert(
   !buildCaption(cleanRecord).includes('CHƯA ĐĂNG ĐƯỢC NGAY'),
   'With nothing to verify, the caption carries no warning block'
+);
+
+// 9. Model configuration --------------------------------------------------
+console.log('\n9. Model configuration');
+assert(typeof DRAFT_MODEL === 'string' && DRAFT_MODEL.length > 0, 'A model id is always resolved');
+assert(
+  DRAFT_MODEL === (process.env.NEWSROOM_MODEL || 'gpt-5.6-luna'),
+  'The model comes from NEWSROOM_MODEL, falling back to gpt-5.6-luna'
+);
+
+// The OpenAI SDK refuses to construct without a key, which is the behaviour we
+// want in CI: a missing key fails loudly here rather than silently at call time.
+const priorKey = process.env.OPENAI_API_KEY;
+const priorBase = process.env.OPENAI_BASE_URL;
+process.env.OPENAI_API_KEY = 'test-key-not-real';
+
+delete process.env.OPENAI_BASE_URL;
+assert(
+  createClient().baseURL.includes('openai.com'),
+  'With no OPENAI_BASE_URL the client talks to OpenAI directly'
+);
+
+process.env.OPENAI_BASE_URL = 'https://gateway.example/v1';
+assert(
+  createClient().baseURL === 'https://gateway.example/v1',
+  'OPENAI_BASE_URL redirects the client to a compatible gateway'
+);
+
+if (priorKey === undefined) delete process.env.OPENAI_API_KEY;
+else process.env.OPENAI_API_KEY = priorKey;
+if (priorBase === undefined) delete process.env.OPENAI_BASE_URL;
+else process.env.OPENAI_BASE_URL = priorBase;
+
+// 10. Structured-output schema -------------------------------------------
+console.log('\n10. Structured-output schema');
+// strict mode rejects any object that allows extra keys or leaves a declared
+// property optional, and the failure only shows up at call time — so pin it.
+function auditSchema(node, path = 'root') {
+  const problems = [];
+  if (node.type === 'object') {
+    if (node.additionalProperties !== false) {
+      problems.push(`${path}: thiếu additionalProperties:false`);
+    }
+    const declared = Object.keys(node.properties || {});
+    const required = node.required || [];
+    for (const key of declared) {
+      if (!required.includes(key)) problems.push(`${path}.${key}: khai báo nhưng không nằm trong required`);
+      problems.push(...auditSchema(node.properties[key], `${path}.${key}`));
+    }
+  }
+  if (node.type === 'array' && node.items) {
+    problems.push(...auditSchema(node.items, `${path}[]`));
+  }
+  return problems;
+}
+const schemaProblems = auditSchema(DRAFT_SCHEMA);
+if (schemaProblems.length) console.error('   ', schemaProblems.join('\n    '));
+assert(schemaProblems.length === 0, 'Every object in the schema satisfies strict mode');
+assert(
+  DRAFT_SCHEMA.properties.category.enum.includes('doc'),
+  'The category enum matches the site taxonomy'
+);
+assert(
+  DRAFT_SCHEMA.required.includes('needsVerification'),
+  'The model cannot omit what it is unsure about'
 );
 
 console.log('\n========================================================');

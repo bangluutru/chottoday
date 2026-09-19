@@ -1,6 +1,10 @@
 /**
  * Newsroom — soạn bản nháp bài viết từ một thông báo của cơ quan Nhật.
  *
+ * Gọi model qua API tương thích OpenAI. Tên model và endpoint đều lấy từ biến
+ * môi trường (NEWSROOM_MODEL, OPENAI_BASE_URL) nên đổi nhà cung cấp không phải
+ * sửa file này.
+ *
  * Ranh giới quan trọng nhất của file này: nó soạn BẢN NHÁP, không soạn bài
  * xuất bản. Nội dung ở đây nói về visa, thuế, bảo hiểm và hạn chót thủ tục —
  * sai một con số là người đọc lỡ việc thật. Nên:
@@ -14,10 +18,26 @@
  * validate-content.mjs đòi khối review có người ký tên.
  */
 
-import Anthropic from '@anthropic-ai/sdk';
+import OpenAI from 'openai';
 
-export const DRAFT_MODEL = 'claude-opus-5';
+/**
+ * Tên model đọc từ biến môi trường, không hardcode.
+ *
+ * Lý do: model dùng ở đây không phải model phổ thông, và nhà cung cấp có thể
+ * đổi tên hoặc phiên bản mà không báo trước. Để trong env thì đổi model là sửa
+ * một biến, không phải sửa code rồi mở PR.
+ */
+export const DRAFT_MODEL = process.env.NEWSROOM_MODEL || 'gpt-5.6-luna';
 const MAX_TOKENS = 16000;
+
+/**
+ * Tạo client. Hỗ trợ OPENAI_BASE_URL để trỏ sang gateway tương thích OpenAI —
+ * cần thiết khi model không nằm trên endpoint mặc định của OpenAI.
+ */
+export function createClient() {
+  const baseURL = process.env.OPENAI_BASE_URL;
+  return new OpenAI(baseURL ? { baseURL } : {});
+}
 
 /**
  * Phần hướng dẫn cố định. Để riêng và đánh dấu cache được: một buổi sáng soạn
@@ -219,44 +239,80 @@ export function buildCaption(record, siteUrl = 'https://chottoday.com') {
 }
 
 /**
- * Gọi Claude soạn một bản nháp.
+ * Gửi request, tự xử lý khác biệt tên tham số giới hạn độ dài.
  *
- * Phần cố định của prompt được đánh dấu cache: một buổi sáng soạn nhiều tin
- * thì chỉ trả tiền đầy đủ cho lần đầu.
+ * Dòng model mới của OpenAI đã đổi `max_tokens` thành `max_completion_tokens`
+ * và trả 400 khi nhận tên cũ; các model và gateway cũ thì ngược lại. Tài liệu
+ * của gpt-5.6-luna nằm sau tường lửa của môi trường dựng này nên không tra
+ * được model đó nhận tên nào — thay vì đoán, gửi tên mới trước rồi lùi về tên
+ * cũ đúng khi server than phiền về chính tham số đó.
+ *
+ * Chỉ bắt đúng lỗi này. Mọi lỗi khác ném nguyên vẹn.
+ */
+async function createCompletion(openai, params) {
+  try {
+    return await openai.chat.completions.create({
+      ...params,
+      max_completion_tokens: MAX_TOKENS,
+    });
+  } catch (error) {
+    const message = String(error?.message || '');
+    const isParamName =
+      error?.status === 400 &&
+      /max_completion_tokens|max_tokens|unsupported_parameter|unrecognized/i.test(message);
+
+    if (!isParamName) throw error;
+
+    console.warn('  ⚠ Model không nhận max_completion_tokens, thử lại với max_tokens');
+    return openai.chat.completions.create({ ...params, max_tokens: MAX_TOKENS });
+  }
+}
+
+/**
+ * Gọi model soạn một bản nháp.
+ *
+ * Dùng Chat Completions chứ không phải endpoint mới hơn: đây là giao diện mà
+ * gần như mọi gateway tương thích OpenAI đều cài, nên nếu model nằm sau một
+ * gateway thì vẫn chạy.
  */
 export async function draftArticle(item, source, sourceBody, { client, today } = {}) {
-  const anthropic = client || new Anthropic();
+  const openai = client || createClient();
 
-  const response = await anthropic.messages.create({
+  const response = await createCompletion(openai, {
     model: DRAFT_MODEL,
-    max_tokens: MAX_TOKENS,
-    thinking: { type: 'adaptive' },
-    output_config: {
-      effort: 'high',
-      format: { type: 'json_schema', schema: DRAFT_SCHEMA },
-    },
-    system: [
+    messages: [
+      { role: 'system', content: buildSystemPrompt() },
       {
-        type: 'text',
-        text: buildSystemPrompt(),
-        cache_control: { type: 'ephemeral' },
+        role: 'user',
+        content: buildUserContent({ ...item, organization: source.organization }, sourceBody),
       },
     ],
-    messages: [{ role: 'user', content: buildUserContent({ ...item, organization: source.organization }, sourceBody) }],
+    response_format: {
+      type: 'json_schema',
+      json_schema: { name: 'chotto_draft', schema: DRAFT_SCHEMA, strict: true },
+    },
   });
 
-  if (response.stop_reason === 'refusal') {
-    throw new Error(
-      `Model từ chối soạn tin này (${response.stop_details?.category ?? 'không rõ lý do'}): ${item.url}`
-    );
-  }
+  const message = response.choices?.[0]?.message;
 
-  const textBlock = response.content.find((block) => block.type === 'text');
-  if (!textBlock) {
+  // Model có thể từ chối; khi đó content rỗng và lý do nằm ở refusal.
+  if (message?.refusal) {
+    throw new Error(`Model từ chối soạn tin này: ${message.refusal} — ${item.url}`);
+  }
+  if (!message?.content) {
     throw new Error(`Không có nội dung trả về cho: ${item.url}`);
   }
 
-  const drafted = JSON.parse(textBlock.text);
+  let drafted;
+  try {
+    drafted = JSON.parse(message.content);
+  } catch (error) {
+    throw new Error(
+      `Model trả về JSON hỏng cho ${item.url}: ${error.message}\n` +
+      `  Bắt đầu bằng: ${message.content.slice(0, 200)}`
+    );
+  }
+
   return {
     record: toArticleRecord(drafted, item, source, today || new Date().toISOString()),
     usage: response.usage,
