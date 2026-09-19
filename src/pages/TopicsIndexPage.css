@@ -4,5 +4,277 @@
    ========================================================================== */
 
 .topics-page {
-  padding: 16px 0 48px;
+  padding-bottom: 48px;
+}
+
+.topics-breadcrumb-row {
+  padding-top: 16px;
+}
+
+/* --- Header -------------------------------------------------------------- */
+
+.topics-head-section {
+  padding-top: 14px;
+}
+
+.topics-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.topics-head-main {
+  flex: 1 1 440px;
+  min-width: 0;
+}
+
+.topics-title {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  line-height: 1.14;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+  color: var(--text-primary);
+}
+
+.topics-title-accent {
+  color: var(--brand-teal-deep);
+}
+
+.topics-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 600px;
+  text-wrap: pretty;
+}
+
+.topics-note {
+  flex: 0 0 auto;
+  font-family: var(--font-hand);
+  font-size: 22px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background-color: var(--surface-note);
+  box-shadow: 0 8px 20px rgba(30, 42, 68, 0.12);
+  transform: rotate(2deg);
+}
+
+/* --- Grid ---------------------------------------------------------------- */
+
+.topics-grid-section {
+  padding-top: 22px;
+}
+
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 16px;
+}
+
+.topic-card {
+  display: flex;
+  flex-direction: column;
+  /* The reset centres every <a> for touch targets; a composite card is a
+     block of stacked rows, so its children stretch instead. */
+  align-items: stretch;
+  justify-content: flex-start;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-banner);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.topic-card:hover {
+  transform: translateY(-2px);
+}
+
+.topic-card:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.topic-card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+}
+
+.topic-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background-color: var(--surface-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.topic-card-heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.topic-card-name {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.topic-card-count {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.topic-card-body {
+  padding: 16px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.topic-card-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.topic-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.topic-card-tag {
+  padding: 4px 11px;
+  border-radius: var(--radius-pill);
+  background-color: var(--surface-dim);
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+
+.topic-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-teal-deep-hover);
+}
+
+/* --- Per-topic colouring ------------------------------------------------- */
+
+.topic-card-life { border-color: var(--cat-life-border); }
+.topic-card-life:hover { border-color: var(--cat-life-accent); }
+.topic-card-life .topic-card-head { background-color: var(--cat-life-bg); }
+.topic-card-life .topic-card-count { color: var(--cat-life-text); }
+
+.topic-card-doc { border-color: var(--cat-doc-border); }
+.topic-card-doc:hover { border-color: var(--cat-doc-accent); }
+.topic-card-doc .topic-card-head { background-color: var(--cat-doc-bg); }
+.topic-card-doc .topic-card-count { color: var(--cat-doc-text); }
+
+.topic-card-work { border-color: var(--cat-work-border); }
+.topic-card-work:hover { border-color: var(--cat-work-accent); }
+.topic-card-work .topic-card-head { background-color: var(--cat-work-bg); }
+.topic-card-work .topic-card-count { color: var(--cat-work-text); }
+
+.topic-card-health { border-color: var(--cat-health-border); }
+.topic-card-health:hover { border-color: var(--cat-health-accent); }
+.topic-card-health .topic-card-head { background-color: var(--cat-health-bg); }
+.topic-card-health .topic-card-count { color: var(--cat-health-text); }
+
+.topic-card-study { border-color: var(--cat-study-border); }
+.topic-card-study:hover { border-color: var(--cat-study-accent); }
+.topic-card-study .topic-card-head { background-color: var(--cat-study-bg); }
+.topic-card-study .topic-card-count { color: var(--cat-study-text); }
+
+.topic-card-tool { border-color: var(--cat-tool-border); }
+.topic-card-tool:hover { border-color: var(--cat-tool-accent); }
+.topic-card-tool .topic-card-head { background-color: var(--cat-tool-bg); }
+.topic-card-tool .topic-card-count { color: var(--cat-tool-text); }
+
+/* --- Closing CTA tile ---------------------------------------------------- */
+
+.topic-cta-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px 20px;
+  background-color: var(--surface-card);
+  border: 1px dashed var(--border-dashed);
+  border-radius: var(--radius-banner);
+}
+
+.topic-cta-note {
+  font-family: var(--font-hand);
+  font-size: 23px;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.topic-cta-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.topic-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 8px;
+  height: 42px;
+  margin-top: auto;
+  padding: 0 20px;
+  background-color: var(--brand-teal-deep);
+  color: #ffffff;
+  border-radius: var(--radius-pill);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.topic-cta-btn:hover {
+  background-color: var(--brand-teal-deep-hover);
+  color: #ffffff;
+}
+
+/* --- Narrow viewports ---------------------------------------------------- */
+
+@media (max-width: 899px) {
+  .topics-title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 519px) {
+  .topics-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
