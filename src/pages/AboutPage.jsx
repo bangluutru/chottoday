@@ -53,6 +53,10 @@ const FAQS = [
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/** Two sends per minute is far above any real use and well below a script. */
+const RATE_LIMIT_COUNT = 2;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+
 export function AboutPage() {
   const location = useLocation();
   const contactRef = useRef(null);
@@ -71,6 +75,9 @@ export function AboutPage() {
   );
   const [status, setStatus] = useState('idle'); // idle | sending | sent | error
   const [error, setError] = useState('');
+  // Left empty by people, filled in by the bots that fill in every field.
+  const [website, setWebsite] = useState('');
+  const sendTimes = useRef([]);
 
   // Counts come from the content layer, never from a hand-typed number.
   const stats = useMemo(
@@ -110,6 +117,24 @@ export function AboutPage() {
       setError('Email chưa đúng định dạng. Bạn có thể bỏ trống nếu không cần trả lời.');
       return;
     }
+    // Honeypot: report success and drop it, so a bot gets no signal to adapt.
+    if (website.trim()) {
+      setStatus('sent');
+      return;
+    }
+
+    const now = Date.now();
+    sendTimes.current = sendTimes.current.filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+    if (sendTimes.current.length >= RATE_LIMIT_COUNT) {
+      setStatus('error');
+      setError('Bạn vừa gửi mấy lời nhắn liên tiếp. Chờ một phút rồi gửi tiếp giúp Chotto nhé.');
+      return;
+    }
+
+    // The attempt counts from here: it passed validation and the honeypot, so
+    // it is a submission whether or not an endpoint is configured to take it.
+    sendTimes.current.push(now);
+
     if (!CONTACT_ENDPOINT) {
       setStatus('error');
       setError(
@@ -312,6 +337,21 @@ export function AboutPage() {
                   autoComplete="email"
                 />
               </div>
+            </div>
+
+            {/* Honeypot. Hidden from people and from screen readers, left in
+                the tab order's path only for scripts that fill every input. */}
+            <div className="about-honeypot" aria-hidden="true">
+              <label htmlFor="contact-website">Website (bỏ trống)</label>
+              <input
+                id="contact-website"
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+              />
             </div>
 
             <label className="about-label" htmlFor="contact-message">
