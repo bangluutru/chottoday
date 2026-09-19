@@ -89,6 +89,41 @@ npm test
 
 ---
 
+## ✍️ Viết bài mới
+
+Hướng dẫn đầy đủ: **[`docs/huong-dan-tao-bai-viet.md`](docs/huong-dan-tao-bai-viet.md)**.
+Gửi nguyên văn file đó cho AI kèm chủ đề là nhận về một file `.js` dán thẳng vào
+repo được.
+
+Bài viết là **file JavaScript trong repo**, không phải bản ghi trong database.
+Đổi lại sự bất tiện khi sửa, ta được ba thứ: lịch sử từng phiên bản, diff để
+review, và quan trọng nhất — `npm run validate` **chặn build** nếu một bài
+`published` thiếu nguồn hoặc thiếu người ký duyệt. Đó là sự từ chối, không phải
+lời nhắc.
+
+| Thứ | Ở đâu |
+| --- | --- |
+| Nội dung bài | `src/content/articles/<slug>.js`, khai báo trong `articlesList.js` |
+| Trạng thái & loại nguồn | `src/services/content/articleModel.js` |
+| Chuyên mục (9 id) | `src/content/categories/categoryMap.js` |
+| Kiểu section được render | `src/components/article/ArticleRenderer.jsx` |
+| Luật kiểm định | `scripts/validate-content.mjs` |
+| Sinh ảnh OG 1200×630 | `scripts/images/card.py` |
+
+Quy trình: viết file → `python3 scripts/images/card.py` sinh ảnh OG →
+`npm run validate && npm test && npm run build` → PR → xem thử trên bản preview
+Cloudflare → merge.
+
+> **Hai cái bẫy đã cắn thật, ghi lại cho khỏi quên.**
+> `ArticleRenderer` kết thúc bằng `default: return null`, nên một
+> `sections[].type` ngoài 12 kiểu hợp lệ sẽ render ra **bài trống** — không lỗi,
+> không cảnh báo. Và bài `status: 'review'` **mở được bằng URL trực tiếp** nhưng
+> không vào sitemap, không hiện ở trang danh sách, không được prerender — đó là
+> cơ chế xem thử, dùng nó để duyệt bài trên preview trước khi đổi sang
+> `published`.
+
+---
+
 ## 🛡️ Chống crawl dữ liệu & chống copy bài viết
 
 Ba lớp, làm ba việc khác nhau. Lớp nào cũng có giới hạn thật của nó, nên ghi rõ
