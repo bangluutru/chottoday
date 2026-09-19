@@ -305,6 +305,47 @@ const aboutMeta = {
 writePage('about', injectMeta(baseHtml, aboutMeta));
 console.log('  ✓ Prerendered: /about');
 
+// B5b. Topics index (/topics)
+const topicsMeta = {
+  title: 'Khám phá theo chủ đề | Chotto',
+  description:
+    'Những nhóm việc người Việt ở Nhật hay phải xử lý. Mỗi chủ đề gom cả bài hướng dẫn và công cụ tính toán liên quan.',
+  canonical: `${SITE_URL}/topics`,
+  ogTitle: 'Khám phá theo chủ đề | Chotto',
+  ogDescription: 'Bài hướng dẫn và công cụ, gom theo chủ đề đời sống tại Nhật.',
+  ogImage: `${SITE_URL}/images/og/og-default.png`,
+  ogUrl: `${SITE_URL}/topics`,
+  ogType: 'website',
+  structuredData: {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Khám phá theo chủ đề',
+    url: `${SITE_URL}/topics`,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'Chotto',
+      url: SITE_URL,
+    },
+  },
+};
+writePage('topics', injectMeta(baseHtml, topicsMeta));
+console.log('  ✓ Prerendered: /topics');
+
+// B5c. Policy (/policy)
+const policyMeta = {
+  title: 'Chính sách & Điều khoản | Chotto',
+  description:
+    'Chotto thu thập gì, dữ liệu bạn nhập vào công cụ đi đâu, cookie, quyền của bạn, và điều khoản sử dụng nội dung trên chottoday.com.',
+  canonical: `${SITE_URL}/policy`,
+  ogTitle: 'Chính sách & Điều khoản | Chotto',
+  ogDescription: 'Chotto thu thập gì, dùng vào việc gì, và bạn có quyền gì.',
+  ogImage: `${SITE_URL}/images/og/og-default.png`,
+  ogUrl: `${SITE_URL}/policy`,
+  ogType: 'website',
+};
+writePage('policy', injectMeta(baseHtml, policyMeta));
+console.log('  ✓ Prerendered: /policy');
+
 // B6. Search (/search)
 // Result views carry the visitor's raw query, so the page ships noindex and
 // stays out of the sitemap; the canonical is always the bare /search URL.
@@ -460,7 +501,9 @@ const sitemapUrls = [
     priority: '0.8',
     lastmod: latestArticleDate,
   })),
+  { loc: `${SITE_URL}/topics`, changefreq: 'weekly', priority: '0.9', lastmod: latestArticleDate },
   { loc: `${SITE_URL}/about`, changefreq: 'monthly', priority: '0.6', lastmod: latestArticleDate },
+  { loc: `${SITE_URL}/policy`, changefreq: 'yearly', priority: '0.4', lastmod: latestArticleDate },
   ...CATEGORY_DEFINITIONS.map((c) => {
     const catArticles = publishedArticles.filter((a) => a.category === c.id);
     const catLastmod = catArticles.reduce(

@@ -4,5 +4,335 @@
    ========================================================================== */
 
 .policy-page {
-  padding: 16px 0 48px;
+  padding-bottom: 48px;
+}
+
+.policy-breadcrumb-row {
+  padding-top: 16px;
+}
+
+/* --- Header -------------------------------------------------------------- */
+
+.policy-head-section {
+  padding-top: 14px;
+}
+
+.policy-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.policy-head-main {
+  flex: 1 1 440px;
+  min-width: 0;
+}
+
+.policy-title {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  line-height: 1.14;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+  color: var(--text-primary);
+}
+
+.policy-title-accent {
+  color: var(--brand-teal-deep);
+}
+
+.policy-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 620px;
+  text-wrap: pretty;
+}
+
+.policy-updated {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 18px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-media-card);
+}
+
+.policy-updated-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.policy-updated-date {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+/* --- Body: sticky contents + two cards ----------------------------------- */
+
+.policy-body-section {
+  padding-top: 22px;
+}
+
+.policy-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.policy-toc {
+  flex: 1 1 240px;
+  max-width: 300px;
+  position: sticky;
+  top: 92px;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 20px;
+  background-color: var(--surface-panel);
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-banner);
+}
+
+.policy-toc-title {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0 0 12px;
+  color: var(--text-primary);
+}
+
+.policy-toc-link {
+  /* The reset centres <a> as a touch target; these read as a list. */
+  justify-content: flex-start;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 6px 0;
+  min-height: 36px;
+}
+
+.policy-toc-link.level-2 {
+  padding-left: 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.policy-toc-link:hover {
+  color: var(--brand-teal-deep-hover);
+}
+
+.policy-toc-note {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-hairline);
+}
+
+.policy-content {
+  flex: 1 1 620px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.policy-card {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-panel);
+  padding: 26px 28px 24px;
+}
+
+.policy-part {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 13px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.policy-h2 {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  line-height: 1.24;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+  color: var(--text-primary);
+  /* Clears the sticky header when arriving via /policy#dieu-khoan. */
+  scroll-margin-top: 92px;
+}
+
+.policy-h3 {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 800;
+  margin: 26px 0 10px;
+  color: var(--text-primary);
+  scroll-margin-top: 92px;
+}
+
+.policy-p {
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin: 0 0 12px;
+  text-wrap: pretty;
+}
+
+.policy-p strong {
+  color: var(--text-primary);
+}
+
+.policy-p a {
+  color: var(--brand-teal-deep-hover);
+}
+
+/* --- Callouts ------------------------------------------------------------ */
+
+.policy-callout {
+  padding: 16px 18px;
+  border-radius: var(--radius-media-card);
+  margin: 4px 0 12px;
+}
+
+.policy-callout p {
+  font-size: 14.5px;
+  line-height: 1.8;
+  margin: 0;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.policy-callout strong {
+  color: var(--text-primary);
+}
+
+.policy-callout-life {
+  background-color: var(--cat-life-bg);
+  border: 1px solid var(--cat-life-border);
+}
+
+.policy-callout-work {
+  background-color: var(--cat-work-bg);
+  border: 1px solid var(--cat-work-border);
+}
+
+/* --- Bullets ------------------------------------------------------------- */
+
+.policy-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.policy-bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.policy-bullet strong {
+  color: var(--text-primary);
+}
+
+.policy-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+  margin-top: 9px;
+}
+
+.policy-dot-life {
+  background-color: var(--chotto-green);
+}
+
+.policy-dot-work {
+  background-color: var(--chotto-orange);
+}
+
+/* --- Closing CTA --------------------------------------------------------- */
+
+.policy-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+  padding: 20px 22px;
+  border: 1px solid var(--border-mint);
+  border-radius: var(--radius-banner);
+  background: var(--gradient-mint);
+}
+
+.policy-cta-note {
+  font-family: var(--font-hand);
+  font-size: 21px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.policy-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 22px;
+  background-color: var(--brand-teal-deep);
+  color: #ffffff;
+  border-radius: var(--radius-pill);
+  font-size: 14.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.policy-cta-btn:hover {
+  background-color: var(--brand-teal-deep-hover);
+  color: #ffffff;
+}
+
+/* --- Narrow viewports ---------------------------------------------------- */
+
+@media (max-width: 899px) {
+  .policy-title {
+    font-size: 28px;
+  }
+
+  .policy-toc {
+    position: static;
+    max-width: none;
+    flex-basis: 100%;
+  }
+
+  .policy-card {
+    padding: 22px 18px 20px;
+  }
+
+  .policy-h2 {
+    font-size: 22px;
+  }
 }

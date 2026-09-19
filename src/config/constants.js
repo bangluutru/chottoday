@@ -27,6 +27,12 @@ export const CONTACT_EMAIL = 'hello@chottoday.com';
 export const FANPAGE_URL = 'https://www.facebook.com/chottoday';
 
 /**
+ * Date the /policy page was last revised, ISO so it formats like every other
+ * date on the site. Update this — and only this — when the text changes.
+ */
+export const POLICY_UPDATED_AT = '2026-09-19';
+
+/**
  * Builds an absolute URL pointing to a Toolio tool or subpath.
  * @param {string} path - Relative subpath or hash route, e.g. '/#/tools/japan-tax-simulator'
  * @returns {string} - Full external Toolio URL
