@@ -13,6 +13,8 @@
 
 import { inferTopic, rankItems, recencyFactor, scoreItem } from './newsroom/rank.mjs';
 import { SOURCES, SOURCE_KIND, getOfficialSources, getSourceById } from './newsroom/sources.js';
+import { normalizeDate, parseFeed, parseNoticeList, stripHtml } from './newsroom/fetch.mjs';
+import { buildCaption, slugify, toArticleRecord } from './newsroom/draft.mjs';
 
 let passCount = 0;
 let failCount = 0;
@@ -176,6 +178,103 @@ const limited = rankItems(feed, { now: NOW, limit: 1 });
 assert(limited.length === 1, 'The limit is respected');
 
 assert(rankItems([], { now: NOW }).length === 0, 'An empty feed ranks to an empty list');
+
+// 6. Feed and notice-list parsing --------------------------------------
+console.log('\n6. Feed parsing');
+const rss = `<rss><channel>
+  <item><title>在留カードの手続が変わります</title><description><![CDATA[<p>外国人の方へ</p>]]></description><link>https://www.moj.go.jp/a.html</link><pubDate>Fri, 19 Sep 2026 01:00:00 GMT</pubDate></item>
+</channel></rss>`;
+const parsed = parseFeed(rss);
+assert(parsed.length === 1, 'One <item> parses to one entry');
+assert(parsed[0].title === '在留カードの手続が変わります', 'The Japanese title survives intact');
+assert(parsed[0].summary === '外国人の方へ', 'CDATA and inner HTML are unwrapped');
+assert(parsed[0].publishedAt.startsWith('2026-09-19'), 'pubDate normalises to ISO');
+
+assert(
+  normalizeDate('2026年9月19日').startsWith('2026-09-19'),
+  'A Japanese-format date on a ministry page parses'
+);
+assert(normalizeDate('hôm qua') === null, 'An unparseable date returns null, not a wrong date');
+assert(normalizeDate(null) === null, 'A missing date returns null');
+assert(stripHtml('<p>a &amp; b</p>') === 'a & b', 'Entities decode after tags are stripped');
+
+const noticeHtml =
+  '<a href="/isa/news/01.html">在留資格の変更について</a>' +
+  '<a href="#top">↑</a>' +
+  '<a href="/isa/news/01.html">cùng một link</a>' +
+  '<a href="http://insecure.example/x">link http</a>';
+const notices = parseNoticeList(noticeHtml, 'https://www.moj.go.jp/isa/');
+assert(notices.length === 1, 'Anchors, duplicates and non-HTTPS links are all dropped');
+assert(
+  notices[0].url === 'https://www.moj.go.jp/isa/news/01.html',
+  'A relative href resolves against the source URL'
+);
+
+// 7. Draft record — the part validate-content.mjs will judge ------------
+console.log('\n7. Draft record shape');
+const drafted = {
+  title: 'Thủ tục gia hạn tư cách lưu trú đổi từ tháng 10',
+  excerpt: 'Từ tháng 10, đơn gia hạn nộp online được cho phần lớn tư cách lưu trú.',
+  category: 'doc',
+  shortAnswer: 'Nộp online được từ 1/10.',
+  keyTakeaways: ['Nộp online', 'Từ 1/10', 'Không mất phí thêm'],
+  body: [{ heading: 'Đổi những gì', paragraphs: ['Một đoạn nội dung mẫu để tính thời gian đọc.'] }],
+  applicability: 'Người có tư cách lưu trú đang còn hiệu lực.',
+  needsVerification: ['Xác nhận lại ngày hiệu lực chính xác'],
+  fanpageCaption: 'Từ tháng 10 bạn nộp đơn gia hạn online được.',
+};
+const sourceItem = {
+  title: '在留資格変更許可申請のオンライン化について',
+  url: 'https://www.moj.go.jp/isa/news/01.html',
+  publishedAt: daysAgo(0),
+};
+const record = toArticleRecord(drafted, sourceItem, isa, '2026-09-19T00:00:00Z');
+
+assert(record.status === 'review', 'A generated draft is never published outright');
+assert(record.status !== 'published', 'status is explicitly not "published"');
+assert(
+  /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(record.slug),
+  'The slug is URL-safe kebab-case, as validate-content.mjs demands'
+);
+assert(!/[àáâãèéêìíòóôõùúăđĩũơưăạảấầ]/i.test(record.slug), 'Vietnamese diacritics are stripped from the slug');
+assert(record.sources.length === 1, 'The record carries exactly the source it came from');
+assert(record.sources[0].url === sourceItem.url, 'The source URL is the real fetched URL');
+assert(record.sources[0].url.startsWith('https://'), 'The source URL is HTTPS');
+assert(record.sources[0].organization === isa.organization, 'The organization comes from sources.js, not the model');
+assert(/^\d{4}-\d{2}-\d{2}$/.test(record.sources[0].accessedAt), 'accessedAt is a plain YYYY-MM-DD date');
+assert(record.sources[0].type === 'government', 'An official source is typed as government');
+assert(record.review.lastVerifiedAt <= record.review.reviewAfter, 'lastVerifiedAt never follows reviewAfter');
+assert(
+  record.review.reviewer.includes('CHƯA DUYỆT'),
+  'The reviewer field names itself as unfilled, so nobody publishes it by accident'
+);
+assert(record.seo.metaDescription.length <= 160, 'The meta description stays within 160 characters');
+assert(record.readingTime >= 2, 'Reading time has a sane floor');
+
+assert(slugify('Lương 30 man thực nhận?') === 'luong-30-man-thuc-nhan', 'slugify handles diacritics and punctuation');
+assert(slugify('Đổi bằng lái xe').startsWith('doi-bang-lai'), 'slugify maps đ to d');
+
+// 8. Caption --------------------------------------------------------------
+console.log('\n8. Fanpage caption');
+const caption = buildCaption(record);
+assert(caption.includes(record.slug), 'The caption links back to the article on the site');
+assert(caption.includes(isa.organization), 'The caption credits the source organisation');
+assert(
+  caption.includes('CHƯA ĐĂNG ĐƯỢC NGAY'),
+  'Unverified points are shouted in the caption file, not buried'
+);
+assert(
+  caption.includes('Xác nhận lại ngày hiệu lực chính xác'),
+  'Each unverified point is listed for the reviewer'
+);
+
+const cleanRecord = toArticleRecord(
+  { ...drafted, needsVerification: [] }, sourceItem, isa, '2026-09-19T00:00:00Z'
+);
+assert(
+  !buildCaption(cleanRecord).includes('CHƯA ĐĂNG ĐƯỢC NGAY'),
+  'With nothing to verify, the caption carries no warning block'
+);
 
 console.log('\n========================================================');
 console.log(`TOTAL NEWSROOM TESTS: ${passCount + failCount}`);

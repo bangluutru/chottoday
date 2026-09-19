@@ -1,0 +1,78 @@
+name: Newsroom — soạn nháp tin hằng ngày
+
+# 06:00 giờ Nhật = 21:00 UTC hôm trước.
+on:
+  schedule:
+    - cron: '0 21 * * *'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Số tin tối đa soạn trong lần chạy này'
+        required: false
+        default: '5'
+
+# Workflow tự mở PR nên cần quyền ghi; không cần gì hơn.
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: newsroom-daily
+  cancel-in-progress: false
+
+jobs:
+  draft:
+    name: Thu thập, xếp hạng và soạn nháp
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Cài dependencies
+        run: |
+          npm ci
+          pip install pillow fonttools brotli
+
+      # Font tiếng Nhật cho ảnh card. Font thương hiệu đến từ npm, nhưng
+      # kanji thì không — thiếu nó render_card.py sẽ dừng chứ không vẽ tofu.
+      - name: Cài font tiếng Nhật
+        run: sudo apt-get update && sudo apt-get install -y fonts-ipafont-gothic
+
+      - name: Soạn nháp
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NEWSROOM_LIMIT: ${{ github.event.inputs.limit || '5' }}
+        run: node scripts/newsroom/run.mjs
+
+      - name: Mở PR nếu có nháp mới
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: newsroom/drafts-${{ github.run_number }}
+          title: 'Nháp tin ngày ${{ github.run_number }}'
+          body: |
+            Nháp tự động từ workflow Newsroom.
+
+            **Chưa bài nào được xuất bản.** Mọi bản ghi mang `status: "review"`
+            và ô `reviewer` còn trống. Đọc `newsroom/drafts/<ngày>/README.md`
+            trước — nó liệt kê những điểm model tự đánh dấu là chưa chắc.
+
+            Quy trình duyệt:
+            1. Mở link nguồn, đối chiếu từng số liệu và mốc thời gian.
+            2. Sửa bản ghi nếu cần, điền tên mình vào `review.reviewer`.
+            3. Chuyển bản ghi vào tầng nội dung rồi mới đổi `status`.
+            4. Copy `<slug>.caption.txt` sang fanpage, đính kèm `<slug>.png`.
+          commit-message: 'newsroom: nháp tin tự động'
+          add-paths: newsroom/drafts
+          draft: true
