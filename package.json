@@ -11,9 +11,10 @@
     "validate:tool-refs": "node scripts/validate-tool-refs.mjs",
     "validate": "npm run validate:content && npm run validate:tool-refs",
     "test:discovery": "node scripts/test-discovery.mjs",
-    "test": "npm run test:discovery && npm run test:net-salary && npm run test:crawler-policy",
+    "test": "npm run test:discovery && npm run test:net-salary && npm run test:crawler-policy && npm run test:newsroom",
     "test:net-salary": "node scripts/test-net-salary.mjs",
-    "test:crawler-policy": "node scripts/test-crawler-policy.mjs"
+    "test:crawler-policy": "node scripts/test-crawler-policy.mjs",
+    "test:newsroom": "node scripts/test-newsroom.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
