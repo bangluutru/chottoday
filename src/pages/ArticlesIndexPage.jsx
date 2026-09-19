@@ -1,482 +1,340 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useEffect, useMemo } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import './ArticlesIndexPage.css';
 import { getAllArticles } from '../content/articles/index.js';
-import { getAllCategories, getCategoryById, CATEGORY_BY_ID } from '../content/categories/categoryMap.js';
-import { discover, getEphemeralQuery, setEphemeralQuery, clearEphemeralQuery } from '../services/discovery/index.js';
-import { buildToolUrl } from '../services/toolRegistry/index.js';
-import { trackEvent } from '../services/analytics/index.js';
-import { ClockIcon, ArrowRightIcon, SearchIcon, ExternalLinkIcon, CloseIcon } from '../components/common/Icons.jsx';
+import { getAllCategories, getCategoryById } from '../content/categories/categoryMap.js';
+import { HOME_ARTICLE_CARDS, HOME_INTEREST_SLUGS } from '../data/homepage.js';
 import { PageMeta } from '../components/common/PageMeta.jsx';
-import { DiscoveryQuickSummary } from '../components/search/DiscoveryQuickSummary.jsx';
+import { Breadcrumb } from '../components/common/Breadcrumb.jsx';
+import { formatDate } from '../utils/formatDate.js';
+
+const PAGE_SIZE = 6;
+const ALL = 'all';
+
+const SORTS = [
+  { key: 'new', label: 'Mới nhất' },
+  { key: 'hot', label: 'Đọc nhiều' },
+  { key: 'short', label: 'Đọc nhanh' },
+];
+
+/**
+ * "Đọc nhiều" ordering.
+ *
+ * There is no analytics backend, so rather than print invented view counts the
+ * page reuses the editorially ranked interest list the homepage already
+ * carries. Articles on that list come first in its order; everything else
+ * follows by date.
+ */
+const INTEREST_RANK = new Map(HOME_INTEREST_SLUGS.map((slug, index) => [slug, index]));
+
+/**
+ * Cover art.
+ *
+ * Most records still share one placeholder `coverImage`, which makes a grid of
+ * them look like a mistake. The homepage already carries curated per-article
+ * imagery, so the list reuses it and falls back to the record's own cover.
+ */
+const CARD_IMAGE = new Map(HOME_ARTICLE_CARDS.map((card) => [card.slug, card.image]));
+
+function coverFor(article) {
+  return CARD_IMAGE.get(article.slug) || article.coverImage;
+}
+
+function sortArticles(list, sort) {
+  const byDate = (a, b) =>
+    (b.updatedAt || b.publishedAt || '').localeCompare(a.updatedAt || a.publishedAt || '');
+
+  if (sort === 'short') {
+    return [...list].sort((a, b) => (a.readingTime || 0) - (b.readingTime || 0) || byDate(a, b));
+  }
+  if (sort === 'hot') {
+    return [...list].sort((a, b) => {
+      const ra = INTEREST_RANK.has(a.slug) ? INTEREST_RANK.get(a.slug) : Number.MAX_SAFE_INTEGER;
+      const rb = INTEREST_RANK.has(b.slug) ? INTEREST_RANK.get(b.slug) : Number.MAX_SAFE_INTEGER;
+      return ra - rb || byDate(a, b);
+    });
+  }
+  return [...list].sort(byDate);
+}
 
 export function ArticlesIndexPage() {
-  const location = useLocation();
-
-  // Ephemeral in-memory search state: NEVER persisted to URL, localStorage, or cookies
-  const [query, setQuery] = useState(() => {
-    const ephemeral = getEphemeralQuery();
-    if (ephemeral) return ephemeral;
-    if (typeof window !== 'undefined' && location.search) {
-      return new URLSearchParams(location.search).get('q') || '';
-    }
-    return '';
-  });
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [activeSearchTab, setActiveSearchTab] = useState('all'); // 'all', 'articles', 'problems', 'tools'
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const categories = getAllCategories();
+  // Lists every article the index has always listed, review drafts included;
+  // only the sitemap is restricted to published ones.
+  const articles = getAllArticles();
 
-  // Clear ephemeral query on unmount to prevent stale PII retention
+  // Filter, sort and page live in the query string so a filtered view can be
+  // shared and reloaded. None of them is a free-text query, so nothing
+  // sensitive ends up in the URL.
+  const catParam = searchParams.get('cat') || ALL;
+  const activeCategory = catParam !== ALL && getCategoryById(catParam) ? catParam : ALL;
+  const sortParam = searchParams.get('sort') || 'new';
+  const activeSort = SORTS.some((s) => s.key === sortParam) ? sortParam : 'new';
+  const pageParam = Number.parseInt(searchParams.get('page') || '1', 10);
+
+  const filtered = useMemo(() => {
+    const list =
+      activeCategory === ALL
+        ? articles
+        : articles.filter((a) => a.category === activeCategory);
+    return sortArticles(list, activeSort);
+  }, [articles, activeCategory, activeSort]);
+
+  // The featured article is pulled out of the paginated list whenever the
+  // featured card can appear, so it is never shown twice — and pagination
+  // stays stable when you move off page 1.
+  const featured =
+    HOME_INTEREST_SLUGS.map((slug) => articles.find((a) => a.slug === slug)).find(Boolean) ||
+    null;
+  const featuredEligible = activeCategory === ALL && Boolean(featured);
+  const gridList = featuredEligible
+    ? filtered.filter((a) => a.slug !== featured.slug)
+    : filtered;
+
+  const pageCount = Math.max(1, Math.ceil(gridList.length / PAGE_SIZE));
+  const page = Math.min(Math.max(Number.isNaN(pageParam) ? 1 : pageParam, 1), pageCount);
+  const shown = gridList.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  // A page number past the end (a stale link, or the filter shrank) is rewritten
+  // rather than rendering an empty grid.
   useEffect(() => {
-    return () => {
-      clearEphemeralQuery();
-    };
-  }, []);
-
-  // Handle Search Input Change (purely ephemeral React state - zero URL/history persistence)
-  const handleSearchChange = (e) => {
-    const val = e.target.value;
-    setQuery(val);
-    setEphemeralQuery(val);
-    if (val.trim()) {
-      setActiveSearchTab('all');
+    if (!Number.isNaN(pageParam) && pageParam !== page) {
+      const next = new URLSearchParams(searchParams);
+      if (page === 1) next.delete('page');
+      else next.set('page', String(page));
+      setSearchParams(next, { replace: true });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageParam, page]);
+
+  const update = (changes) => {
+    const next = new URLSearchParams(searchParams);
+    for (const [key, value] of Object.entries(changes)) {
+      if (value === null) next.delete(key);
+      else next.set(key, value);
+    }
+    setSearchParams(next);
   };
 
-  const handleClearSearch = () => {
-    setQuery('');
-    clearEphemeralQuery();
-  };
-
-  const isSearching = Boolean(query.trim());
-
-  // Discovery execution when query is present (evaluated locally in-memory)
-  const discovery = isSearching ? discover(query.trim()) : null;
-
-  // Track search event safely with strictly non-sensitive metadata (NEVER raw query)
-  useEffect(() => {
-    if (isSearching && discovery) {
-      trackEvent('discovery_search', {
-        resultCount: discovery.totalCount,
-        hasResults: discovery.hasResults,
-        category: discovery.intent.category || 'all',
-        source: 'articles_index',
-      });
-    }
-  }, [query]);
-
-  // Base list for non-search browsing
-  const allArticles = getAllArticles();
-  const nonSearchArticles =
-    activeCategory === 'all'
-      ? allArticles
-      : allArticles.filter((a) => a.category === activeCategory);
+  const showFeatured = featuredEligible && page === 1;
+  const featuredCategory = featured ? getCategoryById(featured.category) : null;
 
   return (
-    <div className="articles-index-wrapper">
+    <div className="articles-page">
       <PageMeta
-        title={isSearching ? 'Tìm kiếm & khám phá | Chotto' : 'Tất cả bài viết & hướng dẫn | Chotto'}
-        description="Tổng hợp các bài viết giải thích luật pháp, kinh nghiệm thực tiễn và hướng dẫn từng bước cho người Việt sinh sống tại Nhật Bản."
+        title="Tất cả bài viết & hướng dẫn"
+        description="Hướng dẫn và kinh nghiệm sống ở Nhật, viết theo thứ tự việc cần làm. Mỗi bài đều ghi rõ ngày cập nhật gần nhất."
         canonical="/articles"
-        robots={isSearching ? 'noindex, follow' : 'index, follow'}
-        ogTitle={isSearching ? 'Tìm kiếm & khám phá | Chotto' : 'Cẩm nang bài viết Chotto'}
-        ogDescription="Tổng hợp các bài viết giải thích luật pháp, kinh nghiệm thực tiễn và hướng dẫn từng bước cho người Việt sinh sống tại Nhật Bản."
       />
 
-      <div className="container">
-        {/* Header */}
-        <header className="articles-index-header">
-          <div className="section-eyebrow">
-            {isSearching ? 'Khám phá thông minh' : 'Thư viện nội dung'}
-          </div>
-          <h1 className="text-h1 articles-index-h1">
-            {isSearching ? 'Kết quả tìm kiếm & khám phá' : 'Cẩm nang bài viết Chotto'}
-          </h1>
-          <p className="text-body articles-index-lead">
-            {isSearching
-              ? 'Chotto kết nối vấn đề của bạn tới bài viết hướng dẫn đã xác minh và công cụ hỗ trợ phù hợp.'
-              : 'Tổng hợp các bài viết giải thích luật pháp, kinh nghiệm thực tiễn và hướng dẫn từng bước cho người Việt sinh sống tại Nhật Bản.'}
-          </p>
-        </header>
+      <div className="container articles-breadcrumb-row">
+        <Breadcrumb
+          label="Đường dẫn bài viết"
+          items={[{ label: 'Trang chủ', to: '/' }, { label: 'Bài viết' }]}
+        />
+      </div>
 
-        {/* Search Input Box */}
-        <div className="articles-search-container">
-          <div className="search-box-wrapper articles-search-box">
-            <SearchIcon size={18} color="var(--text-muted)" />
-            <input
-              type="search"
-              className="search-input"
-              value={query}
-              onChange={handleSearchChange}
-              placeholder="Bạn đang gặp vấn đề gì? Ví dụ: mất thẻ zairyu, thuế thị dân, nghỉ việc..."
-              aria-label="Tìm kiếm bài viết hoặc vấn đề"
-            />
-            {query && (
+      {/* HEADER */}
+      <section className="articles-head-section">
+        <div className="container articles-head">
+          <div className="articles-head-main">
+            <h1 className="articles-title">
+              Tất cả <span className="articles-title-accent">bài viết</span>
+            </h1>
+            <p className="articles-desc">
+              Hướng dẫn và kinh nghiệm sống ở Nhật, viết theo thứ tự việc cần làm. Mỗi bài
+              đều ghi rõ ngày cập nhật gần nhất.
+            </p>
+          </div>
+          <p className="articles-note">
+            Đọc một chút mỗi ngày
+            <br />
+            là đủ ☺
+          </p>
+        </div>
+      </section>
+
+      {/* CONTROLS */}
+      <section className="articles-controls-section">
+        <div className="container">
+          <div className="articles-controls">
+            <div className="articles-chips" role="group" aria-label="Lọc bài viết theo chủ đề">
               <button
                 type="button"
-                className="search-clear-btn"
-                onClick={handleClearSearch}
-                aria-label="Xóa từ khóa tìm kiếm"
+                className={`articles-chip ${activeCategory === ALL ? 'active' : ''}`}
+                aria-pressed={activeCategory === ALL}
+                onClick={() => update({ cat: null, page: null })}
               >
-                <CloseIcon size={14} />
+                Tất cả
               </button>
-            )}
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  type="button"
+                  className={`articles-chip ${activeCategory === category.id ? 'active' : ''}`}
+                  aria-pressed={activeCategory === category.id}
+                  onClick={() => update({ cat: category.id, page: null })}
+                >
+                  {category.shortName}
+                </button>
+              ))}
+            </div>
+
+            <div className="articles-controls-right">
+              <span className="articles-count">{filtered.length} bài viết</span>
+              <div className="articles-sort" role="group" aria-label="Sắp xếp bài viết">
+                {SORTS.map((sort) => (
+                  <button
+                    key={sort.key}
+                    type="button"
+                    className={`articles-sort-btn ${activeSort === sort.key ? 'active' : ''}`}
+                    aria-pressed={activeSort === sort.key}
+                    onClick={() => update({ sort: sort.key, page: null })}
+                  >
+                    {sort.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* ========================================================= */}
-        {/* MODE A: DISCOVERY SEARCH RESULTS VIEW                      */}
-        {/* ========================================================= */}
-        {isSearching && discovery ? (
-          <div className="discovery-results-section">
-            {/* 1. Grounded Quick Summary (if available) */}
-            {discovery.summary && activeSearchTab === 'all' && (
-              <DiscoveryQuickSummary summary={discovery.summary} />
-            )}
-
-            {/* 2. Result Type Filter Tabs */}
-            {discovery.hasResults && (
-              <div className="discovery-result-tabs" role="tablist" aria-label="Phân loại kết quả">
-                <button
-                  type="button"
-                  className={`discovery-tab-btn ${activeSearchTab === 'all' ? 'active' : ''}`}
-                  onClick={() => setActiveSearchTab('all')}
-                  role="tab"
-                  aria-selected={activeSearchTab === 'all'}
-                >
-                  Tất cả ({discovery.totalCount})
-                </button>
-                {discovery.results.articles.length > 0 && (
-                  <button
-                    type="button"
-                    className={`discovery-tab-btn ${activeSearchTab === 'articles' ? 'active' : ''}`}
-                    onClick={() => setActiveSearchTab('articles')}
-                    role="tab"
-                    aria-selected={activeSearchTab === 'articles'}
-                  >
-                    Bài viết ({discovery.results.articles.length})
-                  </button>
-                )}
-                {discovery.results.problems.length > 0 && (
-                  <button
-                    type="button"
-                    className={`discovery-tab-btn ${activeSearchTab === 'problems' ? 'active' : ''}`}
-                    onClick={() => setActiveSearchTab('problems')}
-                    role="tab"
-                    aria-selected={activeSearchTab === 'problems'}
-                  >
-                    Tình huống ({discovery.results.problems.length})
-                  </button>
-                )}
-                {discovery.results.tools.length > 0 && (
-                  <button
-                    type="button"
-                    className={`discovery-tab-btn ${activeSearchTab === 'tools' ? 'active' : ''}`}
-                    onClick={() => setActiveSearchTab('tools')}
-                    role="tab"
-                    aria-selected={activeSearchTab === 'tools'}
-                  >
-                    Công cụ ({discovery.results.tools.length})
-                  </button>
-                )}
-              </div>
-            )}
-
-            {/* 3. Empty or Low Confidence State */}
-            {(!discovery.hasResults || discovery.isLowConfidence) && (
-              <div className="discovery-empty-card" role="status">
-                <div className="discovery-empty-icon">🔍</div>
-                <h2 className="discovery-empty-title">
-                  Chotto chưa tìm thấy nội dung đủ sát với vấn đề này.
-                </h2>
-                <p className="discovery-empty-desc">
-                  Chotto tập trung vào các thủ tục hành chính, thuế, việc làm, và sinh hoạt tại Nhật Bản.
-                  Bạn có thể thử tìm theo cách diễn đạt khác hoặc xem các chủ đề phổ biến:
-                </p>
-
-                <div className="discovery-suggestion-chips">
-                  {['Mất thẻ cư trú', 'Lương 30 man', 'Đổi bằng lái xe', 'Nghỉ việc', 'Thuế thị dân'].map(
-                    (suggestion) => (
-                      <button
-                        key={suggestion}
-                        type="button"
-                        className="intent-chip"
-                        onClick={() => {
-                          setQuery(suggestion);
-                          setEphemeralQuery(suggestion);
-                          setActiveSearchTab('all');
-                        }}
-                      >
-                        {suggestion}
-                      </button>
-                    )
-                  )}
-                </div>
-
-                <div className="discovery-empty-actions">
-                  <Link to="/problems" className="chotto-btn chotto-btn-secondary">
-                    <span>Xem tất cả tình huống</span>
-                    <ArrowRightIcon size={14} />
-                  </Link>
-                  <button
-                    type="button"
-                    className="chotto-btn chotto-btn-ghost"
-                    onClick={handleClearSearch}
-                  >
-                    Xem tất cả bài viết
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* 4. Articles Results */}
-            {(activeSearchTab === 'all' || activeSearchTab === 'articles') &&
-              discovery.results.articles.length > 0 && (
-                <div className="discovery-group-block">
-                  {activeSearchTab === 'all' && (
-                    <div className="discovery-group-heading">
-                      <span>Bài viết hướng dẫn</span>
-                      <span className="discovery-group-count">
-                        ({discovery.results.articles.length})
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="articles-editorial-list" role="list">
-                    {discovery.results.articles.map((article) => {
-                      const cat = getCategoryById(article.category);
-                      return (
-                        <Link
-                          key={article.id}
-                          to={`/articles/${article.slug}`}
-                          className={`article-row-item card-${article.category}`}
-                          role="listitem"
-                          onClick={() =>
-                            trackEvent('discovery_result_click', {
-                              resultType: 'article',
-                              articleSlug: article.slug,
-                            })
-                          }
-                        >
-                          <div className="article-row-main">
-                            <div className="article-row-top">
-                              {cat && (
-                                <span className={`chotto-chip chip-${cat.colorKey} article-row-chip`}>
-                                  {cat.shortName}
-                                </span>
-                              )}
-                              {article.status === 'published' && (
-                                <span className="discovery-verified-tag">
-                                  Đã xác minh
-                                </span>
-                              )}
-                              <span className="text-caption">
-                                {article.updatedAt || article.publishedAt}
-                              </span>
-                              <span className="text-caption">·</span>
-                              <span className="text-caption article-row-read-time">
-                                <ClockIcon size={12} />
-                                <span>{article.readingTime} phút đọc</span>
-                              </span>
-                            </div>
-
-                            <h2 className="article-row-title">{article.title}</h2>
-                            <p className="article-row-excerpt">{article.excerpt}</p>
-                          </div>
-
-                          <div className="article-row-action">
-                            <ArrowRightIcon size={18} />
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-            {/* 5. Problems / Situations Results */}
-            {(activeSearchTab === 'all' || activeSearchTab === 'problems') &&
-              discovery.results.problems.length > 0 && (
-                <div className="discovery-group-block">
-                  {activeSearchTab === 'all' && (
-                    <div className="discovery-group-heading">
-                      <span>Tình huống thực tế liên quan</span>
-                      <span className="discovery-group-count">
-                        ({discovery.results.problems.length})
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="discovery-problems-grid">
-                    {discovery.results.problems.map((prob) => {
-                      const cat = CATEGORY_BY_ID[prob.categoryKey];
-                      return (
-                        <div
-                          key={prob.id}
-                          className={`discovery-problem-item card-${prob.categoryKey}`}
-                        >
-                          <div className="discovery-problem-header">
-                            {cat && (
-                              <span className={`chotto-chip chip-${cat.colorKey}`}>
-                                {cat.shortName}
-                              </span>
-                            )}
-                          </div>
-                          <h3 className="discovery-problem-title">💬 {prob.statement}</h3>
-                          <p className="discovery-problem-detail">{prob.detail}</p>
-                          {prob.recommendedArticle && (
-                            <Link
-                              to={`/articles/${prob.recommendedArticle.slug}`}
-                              className="discovery-problem-link"
-                              onClick={() =>
-                                trackEvent('discovery_result_click', {
-                                  resultType: 'problem',
-                                  problemId: prob.id,
-                                })
-                              }
-                            >
-                              <span>Xem giải pháp: {prob.recommendedArticle.title}</span>
-                              <ArrowRightIcon size={13} />
-                            </Link>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-            {/* 6. Tools Results */}
-            {(activeSearchTab === 'all' || activeSearchTab === 'tools') &&
-              discovery.results.tools.length > 0 && (
-                <div className="discovery-group-block">
-                  {activeSearchTab === 'all' && (
-                    <div className="discovery-group-heading">
-                      <span>Công cụ thực hành (Toolio)</span>
-                      <span className="discovery-group-count">
-                        ({discovery.results.tools.length})
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="discovery-tools-grid">
-                    {discovery.results.tools.map((tool) => {
-                      const toolUrl = buildToolUrl(tool.id, { source: 'search' });
-                      if (!toolUrl) return null;
-                      return (
-                        <a
-                          key={tool.id}
-                          href={toolUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="discovery-tool-card"
-                          onClick={() =>
-                            trackEvent('toolio_open', {
-                              toolId: tool.id,
-                              source: 'discovery_search',
-                            })
-                          }
-                        >
-                          <div className="discovery-tool-info">
-                            <h3 className="discovery-tool-name">{tool.name}</h3>
-                            <p className="discovery-tool-desc">{tool.description}</p>
-                          </div>
-                          <span className="discovery-tool-cta-badge">
-                            <span>Mở trong Toolio</span>
-                            <ExternalLinkIcon size={12} />
-                          </span>
-                        </a>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-          </div>
-        ) : (
-          /* ========================================================= */
-          /* MODE B: STANDARD ARTICLES BROWSER (NO ACTIVE SEARCH)      */
-          /* ========================================================= */
-          <>
-            {/* Category Tabs */}
-            <div className="articles-filter-tabs" role="tablist" aria-label="Lọc theo nhóm chủ đề">
-              <button
-                type="button"
-                className={`articles-filter-btn ${activeCategory === 'all' ? 'active' : ''}`}
-                onClick={() => setActiveCategory('all')}
-                role="tab"
-                aria-selected={activeCategory === 'all'}
-              >
-                Tất cả ({allArticles.length})
-              </button>
-              {categories.map((cat) => {
-                const count = allArticles.filter((a) => a.category === cat.id).length;
-                return (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    className={`articles-filter-btn ${activeCategory === cat.id ? 'active' : ''}`}
-                    onClick={() => setActiveCategory(cat.id)}
-                    role="tab"
-                    aria-selected={activeCategory === cat.id}
-                  >
-                    <span className={`cat-dot cat-dot-${cat.colorKey} articles-filter-dot`} />
-                    <span>
-                      {cat.shortName} ({count})
+      {/* FEATURED */}
+      {showFeatured && (
+        <section className="articles-featured-section">
+          <div className="container">
+            <Link to={`/articles/${featured.slug}`} className="articles-featured">
+              <div
+                className="articles-featured-media"
+                role="img"
+                aria-label={featured.title}
+                style={{ backgroundImage: `url(${coverFor(featured)})` }}
+              />
+              <div className="articles-featured-body">
+                <div className="articles-featured-badges">
+                  <span className="articles-featured-badge">Bài nổi bật</span>
+                  {featuredCategory && (
+                    <span
+                      className={`chotto-chip chip-${featuredCategory.colorKey} articles-card-chip`}
+                    >
+                      {featuredCategory.shortName}
                     </span>
-                  </button>
+                  )}
+                </div>
+                <h2 className="articles-featured-title">{featured.title}</h2>
+                <p className="articles-featured-desc">{featured.excerpt}</p>
+                <div className="articles-featured-meta">
+                  <span>{featured.readingTime} phút đọc</span>
+                  <span className="articles-meta-sep" aria-hidden="true">
+                    •
+                  </span>
+                  <span>Cập nhật {formatDate(featured.updatedAt || featured.publishedAt)}</span>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {/* GRID */}
+      <section className="articles-grid-section">
+        <div className="container">
+          {shown.length > 0 ? (
+            <div className="articles-grid">
+              {shown.map((article) => {
+                const category = getCategoryById(article.category);
+                return (
+                  <Link
+                    key={article.slug}
+                    to={`/articles/${article.slug}`}
+                    className="articles-card"
+                  >
+                    <div
+                      className="articles-card-media"
+                      role="img"
+                      aria-label={article.title}
+                      style={{ backgroundImage: `url(${coverFor(article)})` }}
+                    />
+                    <div className="articles-card-body">
+                      {category && (
+                        <span
+                          className={`chotto-chip chip-${category.colorKey} articles-card-chip`}
+                        >
+                          {category.shortName}
+                        </span>
+                      )}
+                      <h3 className="articles-card-title">{article.title}</h3>
+                      <p className="articles-card-desc">{article.excerpt}</p>
+                      <div className="articles-card-meta">
+                        {/* Each cluster is nowrap and carries its own leading
+                            dot, so a bullet never lands alone at a line end. */}
+                        <span className="articles-meta-part">{article.readingTime} phút đọc</span>
+                        <span className="articles-meta-part">
+                          <span className="articles-meta-sep" aria-hidden="true">
+                            •
+                          </span>{' '}
+                          {formatDate(article.updatedAt || article.publishedAt)}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
                 );
               })}
             </div>
+          ) : (
+            <div className="articles-empty">
+              <p className="articles-empty-title">Chưa có bài nào khớp…</p>
+              <p className="articles-empty-desc">
+                Thử bỏ bộ lọc chủ đề, hoặc gửi câu hỏi để Chotto viết bài bạn cần.
+              </p>
+              <Link to="/about#lien-he" className="articles-empty-btn">
+                Gửi yêu cầu chủ đề
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
 
-            {/* Editorial Article Rows */}
-            {nonSearchArticles.length === 0 ? (
-              <div className="articles-empty-state">
-                Không tìm thấy bài viết nào trong danh mục này.
-              </div>
-            ) : (
-              <div className="articles-editorial-list" role="list">
-                {nonSearchArticles.map((article) => {
-                  const cat = getCategoryById(article.category);
-                  return (
-                    <Link
-                      key={article.id}
-                      to={`/articles/${article.slug}`}
-                      className={`article-row-item card-${article.category}`}
-                      role="listitem"
-                    >
-                      <div className="article-row-main">
-                        <div className="article-row-top">
-                          {cat && (
-                            <span className={`chotto-chip chip-${cat.colorKey} article-row-chip`}>
-                              {cat.shortName}
-                            </span>
-                          )}
-                          <span className="text-caption">
-                            {article.updatedAt || article.publishedAt}
-                          </span>
-                          <span className="text-caption">·</span>
-                          <span className="text-caption article-row-read-time">
-                            <ClockIcon size={12} />
-                            <span>{article.readingTime} phút đọc</span>
-                          </span>
-                        </div>
-
-                        <h2 className="article-row-title">{article.title}</h2>
-                        <p className="article-row-excerpt">{article.excerpt}</p>
-                      </div>
-
-                      <div className="article-row-action">
-                        <ArrowRightIcon size={18} />
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      {/* PAGINATION */}
+      {pageCount > 1 && (
+        <section className="articles-pagination-section">
+          <nav className="container articles-pagination" aria-label="Phân trang bài viết">
+            <button
+              type="button"
+              className="articles-page-arrow"
+              aria-label="Trang trước"
+              disabled={page === 1}
+              onClick={() => update({ page: String(Math.max(1, page - 1)) })}
+            >
+              ‹
+            </button>
+            {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
+              <button
+                key={n}
+                type="button"
+                className={`articles-page-btn ${n === page ? 'active' : ''}`}
+                aria-current={n === page ? 'page' : undefined}
+                aria-label={`Trang ${n}`}
+                onClick={() => update({ page: String(n) })}
+              >
+                {n}
+              </button>
+            ))}
+            <button
+              type="button"
+              className="articles-page-arrow"
+              aria-label="Trang sau"
+              disabled={page === pageCount}
+              onClick={() => update({ page: String(Math.min(pageCount, page + 1)) })}
+            >
+              ›
+            </button>
+          </nav>
+        </section>
+      )}
     </div>
   );
 }

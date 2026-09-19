@@ -11,6 +11,7 @@ import { buildToolUrl } from '../services/toolRegistry';
 import { TOOL_CATALOGUE } from '../data/tools.js';
 import { trackEvent } from '../services/analytics';
 import { formatDate } from '../utils/formatDate';
+import { DiscoveryQuickSummary } from '../components/search/DiscoveryQuickSummary';
 
 const TABS = [
   { id: 'all', label: 'Tất cả' },
@@ -256,6 +257,13 @@ export function SearchResultsPage() {
       <section className="search-body-section">
         <div className="container search-body">
           <div className="search-results">
+            {/* The grounded summary the discovery service derives from the top
+                verified article. It moved here from /articles, which is now a
+                browse page. */}
+            {tab === 'all' && discovery?.summary && (
+              <DiscoveryQuickSummary summary={discovery.summary} />
+            )}
+
             {visible.map((result) => {
               const body = (
                 <>
