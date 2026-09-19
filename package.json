@@ -17,12 +17,12 @@
     "test:newsroom": "node scripts/test-newsroom.mjs"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.127.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.127.0",
     "@expo-google-fonts/be-vietnam-pro": "^0.4.1",
     "@expo-google-fonts/nunito": "^0.4.2",
     "@vitejs/plugin-react": "^4.3.1",
