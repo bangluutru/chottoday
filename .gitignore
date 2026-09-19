@@ -43,3 +43,7 @@ __MACOSX/
 *.sln
 *.sw?
 scratch/
+
+# Python bytecode (scripts/newsroom/render_card.py sinh ra khi chạy)
+__pycache__/
+*.py[cod]
