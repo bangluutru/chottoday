@@ -13,7 +13,10 @@
 
 import { inferTopic, rankItems, recencyFactor, scoreItem } from './newsroom/rank.mjs';
 import { SOURCES, SOURCE_KIND, getOfficialSources, getSourceById } from './newsroom/sources.js';
-import { USER_AGENT, normalizeDate, parseFeed, parseNoticeList, stripHtml } from './newsroom/fetch.mjs';
+import {
+  MIN_BODY_CHARS, MIN_BODY_SENTENCES, USER_AGENT, hasEnoughSubstance,
+  measureSubstance, normalizeDate, parseFeed, parseNoticeList, stripHtml,
+} from './newsroom/fetch.mjs';
 import { DRAFT_MODEL, DRAFT_SCHEMA, buildCaption, createClient, slugify, toArticleRecord } from './newsroom/draft.mjs';
 
 let passCount = 0;
@@ -428,6 +431,70 @@ const terseOfficial = rankItems(
 assert(
   terseOfficial.length === 1,
   'A terse ministry notice with no explicit "Japan" word is still kept'
+);
+
+// 13. Substance gate — the second lesson from the first real run ----------
+console.log('\n13. Substance gate');
+// The run drafted an article from a table-of-contents page. The model was
+// honest about it — it said the source gave no detail — but the result told
+// the reader to go read the source, and so did the caption. An empty draft is
+// worse than none: it costs a model call, costs review time, and costs trust
+// if it ever reaches the page.
+const menuPage =
+  'Trang chủ Dịch vụ 特定技能 外国人本人の方 所属機関の方 適用事業所 お問い合わせ サイトマップ 年金について 手続き 各種様式';
+const longMenuPage = Array(12)
+  .fill('年金について 手続き 各種様式 よくある質問 関連リンク 特定技能 外国人本人の方 所属機関の方')
+  .join(' ');
+const realNoticeJa =
+  '日本年金機構は、特定技能の在留資格を持つ外国人に関する社会保険の書類交付について手続きを変更すると発表しました。' +
+  '申請は令和8年10月1日から受け付けます。必要な書類は在留カードの写しと雇用契約書です。';
+const realNoticeEn =
+  'The ministry announced a change to the procedure. Applications open on October 1. ' +
+  'Required documents include a copy of the residence card.';
+
+assert(!hasEnoughSubstance(menuPage).ok, 'A table-of-contents page is rejected');
+assert(
+  !hasEnoughSubstance(longMenuPage).ok,
+  'A LONG menu page is rejected too — length alone never earns a draft'
+);
+assert(hasEnoughSubstance(realNoticeJa).ok, 'A short but complete Japanese notice is accepted');
+assert(hasEnoughSubstance(realNoticeEn).ok, 'An English notice is accepted');
+assert(!hasEnoughSubstance('').ok, 'Empty text is rejected');
+assert(
+  !hasEnoughSubstance('。。。。。').ok,
+  'Bare punctuation counts as sentences but is still rejected by the character floor'
+);
+
+// Japanese carries far more meaning per character than Vietnamese or English.
+// A character threshold set by Vietnamese intuition would reject exactly the
+// shortest, clearest notices — so sentences are the primary signal.
+assert(
+  measureSubstance(realNoticeJa).chars < MIN_BODY_CHARS * 2,
+  'The accepted Japanese notice is genuinely short, which is why chars cannot lead'
+);
+assert(
+  measureSubstance(realNoticeJa).sentences >= MIN_BODY_SENTENCES,
+  'It passes on sentence count, not on length'
+);
+assert(
+  measureSubstance(longMenuPage).chars > MIN_BODY_CHARS * 4 &&
+    measureSubstance(longMenuPage).sentences === 0,
+  'And the long menu proves the point in reverse: many characters, no sentences'
+);
+
+assert(
+  typeof hasEnoughSubstance(menuPage).reason === 'string',
+  'A rejection explains itself, so the summary can tell the reviewer why'
+);
+assert(
+  hasEnoughSubstance(realNoticeEn).reason === null,
+  'An accepted body carries no rejection reason'
+);
+
+// "index.html" must not read as a sentence boundary.
+assert(
+  measureSubstance('see index.html and page.html for more').sentences === 0,
+  'A dot inside a filename is not counted as a sentence'
 );
 
 console.log('\n========================================================');

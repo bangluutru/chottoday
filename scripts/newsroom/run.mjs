@@ -18,7 +18,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { promisify } from 'node:util';
 
-import { fetchAllSources, fetchArticleBody } from './fetch.mjs';
+import { fetchAllSources, fetchArticleBody, hasEnoughSubstance } from './fetch.mjs';
 import { rankItems } from './rank.mjs';
 import { buildCaption, draftArticle } from './draft.mjs';
 import { getSourceById } from './sources.js';
@@ -67,6 +67,7 @@ async function main() {
   await fs.mkdir(outDir, { recursive: true });
   const written = [];
   const failures = [];
+  const skipped = [];
 
   for (const item of ranked) {
     const source = getSourceById(item.sourceId);
@@ -77,6 +78,20 @@ async function main() {
         body = await fetchArticleBody(item.url);
       } catch (error) {
         console.warn(`  ⚠ Không lấy được thân bài ${item.url}: ${error.message}`);
+      }
+
+      // Cổng "đủ chất", đặt TRƯỚC khi gọi model.
+      //
+      // Lần chạy thật đầu tiên soạn một bài từ trang mục lục. Model không bịa
+      // — nó trung thực nói nguồn thiếu chi tiết — nhưng kết quả là bài bảo
+      // người đọc đi đọc trang gốc, và caption cũng vậy. Bài rỗng tệ hơn không
+      // có bài: nó tốn tiền gọi model, tốn thì giờ người duyệt, và nếu lọt lên
+      // fanpage thì tốn uy tín.
+      const substance = hasEnoughSubstance(body);
+      if (!substance.ok) {
+        skipped.push({ item, reason: substance.reason });
+        console.log(`  – ${item.title.slice(0, 55)} — bỏ qua: ${substance.reason}`);
+        continue;
       }
 
       const { record, usage } = await draftArticle(item, source, body, { today });
@@ -104,7 +119,7 @@ async function main() {
   const summary = [
     `# Nháp tin ngày ${dateStamp}`,
     '',
-    `Tự động soạn từ ${entries.length} tin thô, giữ lại ${ranked.length}, soạn xong ${written.length}.`,
+    `Tự động soạn từ ${entries.length} tin thô, giữ lại ${ranked.length}, bỏ qua ${skipped.length} vì nguồn không đủ chất, soạn xong ${written.length}.`,
     '',
     '**Chưa bài nào được xuất bản.** Mọi bản ghi đều mang `status: "review"` và ô',
     '`reviewer` còn để trống. Muốn đưa lên site thì tự tra nguồn, điền tên vào ô đó,',
@@ -122,15 +137,37 @@ async function main() {
         : '- Model không đánh dấu điểm nào cần tra lại (vẫn nên đọc kỹ)',
       '',
     ]),
+    ...(skipped.length
+      ? [
+          '## Bỏ qua vì nguồn không đủ chất',
+          '',
+          'Những tin này lọt qua xếp hạng nhưng trang nguồn chỉ là mục lục hoặc',
+          'gần như rỗng. Soạn bài từ đó sẽ ra một bài bảo bạn đi đọc trang gốc,',
+          'nên pipeline dừng trước khi gọi model. Nếu thấy tin nào đáng làm, mở',
+          'link và tự viết.',
+          '',
+          ...skipped.map((sk) => `- [${sk.item.title}](${sk.item.url}) — ${sk.reason}`),
+          '',
+        ]
+      : []),
     ...(failures.length
       ? ['## Soạn hỏng', '', ...failures.map((f) => `- ${f.item.url} — ${f.error}`), '']
       : []),
   ].join('\n');
 
   await fs.writeFile(path.join(outDir, 'README.md'), summary, 'utf8');
-  console.log(`\nĐã ghi ${written.length} bản nháp vào newsroom/drafts/${dateStamp}/`);
+  console.log(
+    `\nĐã ghi ${written.length} bản nháp vào newsroom/drafts/${dateStamp}/` +
+    (skipped.length ? ` (bỏ qua ${skipped.length} vì nguồn không đủ chất)` : '')
+  );
 
-  if (written.length === 0) {
+  // Một buổi sáng không có tin nào đáng soạn là kết quả HỢP LỆ, không phải
+  // hỏng — nhất là sau khi thêm cổng đủ chất. Báo đỏ vào những hôm như vậy
+  // thì mỗi tuần vài lần có mail báo lỗi giả, và kết cục quen thuộc là người
+  // ta tắt thông báo của workflow, tắt luôn cả cảnh báo thật.
+  // Chỉ coi là hỏng khi có tin đã qua cổng mà soạn lỗi hết.
+  if (written.length === 0 && failures.length > 0) {
+    console.error(`❌ ${failures.length} tin qua cổng nhưng soạn lỗi hết.`);
     process.exit(1);
   }
 }

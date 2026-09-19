@@ -167,6 +167,73 @@ export async function fetchArticleBody(url, { maxChars = 6000 } = {}) {
   return stripHtml(main).slice(0, maxChars);
 }
 
+/**
+ * Đo xem một đoạn chữ có đủ chất để soạn bài hay không.
+ *
+ * Vì sao cần: lần chạy thật đầu tiên soạn một bài từ trang MỤC LỤC của
+ * 年金機構. Model không bịa — nó trung thực viết rằng nguồn không nêu chi tiết
+ * — nhưng kết quả là một bài bảo người đọc đi đọc trang gốc. Caption cũng vậy.
+ * Vòng tròn, và vô dụng với người đang cần biết phải làm gì.
+ *
+ * Trang mục lục và trang thông báo thật khác nhau ở chỗ dễ đo: trang mục lục
+ * là một đống nhãn link ngắn, gần như không có câu hoàn chỉnh. Văn xuôi thật
+ * thì có dấu kết câu. Nên đếm câu đáng tin hơn đếm ký tự — một trang menu dài
+ * vẫn có thể vượt ngưỡng ký tự mà không có lấy một câu nào.
+ */
+
+/**
+ * Số câu hoàn chỉnh tối thiểu — tín hiệu CHÍNH.
+ *
+ * Đếm câu, không đếm ký tự, vì tiếng Nhật đặc thông tin hơn hẳn: một thông báo
+ * đầy đủ có thể chỉ hơn trăm ký tự mà vẫn nói hết việc. Ngưỡng ký tự đặt theo
+ * cảm giác tiếng Việt sẽ loại nhầm đúng những thông báo ngắn gọn nhất, vốn là
+ * loại dễ đọc nhất.
+ */
+export const MIN_BODY_SENTENCES = 3;
+
+/**
+ * Sàn ký tự — chỉ để chặn đầu vào bệnh hoạn như "。。。", thứ đếm ra ba "câu"
+ * mà không có chữ nào. Đặt rất thấp là cố ý: một thông báo tiếng Nhật ba câu
+ * chỉ hơn trăm ký tự vẫn là thông báo đầy đủ, và sàn cao sẽ loại đúng những
+ * bản ngắn gọn nhất — loại dễ đọc nhất.
+ */
+export const MIN_BODY_CHARS = 60;
+
+export function measureSubstance(text = '') {
+  const clean = text.trim();
+  // 。！？ cho tiếng Nhật, .!? cho phần còn lại. Yêu cầu sau dấu chấm phương
+  // Tây là khoảng trắng hoặc hết chuỗi, để không đếm nhầm "index.html".
+  const sentences = (clean.match(/[。！？]|[.!?](?=\s|$)/g) || []).length;
+  return { chars: clean.length, sentences };
+}
+
+/**
+ * Có đáng gọi model cho đoạn chữ này không.
+ * Trả về lý do cụ thể khi không, để ghi vào bảng kê cho người duyệt đọc.
+ */
+export function hasEnoughSubstance(text = '') {
+  const { chars, sentences } = measureSubstance(text);
+
+  // Xét câu trước: đây là thứ phân biệt trang mục lục với văn xuôi thật.
+  if (sentences < MIN_BODY_SENTENCES) {
+    return {
+      ok: false,
+      reason: `chỉ ${sentences} câu hoàn chỉnh (cần ${MIN_BODY_SENTENCES}) — nhiều nhãn link, ít văn xuôi`,
+      chars,
+      sentences,
+    };
+  }
+  if (chars < MIN_BODY_CHARS) {
+    return {
+      ok: false,
+      reason: `thân bài chỉ ${chars} ký tự (cần ${MIN_BODY_CHARS}) — gần như rỗng`,
+      chars,
+      sentences,
+    };
+  }
+  return { ok: true, reason: null, chars, sentences };
+}
+
 /** Lấy một nguồn. Không bao giờ ném — lỗi trả về trong kết quả. */
 export async function fetchSource(source) {
   try {
